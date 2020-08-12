@@ -11,9 +11,9 @@
         <link href="{{ asset('https://fonts.googleapis.com/css?family=Cabin:400,600') }}" rel="stylesheet"/>
     </head>
 
-    <body id="{% block body_id %}{% endblock %}">
+    <body>
     {% block header %}
-    <header id="masthead" class="site-header site-header--layout-1 site-header--fluid site-header--absolute">
+    <header id="masthead" class="{% block header_class %} site-header site-header--layout-1 site-header--fluid site-header--absolute {% endblock %}">
         <div class="d-lg-flex justify-content-lg-between align-items-lg-center site-header__container">
             <div class="d-lg-flex align-items-lg-center">
                 <div class="site-header__logo">
@@ -754,7 +754,7 @@
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
-    <script src="{{ asset('https://maps.googleapis.com/maps/api/js?key=AIzaSyBDyCxHyc8z9gMA5IlipXpt0c33Ajzqix4') }}"></script>
-    <script src="{{ asset('https://cdn.rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDyCxHyc8z9gMA5IlipXpt0c33Ajzqix4"></script>
+    <script src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox.js"></script>
     </body>
 </html>
