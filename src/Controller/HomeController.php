@@ -12,6 +12,11 @@ class HomeController extends AbstractController
      */
     public function index()
     {
+        // returns the user object if it is authenticated
+        if ($this->getUser())
+        {
+            return $this->render('');
+        }
         return $this->render('index.html.twig');
     }
 }
