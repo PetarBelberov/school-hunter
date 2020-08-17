@@ -6,6 +6,9 @@
 
 {% block header_class %} site-header site-header--fluid bg-primary {% endblock %}
 {% block body %}
+{% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
 <div class="page-content">
   <div class="breadcrumbs-container">
   <div class="container">
@@ -33,6 +36,8 @@
     <div class="col-md-4 offset-md-4">
       <div class="form-login js-login-form">
         <div class="form-login__block js-form-block is-selected" id="signin">
+
+          {# Login form #}
           <form action="/" method="post">
             <div class="form-container">
               <h3 class="form-title t-center">Sign In</h3>
@@ -115,12 +120,15 @@
               </div>
             </div><!-- .form-container -->
           </form><!-- .signin -->
+          {# Login form #}
         </div><!-- .form-login__block -->
 
         <div class="form-login__block js-form-block" id="signup">
-          <form>
+
+        {# Registration form #}
+        {{ form_start(form_registration, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="form-container">
-              <h3 class="form-title t-center">Sign Up</h3>
+              <h3 class="form-title t-center">Регистрация</h3>
               <div class="form-social">
                 <div class="form-group">
                   <div class="form-group__wrapper">
@@ -150,46 +158,97 @@
                   </div><!-- .form-group__wrapper -->
                 </div><!-- .form-group -->
               </div><!-- .form-social -->
+
               <div class="form-group">
-                <label for="signup-email">Email *</label>
-                <input
-                  type="email"
-                  name="signup-email"
-                  id="signup-email"
-                  class="form-input form-input--pill form-input--border-c-gallery"
-                  required
-                  placeholder="johndoe@gmail.com"
-                >
+               {{ form_row(form_registration.firstName, {
+                  label: 'Имe *',
+                  attr: {
+                    'type': 'text',
+                    'class': 'form-input form-input--pill form-input--border-c-gallery',
+                    'placeholder': 'John'
+                  },
+                  id: 'signup_first_name'
+                }) }}
               </div><!-- .form-group -->
 
               <div class="form-group">
-                <label for="signup-name">Name *</label>
-                <input
-                  type="text"
-                  name="signup-name"
-                  id="signup-name"
-                  class="form-input form-input--pill form-input--border-c-gallery"
-                  required
-                  placeholder="John Doe"
-                >
+               {{ form_row(form_registration.lastName, {
+                  label: 'Фамилия *',
+                  attr: {
+                    'type': 'text',
+                    'class': 'form-input form-input--pill form-input--border-c-gallery',
+                    'placeholder': 'Doe'
+                  },
+                  id: 'signup_last_name'
+                }) }}
+              </div><!-- .form-group -->
+
+              {# <div class="form-group">
+               {{ form_row(form_registration.username, {
+                  label: 'Потребителско име *',
+                  attr: {
+                    'type': 'text',
+                    'class': 'form-input form-input--pill form-input--border-c-gallery',
+                    'placeholder': 'john_doe'
+                  },
+                  id: 'signup_username'
+                }) }}
+              </div><!-- .form-group --> #}
+
+              <div class="form-group">
+               {{ form_row(form_registration.email, {
+                  label: 'Имейл *',
+                  attr: {
+                    'type': 'email',
+                    'class': 'form-input form-input--pill form-input--border-c-gallery',
+                    'placeholder': 'johndoe@gmail.com'
+                  },
+                  id: 'signup_email'
+                }) }}
               </div><!-- .form-group -->
 
               <div class="form-group">
-                <label for="signup-password">Confirm new password *</label>
-                <input
-                  type="password"
-                  name="signup-password"
-                  id="signup-password"
-                  class="form-input form-input--pill form-input--border-c-gallery"
-                  required
-                  placeholder="******"
-                >
+               {{ form_row(form_registration.password.first, {
+                  label: 'Парола *',
+                  attr: {
+                    'type': 'password',
+                    'class': 'form-input form-input--pill form-input--border-c-gallery',
+                    'placeholder': '******'
+                  },
+                  id: 'signup_password'
+                }) }}
               </div><!-- .form-group -->
 
+              <div class="form-group">
+               {{ form_row(form_registration.password.second, {
+                  label: 'Потвърдете паролата *',
+                  attr: {
+                    'type': 'password',
+                    'class': 'form-input form-input--pill form-input--border-c-gallery',
+                    'placeholder': '******'
+                  },
+                  id: 'signup_password_confirm'
+                }) }}
+              </div><!-- .form-group -->
+
+
+              <div class="form-group">
+               {{ form_row(form_registration.agreeTerms, {
+                  label: 'Съгласявам се с условията',
+                  attr: {
+                    'type': 'checkbox',
+                    'class': 'form-input form-input--pill form-input--border-c-gallery',
+                    'placeholder': '******'
+                  },
+                  id: 'signup_terms',
+                  required: true
+                }) }}
+              </div><!-- .form-group -->
+             
               <div class="form-group">
               <span class="c-gray">
-                By creating an account your agree to our <a href="#" class="t-underline">Terms and Conditions</a>
-                and our <a href="#" class="t-underline">Privacy Policy</a>
+                Създавайки акаунт, вие се съгласявате с нашите <a href="#" class="t-underline">Общи условия</a>
+                и нашата <a href="#" class="t-underline">Политика за поверителност</a>
               </span>
               </div><!-- .form-group -->
 
@@ -204,12 +263,14 @@
 
               <div class="form-group--footer">
               <span class="c-gray">
-                Already have an account?
-                <a href="#signin" class="c-secondary t-underline js-block-trigger">Sign in</a>
+                Вече имате акаунт?
+                <a href="#signin" class="c-secondary t-underline js-block-trigger">Вход за потребители</a>
               </span>
               </div>
             </div><!-- .form-container -->
-          </form><!-- .signup -->
+            {{ form_end(form_registration) }}
+            {# Registration form #}
+
         </div><!-- .form-login__block -->
 
         <div class="form-login__block js-form-block" id="reset">

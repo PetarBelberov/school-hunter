@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -21,23 +23,32 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="fullName", type="string", length=255)
+     * @ORM\Column(name="firstName", type="string", length=255)
      * @Assert\NotBlank()
      */
-    private $fullName;
+    private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", unique=true)
+     * @ORM\Column(name="lastName", type="string", length=255)
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=50)
      */
-    private $username;
+    private $lastName;
+
+    // /**
+    //  * @var string
+    //  *
+    //  * @ORM\Column(name="username", type="string", unique=true)
+    //  * @Assert\NotBlank()
+    //  * @Assert\Length(min=3, max=50)
+    //  */
+    // private $username;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -52,30 +63,45 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFullName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->fullName;
+        return $this->firstName;
     }
 
-    public function setFullName(string $fullName): void
+    public function setFirstName(string $firstName): void
     {
-        $this->fullName = $fullName;
+        $this->firstName = $firstName;
     }
 
-    public function getUser(): ?string
+    public function getLastName(): ?string
     {
-        return $this->username;
+        return $this->lastName;
     }
 
-    public function setUser(string $username): void
+    public function setLastName(string $lastName): void
     {
-        $this->username = $username;
+        $this->lastName = $lastName;
     }
+
+    // public function getUser(): ?string
+    // {
+    //     return $this->username;
+    // }
+
+    // public function setUser(string $username): void
+    // {
+    //     $this->username = $username;
+    // }
 
 
     public function getEmail(): ?string
@@ -147,5 +173,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 }

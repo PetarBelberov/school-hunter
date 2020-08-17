@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserFormType;
+use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-class UserController extends AbstractController
+class RegistrationController extends AbstractController
 {
     private $emailVerifier;
 
@@ -24,28 +24,22 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/account", name="user_registration")
+     * @Route("/register", name="app_register")
      */
-    public function registration(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        // the form is created
-        $form_registration = $this->createForm(UserFormType::class, $user);
-
-        // writes the submitted data of the $user object (object is validated)
+        $form_registration = $this->createForm(RegistrationFormType::class, $user);
         $form_registration->handleRequest($request);
 
-        // checks object whether or not it has valid data (if not the form is rendered again)
         if ($form_registration->isSubmitted() && $form_registration->isValid()) {
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form_registration->get('password')->getData()
+                    $form_registration->get('plainPassword')->getData()
                 )
             );
-            
-            $form_registration->get('agreeTerms')->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -64,7 +58,6 @@ class UserController extends AbstractController
             return $this->redirectToRoute('home_index');
         }
 
-        // the form is rendered
         return $this->render('user/account.html.twig', [
             'form_registration' => $form_registration->createView()
         ]);
