@@ -47,8 +47,13 @@ class UserController extends AbstractController
             
             $form_registration->get('agreeTerms')->getData();
 
+            // saving the object to the database
             $entityManager = $this->getDoctrine()->getManager();
+
+            // tell Doctrine you want to (eventually) save the User
             $entityManager->persist($user);
+
+            // actually executes the querie (i.e. the INSERT query)
             $entityManager->flush();
 
             // generate a signed url and email it to the user
@@ -57,7 +62,7 @@ class UserController extends AbstractController
                     ->from(new Address('petar_belberov@gmx.com', 'Petar Belberov'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('user/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
 

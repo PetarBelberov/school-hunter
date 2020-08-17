@@ -9,6 +9,7 @@
 {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
+    
 <div class="page-content">
   <div class="breadcrumbs-container">
   <div class="container">
@@ -182,18 +183,6 @@
                   id: 'signup_last_name'
                 }) }}
               </div><!-- .form-group -->
-
-              {# <div class="form-group">
-               {{ form_row(form_registration.username, {
-                  label: 'Потребителско име *',
-                  attr: {
-                    'type': 'text',
-                    'class': 'form-input form-input--pill form-input--border-c-gallery',
-                    'placeholder': 'john_doe'
-                  },
-                  id: 'signup_username'
-                }) }}
-              </div><!-- .form-group --> #}
 
               <div class="form-group">
                {{ form_row(form_registration.email, {

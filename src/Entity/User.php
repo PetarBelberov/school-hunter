@@ -36,15 +36,6 @@ class User implements UserInterface
      */
     private $lastName;
 
-    // /**
-    //  * @var string
-    //  *
-    //  * @ORM\Column(name="username", type="string", unique=true)
-    //  * @Assert\NotBlank()
-    //  * @Assert\Length(min=3, max=50)
-    //  */
-    // private $username;
-
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()
@@ -92,17 +83,6 @@ class User implements UserInterface
     {
         $this->lastName = $lastName;
     }
-
-    // public function getUser(): ?string
-    // {
-    //     return $this->username;
-    // }
-
-    // public function setUser(string $username): void
-    // {
-    //     $this->username = $username;
-    // }
-
 
     public function getEmail(): ?string
     {
