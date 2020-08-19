@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+    
+    {% for message in app.flashes('success_reg') %}
+        <h1 class="alert alert-success">
+            {{ message }}
+        </h1>
+    {% endfor %}
+    {% for message in app.flashes('success_email') %}
+        <p>{{ message }}</p>
+    {% endfor %}
+
+    <button type="button"><a href="{{ path('user_registration') }}">Login</a></button>
+{% endblock %}
+
+{% block footer %}{% endblock %}

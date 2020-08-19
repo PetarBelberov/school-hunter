@@ -36,100 +36,8 @@
   <div class="row">
     <div class="col-md-4 offset-md-4">
       <div class="form-login js-login-form">
+
         <div class="form-login__block js-form-block is-selected" id="signin">
-
-          {# Login form #}
-          <form action="{{ path('security_login') }}" method="post">
-          <form action="/" method="post">
-            <div class="form-container">
-              <h3 class="form-title t-center">Sign In</h3>
-              <div class="form-social">
-                <div class="form-group">
-                  <div class="form-group__wrapper">
-                    <button
-                      class="button button--social button--twitter button--pill button--large button--block"
-                      type="button"
-                    >
-                      Connect to Twitter
-                    </button>
-                    <span class="form-group__icon form-group__icon--social">
-                  <i class="fa fa-twitter c-white"></i>
-                </span>
-                  </div><!-- .form-group__wrapper -->
-                </div><!-- .form-group -->
-
-                <div class="form-group">
-                  <div class="form-group__wrapper">
-                    <button
-                      class="button button--social button--facebook button--pill button--large button--block"
-                      type="button"
-                    >
-                      Connect to Facebook
-                    </button>
-                    <span class="form-group__icon form-group__icon--social">
-                  <i class="fa fa-facebook-f c-white"></i>
-                </span>
-                  </div><!-- .form-group__wrapper -->
-                </div><!-- .form-group -->
-              </div><!-- .form-social -->
-              <div class="form-group">
-                <label for="login-user">Username or Email</label>
-                <input
-                  type="text"
-                  name="_username"
-                  id="login-user"
-                  class="form-input form-input--pill form-input--border-c-gallery"
-                  value="{{ last_username }}"
-                  required
-                  placeholder="johndoe"
-                >
-              </div><!-- .form-group -->
-
-              <div class="form-group">
-                <label for="login-password">Password</label>
-                <input
-                  type="password"
-                  name="_password"
-                  id="login-password"
-                  class="form-input form-input--pill form-input--border-c-gallery"
-                  required
-                  placeholder="******"
-                >
-              </div><!-- .form-group -->
-
-              <div class="form-group">
-                <div class="form-group__container">
-                  <label for="remember-me" class="icheck_label">
-                    <input type="checkbox" id="remember-me" name="iCheck">
-                    Remember Me
-                  </label>
-                  <a href="#reset" class="c-gray js-block-trigger">Forgot Password?</a>
-                </div><!-- .form-group__container -->
-              </div><!-- .form-group -->
-
-              <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}"/>
-              <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-              
-              <div class="form-group--submit">
-                <button
-                  class="button button--primary button--pill button--large button--block button--submit"
-                  type="submit"
-                >
-                  Log In
-                </button>
-              </div>
-
-              <div class="form-group--footer">
-            <span class="c-gray">
-              Don't have an account? <a href="#signup" class="c-secondary t-underline js-block-trigger">Register</a>
-            </span>
-              </div>
-            </div><!-- .form-container -->
-          </form><!-- .signin -->
-          {# Login form #}
-        </div><!-- .form-login__block -->
-
-        <div class="form-login__block js-form-block" id="signup">
         {# {% if  form_registration is defined %} #}
         {# Registration form #}
         {{ form_start(form_registration, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -258,7 +166,7 @@
               <div class="form-group--footer">
               <span class="c-gray">
                 Вече имате акаунт?
-                <a href="#signin" class="c-secondary t-underline js-block-trigger">Вход за потребители</a>
+                <a href="{{ path('security_login') }}" class="c-secondary t-underline js-block-trigger">Вход за потребители</a>
               </span>
               </div>
             </div><!-- .form-container -->

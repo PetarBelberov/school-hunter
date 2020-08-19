@@ -40,7 +40,7 @@
 
           {# Login form #}
           <form action="{{ path('security_login') }}" method="post">
-          <form action="/" method="post">
+          {# <form action="/" method="post"> #}
             <div class="form-container">
               <h3 class="form-title t-center">Sign In</h3>
               <div class="form-social">
@@ -121,150 +121,12 @@
 
               <div class="form-group--footer">
             <span class="c-gray">
-              Don't have an account? <a href="#signup" class="c-secondary t-underline js-block-trigger">Register</a>
+              Don't have an account? <a href="{{ path('user_registration') }}" class="c-secondary t-underline js-block-trigger">Register</a>
             </span>
               </div>
             </div><!-- .form-container -->
           </form><!-- .signin -->
           {# Login form #}
-        </div><!-- .form-login__block -->
-
-        <div class="form-login__block js-form-block" id="signup">
-        {# {% if  form_registration is defined %} #}
-        {# Registration form #}
-        {{ form_start(form_registration, {'attr': {'novalidate': 'novalidate'}}) }}
-            <div class="form-container">
-              <h3 class="form-title t-center">Регистрация</h3>
-              <div class="form-social">
-                <div class="form-group">
-                  <div class="form-group__wrapper">
-                    <button
-                      class="button button--social button--twitter button--pill button--large button--block"
-                      type="button"
-                    >
-                      Connect to Twitter
-                    </button>
-                    <span class="form-group__icon form-group__icon--social">
-                    <i class="fa fa-twitter c-white"></i>
-                  </span>
-                  </div><!-- .form-group__wrapper -->
-                </div><!-- .form-group -->
-
-                <div class="form-group">
-                  <div class="form-group__wrapper">
-                    <button
-                      class="button button--social button--facebook button--pill button--large button--block"
-                      type="button"
-                    >
-                      Connect to Facebook
-                    </button>
-                    <span class="form-group__icon form-group__icon--social">
-                    <i class="fa fa-facebook-f c-white"></i>
-                  </span>
-                  </div><!-- .form-group__wrapper -->
-                </div><!-- .form-group -->
-              </div><!-- .form-social -->
-
-              <div class="form-group">
-               {{ form_row(form_registration.firstName, {
-                  label: 'Имe *',
-                  attr: {
-                    'type': 'text',
-                    'class': 'form-input form-input--pill form-input--border-c-gallery',
-                    'placeholder': 'John'
-                  },
-                  id: 'signup_first_name'
-                }) }}
-              </div><!-- .form-group -->
-
-              <div class="form-group">
-               {{ form_row(form_registration.lastName, {
-                  label: 'Фамилия *',
-                  attr: {
-                    'type': 'text',
-                    'class': 'form-input form-input--pill form-input--border-c-gallery',
-                    'placeholder': 'Doe'
-                  },
-                  id: 'signup_last_name'
-                }) }}
-              </div><!-- .form-group -->
-
-              <div class="form-group">
-               {{ form_row(form_registration.email, {
-                  label: 'Имейл *',
-                  attr: {
-                    'type': 'email',
-                    'class': 'form-input form-input--pill form-input--border-c-gallery',
-                    'placeholder': 'johndoe@gmail.com'
-                  },
-                  id: 'signup_email'
-                }) }}
-              </div><!-- .form-group -->
-
-              <div class="form-group">
-               {{ form_row(form_registration.password.first, {
-                  label: 'Парола *',
-                  attr: {
-                    'type': 'password',
-                    'class': 'form-input form-input--pill form-input--border-c-gallery',
-                    'placeholder': '******'
-                  },
-                  id: 'signup_password'
-                }) }}
-              </div><!-- .form-group -->
-
-              <div class="form-group">
-               {{ form_row(form_registration.password.second, {
-                  label: 'Потвърдете паролата *',
-                  attr: {
-                    'type': 'password',
-                    'class': 'form-input form-input--pill form-input--border-c-gallery',
-                    'placeholder': '******'
-                  },
-                  id: 'signup_password_confirm'
-                }) }}
-              </div><!-- .form-group -->
-
-
-              <div class="form-group">
-               {{ form_row(form_registration.agreeTerms, {
-                  label: 'Съгласявам се с условията',
-                  attr: {
-                    'type': 'checkbox',
-                    'class': 'form-input form-input--pill form-input--border-c-gallery',
-                    'placeholder': '******'
-                  },
-                  id: 'signup_terms',
-                  required: true
-                }) }}
-              </div><!-- .form-group -->
-             
-              <div class="form-group">
-              <span class="c-gray">
-                Създавайки акаунт, вие се съгласявате с нашите <a href="#" class="t-underline">Общи условия</a>
-                и нашата <a href="#" class="t-underline">Политика за поверителност</a>
-              </span>
-              </div><!-- .form-group -->
-
-              <div class="form-group--submit">
-                <button
-                  class="button button--primary button--pill button--large button--block button--submit"
-                  type="submit"
-                >
-                  Sign Up
-                </button>
-              </div>
-
-              <div class="form-group--footer">
-              <span class="c-gray">
-                Вече имате акаунт?
-                <a href="#signin" class="c-secondary t-underline js-block-trigger">Вход за потребители</a>
-              </span>
-              </div>
-            </div><!-- .form-container -->
-            {{ form_end(form_registration) }}
-            {# Registration form #}
-          {# {% endif %} #}
         </div><!-- .form-login__block -->
 
         <div class="form-login__block js-form-block" id="reset">

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+    
+    {% for message in app.flashes('verify_title') %}
+        <h1>
+            {{ message }}
+        </h1>
+    {% endfor %}
+    {% for message in app.flashes('verify_paragraph') %}
+        <p>{{ message }} - {{ user.email }}</p>
+    {% endfor %}
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

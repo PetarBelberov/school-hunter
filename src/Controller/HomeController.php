@@ -15,8 +15,10 @@ class HomeController extends AbstractController
         // returns the user object if it is authenticated
         if ($this->getUser())
         {
-            return $this->render('');
+            var_dump($this->getUser());
+            return $this->render('index.html.twig');
         }
+        var_dump($this->getUser());
         return $this->render('index.html.twig');
     }
 }

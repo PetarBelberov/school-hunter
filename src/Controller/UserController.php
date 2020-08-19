@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+ 
 class UserController extends AbstractController
 {
     private $emailVerifier;
@@ -24,11 +25,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/account", name="user_registration")
-     */
+    * @Route("/register", name="user_registration")
+    */
     public function registration(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
+        $user->setRoles(array('ROLE_USER'));
         // the form is created
         $form_registration = $this->createForm(UserFormType::class, $user);
 
@@ -57,7 +59,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation('user_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('petar_belberov@gmx.com', 'Petar Belberov'))
                     ->to($user->getEmail())
@@ -66,17 +68,20 @@ class UserController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('home_index');
+            // return $this->redirectToRoute('home_index');
+            $this->addFlash('verify_title', 'Verify your email');
+            $this->addFlash('verify_paragraph', 'We sent you a verification code to the email address you used to create the account');
+            return $this->render('user/confirmation_message.html.twig', ['user'=>$user]);
         }
 
         // the form is rendered
-        return $this->render('user/account.html.twig', [
+        return $this->render('user/register.html.twig', [
             'form_registration' => $form_registration->createView()
         ]);
     }
 
     /**
-     * @Route("/verify/email", name="app_verify_email")
+     * @Route("/verify/email", name="user_verify_email")
      */
     public function verifyUserEmail(Request $request): Response
     {
@@ -86,14 +91,16 @@ class UserController extends AbstractController
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
+            $this->addFlash('user_verify_email', $exception->getReason());
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('user_verify_email');
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success_reg', 'Registration completed successfully');
+        $this->addFlash('success_email', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+         // the form is rendered
+         return $this->render('user/verified.html.twig');
     }
 }
