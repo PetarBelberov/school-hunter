@@ -13,6 +13,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Security\Core\Security;
 
  
 class UserController extends AbstractController
@@ -27,8 +28,13 @@ class UserController extends AbstractController
     /**
     * @Route("/register", name="user_registration")
     */
-    public function registration(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function registration(Request $request, UserPasswordEncoderInterface $passwordEncoder, Security $security): Response
     {
+        // if user is already logged in, don't display the login page again
+        if ($security->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('home_index');
+        }
+        
         $user = new User();
         $user->setRoles(array('ROLE_USER'));
         // the form is created
