@@ -125,13 +125,17 @@
                         <a href="blog.html">Blog</a>
                     </li>
                 </ul><!-- .main-navigation -->
-
                 <div class="user-action">
-                    <a href="login.html" class="sign-in c-white">
-                        <i class="fa fa-user"></i>
-                        Sign in
-                    </a>
-                    <button class="button button--small button--pill button--primary d-none d-lg-inline-block">&plus; Add Listing</button>
+                    {% if is_granted('ROLE_USER') %}
+                        <li><a href="#" class="userNavbar c-white"><span class="glyphicon glyphicon-user"></span> Welcome {{ app.user.firstName }}</a></li>
+                        <button class="button button--small button--pill button--primary d-none d-lg-inline-block">&plus; Add Listing</button>
+                        <li id="logout"><a href="{{ path('security_logout') }}"><span class="glyphicon glyphicon-log-out c-white"></span> Log Out</a></li>
+                     {% else %}
+                        <a href="login.html" class="sign-in c-white">
+                            <i class="fa fa-user"></i>
+                            Sign in
+                        </a>
+                    {% endif %}
                 </div><!-- .user-action -->
             </div>
 
