@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\UniversityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=UniversityRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\UniversityRepository::class)
  */
 class University
 {
@@ -45,6 +44,37 @@ class University
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     */
+    private $address;
+
+     /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     */
+    private $phone;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Email
+     */
+    private $email;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     */
+    private $website;
+
+    /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="university")
      */
 
@@ -76,11 +106,9 @@ class University
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): void
     {
         $this->title = $title;
-
-        return $this;
     }
 
     public function getSlug(): ?string
@@ -88,11 +116,49 @@ class University
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
 
-        return $this;
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddres(string $address): void
+    {
+        $this->address = $address;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(string $website): void
+    {
+        $this->website = $website;
     }
 
     public function getDescription(): ?string
@@ -100,11 +166,9 @@ class University
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): void
     {
         $this->description = $description;
-
-        return $this;
     }
 
     /**
