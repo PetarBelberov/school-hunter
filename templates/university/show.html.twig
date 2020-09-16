@@ -48,7 +48,10 @@
                     <span class="c-dusty-gray">Claimed</span>
                   </div>
                 </div>
-
+                {% for specialty in rating_content %}
+                  <p>{{ specialty.name|e }}</p>
+                  <br>
+                {% endfor %}
                 <ul class="min-list listing-header__detail">
                   <li>
                     <span class="listing__score t-center">8.5</span>

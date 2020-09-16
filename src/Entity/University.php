@@ -74,10 +74,6 @@ class University
      */
     private $website;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="university")
-     */
-
      /**
      * @var Comment[]|ArrayCollection
      *
@@ -91,9 +87,13 @@ class University
      */
     private $comments;
 
+     /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="university") */
+     private $universityMajor;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->universityMajor = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,5 +190,13 @@ class University
     public function removeComments(Comment $comment): void
     {
         $this->comments->removeElement($comment);
+    }
+
+    public function addUniversityMajor(UniversityMajor $universityMajors)
+    {
+        if ($this->universityMajor->contains($universityMajors)) {
+            return;
+        }
+        $this->universityMajor[] = $universityMajors;
     }
 }
