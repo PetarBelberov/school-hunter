@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,8 +12,7 @@ use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 
     /**
-    * @Route("/admin/universities", name="admin_university_")
-    * @IsGranted("ROLE_ADMIN")
+    * @Route("/universities", name="university_")
     */
 class UniversityController extends AbstractController
 {
@@ -32,6 +31,22 @@ class UniversityController extends AbstractController
      */
     public function show(University $university): Response
     {
+        $majors = array();
+        $university_majors = $this->getDoctrine()
+        ->getRepository(UniversityMajor::class)
+        ->findBy(['university' => $university]);
 
+        $counter = 0;
+        foreach ($university_majors as $university_major) {
+            array_push($majors, array($counter => $university_major->getMajor()->getName(), $university_major->getRSVURanking()));
+            $counter++;
+        }
+
+        return $this->render('university/show.html.twig',
+            array(
+                'university' => $university,
+                'majors' => $majors
+            )
+        );
     }
 }
