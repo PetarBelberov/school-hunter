@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,7 +46,7 @@ class UniversityController extends AbstractController
         return $this->render('university/show.html.twig',
             array(
                 'university' => $university,
-                'majors' => $majors
+                'majors' => $majors,
             )
         );
     }

@@ -20,11 +20,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/school-hunter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/school-hunter.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/UniversityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/university/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/university/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200812214158.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200817120024.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200826201828.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200901194718.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200904081602.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200904083823.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200904192109.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200909172230.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200913185907.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20201229180026.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UniversityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/UniversityMajorFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UniversityMajorFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/OverallRating.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Rating.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Rating.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/University.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/University.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/OverallRatingRepository.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.lock" afterDir="false" />
@@ -50,6 +64,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP">
     <include_path>
@@ -172,12 +194,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Controller" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -194,7 +216,22 @@
       <recent name="C:\xampp\htdocs\school-hunter\public" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="RatingFixtures.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/src/DataFixtures/RatingFixtures.php">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="PHP Script.RatingFixtures.php" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="StructuralSearchPlugin">
+    <searchConfiguration name="Unnamed" created="1609625183314" text="migrations.php" recursive="false" caseInsensitive="false" type="PHP" scope_type="PROJECT" scope_descriptor="" history="1">
+      <constraint name="__context__" within="" contains="" />
+    </searchConfiguration>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -216,7 +253,9 @@
       <workItem from="1609264154633" duration="168000" />
       <workItem from="1609264699118" duration="8892000" />
       <workItem from="1609597609816" duration="703000" />
-      <workItem from="1609599142077" duration="6100000" />
+      <workItem from="1609599142077" duration="12298000" />
+      <workItem from="1609755357275" duration="14199000" />
+      <workItem from="1609852412963" duration="25383000" />
     </task>
     <servers />
   </component>
@@ -243,6 +282,10 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
   <component name="masterDetails">
     <states>

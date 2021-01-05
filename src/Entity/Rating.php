@@ -67,6 +67,23 @@ class Rating
      */
     private $dorms;
 
+    /**
+     * @ORM\Column(type="integer", length=255)
+     * @Assert\NotBlank
+     */
+    private $overall_rating;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
+    private $overall_review;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="rating", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,7 +136,7 @@ class Rating
 
     public function setJobProspects(int $jobProspects): void
     {
-        $this->jobProspects = jobProspects;
+        $this->jobProspects = $jobProspects;
     }
 
     public function getProfessors(): ?int
@@ -160,5 +177,36 @@ class Rating
     public function setDorms(int $dorms): void
     {
         $this->dorms = $dorms;
+    }
+
+    public function getOverallRating(): ?int
+    {
+        return $this->overall_rating;
+    }
+
+    public function setOverallRating(int $overall_rating): void
+    {
+        $this->overall_rating = $overall_rating;
+    }
+
+    public function getOverallReview(): ?string
+    {
+        return $this->overall_rating;
+    }
+
+    public function setOverallReview(string $overall_review): void
+    {
+        $this->overall_review = $overall_review;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newRating = null === $user ? null : $this;
+        if ($user->getRating() !== $newRating) {
+            $user->setRating($newRating);
+        }
     }
 }

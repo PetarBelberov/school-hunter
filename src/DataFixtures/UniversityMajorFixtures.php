@@ -49,7 +49,7 @@ class UniversityMajorFixtures extends Fixture
         }
     }
     
-    public function loadUNSS($manager, $major, $university)
+    public function loadUNSS($manager)
     {
         $university = $this->em
             ->getRepository(University::class)
@@ -100,7 +100,7 @@ class UniversityMajorFixtures extends Fixture
         }
     }
 
-    public function loadNBU($manager, $major, $university)
+    public function loadNBU($manager)
     {
         $university = $this->em
             ->getRepository(University::class)
@@ -221,7 +221,7 @@ class UniversityMajorFixtures extends Fixture
         }
     }
 
-    public function loadSU($manager, $major, $university)
+    public function loadSU($manager)
     {
         $university = $this->em
             ->getRepository(University::class)
@@ -392,7 +392,7 @@ class UniversityMajorFixtures extends Fixture
         }
     }
 
-    public function loadACS($manager, $major, $university)
+    public function loadACS($manager)
     {
         $university = $this->em
             ->getRepository(University::class)

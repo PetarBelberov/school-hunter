@@ -90,6 +90,7 @@ class University
      /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="university") */
      private $universityMajor;
 
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
