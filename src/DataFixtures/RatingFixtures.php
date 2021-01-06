@@ -15,17 +15,17 @@ class RatingFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         foreach ($this->getRatingData() as [
-                 $campus,
-                 $academics,
-                 $location,
-                 $teachingQuality,
-                 $jobProspects,
-                 $professors,
-                 $athletics,
-                 $food,
-                 $dorms,
-                 $overall_rating,
-                 $overall_review,
+             $campus,
+             $academics,
+             $location,
+             $teachingQuality,
+             $jobProspects,
+             $professors,
+             $athletics,
+             $food,
+             $dorms,
+             $overall_rating,
+             $overall_review,
         ]) {
             $rating = new Rating();
             $rating->setCampus($campus);

@@ -20,10 +20,10 @@ class UniversityMajorFixtures extends Fixture
     {
         $major = new Major();
         $university = new University();
-        $this->loadNBU($manager, $major, $university);
-        $this->loadUNSS($manager, $major, $university);
-        $this->loadSU($manager, $major, $university);
-        $this->loadACS($manager, $major, $university);
+        $this->loadNBU($manager);
+        $this->loadUNSS($manager);
+        $this->loadSU($manager);
+        $this->loadACS($manager);
     }
 
     public function checkMajors($major_name, $ranking) {

@@ -18,7 +18,7 @@ class UserRatingFixtures extends Fixture
     {
         $user_emails = ['johny@gmail.com', 'user@abv.com'];
         foreach ($user_emails as $user_email) {
-            $this->loadJohny($user_email);
+            $this->loadUsers($user_email);
 
         $ratings = $this->em
             ->getRepository(Rating::class)
@@ -26,12 +26,12 @@ class UserRatingFixtures extends Fixture
         $user_rating = new UserRating();
 
             foreach ($ratings as $rating) {
-                $this->save($rating, $manager, $this->loadJohny($user_email), $user_rating);
+                $this->save($rating, $manager, $this->loadUsers($user_email), $user_rating);
             }
         }
     }
 
-    private function loadJohny($user_email)
+    private function loadUsers($user_email)
     {
         $users = $this->em
             ->getRepository(User::class)
