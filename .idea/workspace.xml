@@ -21,24 +21,10 @@
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200812214158.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200817120024.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200826201828.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200901194718.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200904081602.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200904083823.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200904192109.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200909172230.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20200913185907.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20201229180026.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UniversityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/UniversityMajorFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UniversityMajorFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/RatingFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/RatingFixtures.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/OverallRating.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Rating.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Rating.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/University.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/University.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/OverallRatingRepository.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.lock" afterDir="false" />
@@ -222,7 +208,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="PHP Script.RatingFixtures.php" />
+        <item itemvalue="PHP Script.UserRatingFixtures.php" />
       </list>
     </recent_temporary>
   </component>
@@ -255,7 +241,8 @@
       <workItem from="1609597609816" duration="703000" />
       <workItem from="1609599142077" duration="12298000" />
       <workItem from="1609755357275" duration="14199000" />
-      <workItem from="1609852412963" duration="25383000" />
+      <workItem from="1609852412963" duration="25593000" />
+      <workItem from="1609950072842" duration="15771000" />
     </task>
     <servers />
   </component>

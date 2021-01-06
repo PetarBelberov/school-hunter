@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RatingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -80,9 +82,15 @@ class Rating
     private $overall_review;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="rating", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=UserRating::class, mappedBy="Rating")
      */
-    private $user;
+    private $userRating;
+
+    public function __construct()
+    {
+        $this->userRating = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -199,14 +207,34 @@ class Rating
         $this->overall_review = $overall_review;
     }
 
-    public function setUser(?User $user): void
+    /**
+     * @return Collection|UserRating[]
+     */
+    public function getUserRating(): Collection
     {
-        $this->user = $user;
+        return $this->userRating;
+    }
 
-        // set (or unset) the owning side of the relation if necessary
-        $newRating = null === $user ? null : $this;
-        if ($user->getRating() !== $newRating) {
-            $user->setRating($newRating);
+    public function addUserRating(UserRating $userRating): self
+    {
+        if (!$this->userRating->contains($userRating)) {
+            $this->userRating[] = $userRating;
+            $userRating->setRating($this);
         }
+
+        return $this;
+    }
+
+    public function removeUserRating(UserRating $userRating): self
+    {
+        if ($this->userRating->contains($userRating)) {
+            $this->userRating->removeElement($userRating);
+            // set the owning side to null (unless already changed)
+            if ($userRating->getRating() === $this) {
+                $userRating->setRating(null);
+            }
+        }
+
+        return $this;
     }
 }

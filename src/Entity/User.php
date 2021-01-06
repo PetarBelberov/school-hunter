@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -60,9 +62,14 @@ class User implements UserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\OneToOne(targetEntity=Rating::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=UserRating::class, mappedBy="user")
      */
-    private $rating;
+    private $userRating;
+
+    public function __construct()
+    {
+        $this->userRating = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -166,13 +173,34 @@ class User implements UserInterface
         $this->isVerified = $isVerified;
     }
 
-    public function getRating(): ?Rating
+    /**
+     * @return Collection|UserRating[]
+     */
+    public function getUserRating(): Collection
     {
-        return $this->rating;
+        return $this->userRating;
     }
 
-    public function setRating(?Rating $rating): void
+    public function addUserRating(UserRating $userRating): self
     {
-        $this->rating = $rating;
+        if (!$this->userRating->contains($userRating)) {
+            $this->userRating[] = $userRating;
+            $userRating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRating(UserRating $userRating): self
+    {
+        if ($this->userRating->contains($userRating)) {
+            $this->userRating->removeElement($userRating);
+            // set the owning side to null (unless already changed)
+            if ($userRating->getUser() === $this) {
+                $userRating->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

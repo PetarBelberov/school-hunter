@@ -1,9 +1,7 @@
 <?php
 namespace App\DataFixtures;
 
-use App\Entity\Rating;
 use App\Entity\User;
-use App\Entity\University;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -19,9 +17,8 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $user = new User();
         foreach ($this->getUserData() as [$firstName, $lastName, $email, $roles, $password, $isVerified]) {
-
+            $user = new User();
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
             $user->setEmail($email);
@@ -31,7 +28,6 @@ class UserFixtures extends Fixture
 
             $manager->persist($user);
         }
-        $user->setRating($this->getReference(RatingFixtures::RATING_REFERENCE));
         $manager->flush();
     }
 

@@ -2,25 +2,18 @@
 namespace App\DataFixtures;
 
 use App\Entity\Rating;
-use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
-use Psr\Log\LoggerInterface;
 
 class RatingFixtures extends Fixture
 {
-    public const RATING_REFERENCE = 'rating';
-
-    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->logger = $logger;
     }
     public function load(ObjectManager $manager)
     {
-        $rating = new Rating();
-
         foreach ($this->getRatingData() as [
                  $campus,
                  $academics,
@@ -34,7 +27,7 @@ class RatingFixtures extends Fixture
                  $overall_rating,
                  $overall_review,
         ]) {
-
+            $rating = new Rating();
             $rating->setCampus($campus);
             $rating->setAcademics($academics);
             $rating->setLocation($location);
@@ -49,7 +42,6 @@ class RatingFixtures extends Fixture
 
             $manager->persist($rating);
         }
-        $this->addReference(self::RATING_REFERENCE, $rating);
         $manager->flush();
     }
 
@@ -57,7 +49,8 @@ class RatingFixtures extends Fixture
     {
         return [
             // $ratingData = [$university, $campus, $academics, $location, $teachingQuality, $jobProspects, $professors, $athletics, $food, $dorms, $overall_rating, $overall_review];
-            [1, 2, 3, 4, 5, 4, 3, 2, 1, 5, 'Lorem Ipsum']
+            [1, 2, 3, 4, 5, 4, 3, 2, 1, 5, 'Lorem Ipsum'],
+            [5, 4, 3, 2, 1, 1, 2, 3, 4, 1, 'Ipsum Lorem']
         ];
     }
 }
