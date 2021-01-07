@@ -50,7 +50,9 @@ class RatingFixtures extends Fixture
         return [
             // $ratingData = [$university, $campus, $academics, $location, $teachingQuality, $jobProspects, $professors, $athletics, $food, $dorms, $overall_rating, $overall_review];
             [1, 2, 3, 4, 5, 4, 3, 2, 1, 5, 'Lorem Ipsum'],
-            [5, 4, 3, 2, 1, 1, 2, 3, 4, 1, 'Ipsum Lorem']
+            [2, 3, 4, 5, 1, 5, 4, 3, 2, 1, 'Ipsum Lorem'],
+            [3, 4, 5, 1, 2, 1, 5, 4, 3, 2, 'Why do we use it'],
+            [4, 5, 4, 2, 3, 2, 1, 5, 4, 3, 'Where does it come from']
         ];
     }
 }

@@ -90,11 +90,17 @@ class University
      /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="university") */
      private $universityMajor;
 
+     /**
+      * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="university")
+      */
+     private $rating;
+
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->universityMajor = new ArrayCollection();
+        $this->rating = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -199,5 +205,32 @@ class University
             return;
         }
         $this->universityMajor[] = $universityMajors;
+    }
+
+    /**
+     * @return Collection|Rating[]
+     */
+    public function getRating(): Collection
+    {
+        return $this->rating;
+    }
+
+    public function addRating(Rating $rating): void
+    {
+        if (!$this->rating->contains($rating)) {
+            $this->rating[] = $rating;
+            $rating->setUniversity($this);
+        }
+    }
+
+    public function removeRating(Rating $rating): void
+    {
+        if ($this->rating->contains($rating)) {
+            $this->rating->removeElement($rating);
+            // set the owning side to null (unless already changed)
+            if ($rating->getUniversity() === $this) {
+                $rating->setUniversity(null);
+            }
+        }
     }
 }

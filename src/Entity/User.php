@@ -62,14 +62,15 @@ class User implements UserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserRating::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="user")
      */
-    private $userRating;
+    private $rating;
 
     public function __construct()
     {
-        $this->userRating = new ArrayCollection();
+        $this->rating = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -174,33 +175,29 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|UserRating[]
+     * @return Collection|Rating[]
      */
-    public function getUserRating(): Collection
+    public function getRating(): Collection
     {
-        return $this->userRating;
+        return $this->rating;
     }
 
-    public function addUserRating(UserRating $userRating): self
+    public function addRating(Rating $rating): void
     {
-        if (!$this->userRating->contains($userRating)) {
-            $this->userRating[] = $userRating;
-            $userRating->setUser($this);
+        if (!$this->rating->contains($rating)) {
+            $this->rating[] = $rating;
+            $rating->setUser($this);
         }
-
-        return $this;
     }
 
-    public function removeUserRating(UserRating $userRating): self
+    public function removeRating(Rating $rating): void
     {
-        if ($this->userRating->contains($userRating)) {
-            $this->userRating->removeElement($userRating);
+        if ($this->rating->contains($rating)) {
+            $this->rating->removeElement($rating);
             // set the owning side to null (unless already changed)
-            if ($userRating->getUser() === $this) {
-                $userRating->setUser(null);
+            if ($rating->getUser() === $this) {
+                $rating->setUser(null);
             }
         }
-
-        return $this;
     }
 }

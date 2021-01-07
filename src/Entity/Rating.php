@@ -82,14 +82,14 @@ class Rating
     private $overall_review;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserRating::class, mappedBy="Rating")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rating")
      */
-    private $userRating;
+    private $user;
 
-    public function __construct()
-    {
-        $this->userRating = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=University::class, inversedBy="rating")
+     */
+    private $university;
 
 
     public function getId(): ?int
@@ -199,7 +199,7 @@ class Rating
 
     public function getOverallReview(): ?string
     {
-        return $this->overall_rating;
+        return $this->overall_review;
     }
 
     public function setOverallReview(string $overall_review): void
@@ -207,34 +207,23 @@ class Rating
         $this->overall_review = $overall_review;
     }
 
-    /**
-     * @return Collection|UserRating[]
-     */
-    public function getUserRating(): Collection
+    public function getUser(): ?User
     {
-        return $this->userRating;
+        return $this->user;
     }
 
-    public function addUserRating(UserRating $userRating): self
+    public function setUser(?User $user): void
     {
-        if (!$this->userRating->contains($userRating)) {
-            $this->userRating[] = $userRating;
-            $userRating->setRating($this);
-        }
-
-        return $this;
+        $this->user = $user;
     }
 
-    public function removeUserRating(UserRating $userRating): self
+    public function getUniversity(): ?University
     {
-        if ($this->userRating->contains($userRating)) {
-            $this->userRating->removeElement($userRating);
-            // set the owning side to null (unless already changed)
-            if ($userRating->getRating() === $this) {
-                $userRating->setRating(null);
-            }
-        }
+        return $this->university;
+    }
 
-        return $this;
+    public function setUniversity(?University $university): void
+    {
+        $this->university = $university;
     }
 }

@@ -3,7 +3,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Rating;
 use App\Entity\User;
-use App\Entity\UserRating;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -16,38 +15,71 @@ class UserRatingFixtures extends Fixture
     }
     public function load(ObjectManager $manager)
     {
-        $user_emails = ['johny@gmail.com', 'user@abv.com'];
-        foreach ($user_emails as $user_email) {
-            $this->loadUsers($user_email);
+        $this->loadJohny1($manager);
+        $this->loadUser1($manager);
+        $this->loadJohny2($manager);
+        $this->loadUser2($manager);
+    }
 
-        $ratings = $this->em
+    private function loadJohny1(ObjectManager $manager) {
+
+        $rating = $this->em
             ->getRepository(Rating::class)
-            ->findAll();
-        $user_rating = new UserRating();
+            ->findOneBy (['overall_review' => 'Lorem Ipsum']);
 
-            foreach ($ratings as $rating) {
-                $this->save($rating, $manager, $this->loadUsers($user_email), $user_rating);
-            }
-        }
-    }
-
-    private function loadUsers($user_email)
-    {
-        $users = $this->em
+        $user = $this->em
             ->getRepository(User::class)
-            ->findBy(['email' => $user_email]);
+            ->findOneBy (['email' => 'johny@gmail.com']);
 
-        foreach ($users as $user) {
-            return $user;
-        }
+        $rating->setUser($user);
+        $this->save($manager, $rating);
     }
 
-    private function save($rating, $manager, $user, $user_rating)
+    private function loadUser1(ObjectManager $manager)
     {
-        $user_rating->setUser($user);
-        $user_rating->setRating($rating);
+        $rating = $this->em
+            ->getRepository(Rating::class)
+            ->findOneBy(['overall_review' => 'Ipsum Lorem']);
 
-        $manager->persist($user_rating);
+        $user = $this->em
+            ->getRepository(User::class)
+            ->findOneBy(['email' => 'user@abv.com']);
+
+        $rating->setUser($user);
+        $this->save($manager, $rating);
+    }
+
+    private function loadJohny2(ObjectManager $manager) {
+
+        $rating = $this->em
+            ->getRepository(Rating::class)
+            ->findOneBy (['overall_review' => 'Why do we use it']);
+
+        $user = $this->em
+            ->getRepository(User::class)
+            ->findOneBy (['email' => 'johny@gmail.com']);
+
+        $rating->setUser($user);
+        $this->save($manager, $rating);
+    }
+
+    private function loadUser2(ObjectManager $manager)
+    {
+        $rating = $this->em
+            ->getRepository(Rating::class)
+            ->findOneBy(['overall_review' => 'Where does it come from']);
+
+        $user = $this->em
+            ->getRepository(User::class)
+            ->findOneBy(['email' => 'user@abv.com']);
+
+        $rating->setUser($user);
+        $this->save($manager, $rating);
+    }
+
+    private function save($manager, $rating)
+    {
+        $manager->persist($rating);
         $manager->flush();
     }
 }
