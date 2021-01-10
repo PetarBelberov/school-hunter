@@ -21,8 +21,11 @@
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UniversityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/university/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/university/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/findAll()" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/persist($university_major)" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/UniversityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.lock" afterDir="false" />
@@ -178,7 +181,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -188,10 +191,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\school-hunter\templates" />
+      <recent name="C:\xampp\htdocs\school-hunter\templates\admin\university" />
       <recent name="C:\xampp\htdocs\school-hunter\src\Controller" />
       <recent name="C:\xampp\htdocs\school-hunter\public" />
       <recent name="C:\xampp\htdocs\school-hunter\public\build" />
-      <recent name="C:\xampp\htdocs\school-hunter\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\school-hunter\public\build" />
@@ -238,7 +242,7 @@
       <workItem from="1609950072842" duration="17187000" />
       <workItem from="1610028919325" duration="25029000" />
       <workItem from="1610206580432" duration="602000" />
-      <workItem from="1610280155057" duration="10875000" />
+      <workItem from="1610280155057" duration="25544000" />
     </task>
     <servers />
   </component>

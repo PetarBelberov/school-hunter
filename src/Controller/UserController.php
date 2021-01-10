@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
+use App\Entity\University;
 use App\Entity\User;
 use App\Form\UserEditFormType;
 use App\Form\UserFormType;
@@ -18,7 +20,7 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Mailer\MailerInterface;
 
- 
+
 class UserController extends AbstractController
 {
     private $emailVerifier;
@@ -37,7 +39,7 @@ class UserController extends AbstractController
         if ($security->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('home_index');
         }
-        
+
         $user = new User();
         $user->setRoles(array('ROLE_USER'));
         // the form is created
@@ -55,7 +57,7 @@ class UserController extends AbstractController
                     $form_registration->get('password')->getData()
                 )
             );
-            
+
             $form_registration->get('agreeTerms')->getData();
 
             // saving the object to the database
@@ -84,6 +86,27 @@ class UserController extends AbstractController
         // the form is rendered
         return $this->render('user/register.html.twig', [
             'form_registration' => $form_registration->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/profile", name="user_profile")
+     */
+    public function profile()
+    {
+        $user = $this->getUser();
+
+        $this->getDoctrine()
+            ->getRepository(University::class)
+            ->findAll();
+
+        $university_rating = $this->getDoctrine()
+            ->getRepository(Rating::class)
+            ->findBy(['user' => $user]);
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+            'university_rating' => $university_rating
         ]);
     }
 
@@ -172,4 +195,6 @@ class UserController extends AbstractController
             'form_change_pass' => $form_change_pass->createView(),
         ]);
     }
+
+
 }

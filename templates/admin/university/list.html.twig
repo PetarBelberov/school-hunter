@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block header_class %} site-header site-header--fluid bg-primary {% endblock %}
+
+{% block body %}
+    <p>List all universities</p>
+    {% for university in universities %}
+        <h6>{{ (university.title) }}</h6>
+    {% endfor %}
+
+{% endblock %}
