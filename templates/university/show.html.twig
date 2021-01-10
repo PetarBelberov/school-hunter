@@ -43,16 +43,6 @@
               <div class="listing-header__content">
                 <div class="d-sm-flex align-items-sm-center">
 
-                  {{ dump(sum_ratings.campus[0]) }}
-                  {{ dump(sum_ratings.academics[0]) }}
-                  {{ dump(sum_ratings.location[0]) }}
-                  {{ dump(sum_ratings.teachingQuality[0]) }}
-                  {{ dump(sum_ratings.jobProspects[0]) }}
-                  {{ dump(sum_ratings.professors[0]) }}
-                  {{ dump(sum_ratings.athletics[0]) }}
-                  {{ dump(sum_ratings.food[0]) }}
-                  {{ dump(sum_ratings.dorms[0]) }}
-
                   <h2 class="listing-header__title">{{ university.title }}</h2>
                   <div>
                     <i class="fa fa-check-circle c-secondary"></i>
@@ -62,7 +52,7 @@
                 
                 <ul class="min-list listing-header__detail">
                   <li>
-                    <span class="listing__score t-center">8.5</span>
+                    <span class="listing__score t-center">{{ sum_ratings.overall_rating[0] }}</span>
                     <span class="listing__review c-dusty-gray">
                       <span class="stars-outer" data-rating="4.5">
                         <span class="stars-inner"></span>
@@ -240,83 +230,68 @@
             </div><!-- .listing-section__header -->
 
             <table class="listing-ratings">
+
               <tr class="listing-rating">
-                <th>Excellent</th>
+                <th>Обучение</th>
                 <td>
-                  <span class="stars-outer" data-rating="5">
-                    <span class="stars-inner"></span>
-                  </span>
+                  <span>{{ sum_ratings.academics[0] }}</span>
                 </td>
-                <td>
-                  <span class="progressbar-container">
-                    <span class="progressbar" style="width: 89%"></span>
-                  </span>
-                </td>
-                <td class="c-dove-gray">89%</td>
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
-                <th>Good</th>
+                <th>Преподаватели</th>
                 <td>
-                  <span class="stars-outer" data-rating="4">
-                    <span class="stars-inner"></span>
-                  </span>
+                  <span>{{ sum_ratings.professors[0] }}</span>
                 </td>
-                <td>
-                  <span class="progressbar-container">
-                    <span class="progressbar" style="width: 11%"></span>
-                  </span>
-                </td>
-                <td class="c-dove-gray">11%</td>
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
-                <th>Average</th>
+                <th>Университетска база</th>
                 <td>
-                  <span class="stars-outer" data-rating="3">
-                    <span class="stars-inner"></span>
-                  </span>
+                  <span>{{ sum_ratings.campus[0] }}</span>
                 </td>
-                <td>
-                  <span class="progressbar-container">
-                    <span class="progressbar" style="width: 3%"></span>
-                  </span>
-                </td>
-                <td class="c-dove-gray">3%</td>
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
-                <th>Rather Poor</th>
+                <th>Местоположение</th>
                 <td>
-                  <span class="stars-outer" data-rating="2">
-                    <span class="stars-inner"></span>
-                  </span>
+                  <span>{{ sum_ratings.location[0] }}</span>
                 </td>
-                <td>
-                  <span class="progressbar-container">
-                    <span class="progressbar" style="width: 0"></span>
-                  </span>
-                </td>
-                <td class="c-dove-gray">0%</td>
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
-                <th>Bad</th>
+                <th>Спортна база</th>
                 <td>
-                  <span class="stars-outer" data-rating="1">
-                    <span class="stars-inner"></span>
-                  </span>
+                  <span>{{ sum_ratings.athletics[0] }}</span>
                 </td>
-                <td>
-                  <span class="progressbar-container">
-                    <span class="progressbar" style="width: 0"></span>
-                  </span>
-                </td>
-                <td class="c-dove-gray">0%</td>
               </tr><!-- .listing-rating -->
+
+              <tr class="listing-rating">
+                <th>Храна</th>
+                <td>
+                  <span>{{ sum_ratings.food[0] }}</span>
+                </td>
+              </tr><!-- .listing-rating -->
+
+              <tr class="listing-rating">
+                <th>Общежития</th>
+                <td>
+                  <span>{{ sum_ratings.dorms[0] }}</span>
+                </td>
+              </tr><!-- .listing-rating -->
+
+              <tr class="listing-rating">
+                <th>Перспективи за работа</th>
+                <td>
+                  <span>{{ sum_ratings.jobProspects[0] }}</span>
+                </td>
+              </tr><!-- .listing-rating -->
+
             </table><!-- .listing-ratings -->
 
             <ul class="min-list listing-review-list">
+
+              {% for overall_review in sum_ratings.overall_reviews %}
               <li class="listing-review">
                 <div class="d-flex">
                   <div class="listing-review__avatar">
@@ -338,11 +313,7 @@
                     </header><!-- .listing-review__header -->
 
                     <div class="listing-review__review">
-                      <p>
-                        Love the trip! CEO and crew were attentive to our needs and sensed a real desire to make it as
-                        wonderful as possible. Did all they could make sure had top snorkeling experiences, including
-                        see illusive manta rays!
-                      </p>
+                      <p> {{ overall_review }} </p>
                     </div>
 
                     <footer class="listing-review__footer">
@@ -353,84 +324,8 @@
                   </div><!-- .listing-review__content -->
                 </div>
               </li><!-- .listing-review -->
+              {% endfor %}
 
-              <li class="listing-review">
-                <div class="d-flex">
-                  <div class="listing-review__avatar">
-                    <img src="assets/images/uploads/listing-review-2.png" alt="Avatar">
-                  </div><!-- .listing-review__avatar -->
-
-                  <div class="listing-review__content">
-                    <header class="listing-review__header">
-                      <div class="d-sm-flex justify-content-sm-between c-silver-charlice">
-                        <div>
-                          <span class="stars-outer" data-rating="5">
-                            <span class="stars-inner"></span>
-                          </span>
-                          <span>9.0 - Excellent</span>
-                        </div>
-
-                        <span>Written on October 9, 2017</span>
-                      </div>
-                    </header><!-- .listing-review__header -->
-
-                    <div class="listing-review__review">
-                      <p>
-                        Love the trip! CEO and crew were attentive to our needs and sensed a real desire to make it as
-                        wonderful as possible. Did all they could make sure had top snorkeling experiences, including
-                        see illusive manta rays!
-                      </p>
-                    </div>
-
-                    <div class="listing-review__image">
-
-                    </div><!-- .listing-review__image -->
-
-                    <footer class="listing-review__footer">
-                      <button class="button button--like c-white">
-                        <i class="fa fa-thumbs-up"></i>
-                      </button>
-                    </footer>
-                  </div><!-- .listing-review__content -->
-                </div>
-              </li><!-- .listing-review -->
-
-              <li class="listing-review">
-                <div class="d-flex">
-                  <div class="listing-review__avatar">
-                    <img src="assets/images/uploads/listing-review-3.png" alt="Avatar">
-                  </div><!-- .listing-review__avatar -->
-
-                  <div class="listing-review__content">
-                    <header class="listing-review__header">
-                      <div class="d-sm-flex justify-content-sm-between c-silver-charlice">
-                        <div>
-                          <span class="stars-outer" data-rating="4">
-                            <span class="stars-inner"></span>
-                          </span>
-                          <span>8.0 - Good</span>
-                        </div>
-
-                        <span>Written on October 9, 2017</span>
-                      </div>
-                    </header><!-- .listing-review__header -->
-
-                    <div class="listing-review__review">
-                      <p>
-                        Love the trip! CEO and crew were attentive to our needs and sensed a real desire to make it as
-                        wonderful as possible. Did all they could make sure had top snorkeling experiences, including
-                        see illusive manta rays!
-                      </p>
-                    </div>
-
-                    <footer class="listing-review__footer">
-                      <button class="button button--like c-white">
-                        <i class="fa fa-thumbs-up"></i>
-                      </button>
-                    </footer>
-                  </div><!-- .listing-review__content -->
-                </div>
-              </li><!-- .listing-review -->
             </ul><!-- .listing-review-list -->
 
             <div class="d-sm-flex justify-content-sm-between align-items-sm-center listing-pagination">

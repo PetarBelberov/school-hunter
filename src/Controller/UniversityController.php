@@ -55,7 +55,7 @@ class UniversityController extends AbstractController
     private function sumRatings($university)
     {
         // Average grades
-        $overall_ratings = $this->getDoctrine()
+        $ratings = $this->getDoctrine()
             ->getRepository(Rating::class)
             ->findBy(['university' => $university]);
 
@@ -68,6 +68,8 @@ class UniversityController extends AbstractController
         $sum_rating['athletics'] = array();
         $sum_rating['food'] = array();
         $sum_rating['dorms'] = array();
+        $sum_rating['overall_rating'] = array();
+        $sum_rating['overall_reviews'] = array();
 
         $sum_campus_rating = 0;
         $sum_academics_rating = 0;
@@ -78,28 +80,31 @@ class UniversityController extends AbstractController
         $sum_athletics_rating = 0;
         $sum_food_rating = 0;
         $sum_dorms_rating = 0;
+        $sum_overall_rating = 0;
 
-        foreach ($overall_ratings as $overall_rating)
+        foreach ($ratings as $rating)
         {
-            $sum_campus_rating = ($sum_campus_rating + $overall_rating->getCampus());
-            $sum_academics_rating = ($sum_academics_rating + $overall_rating->getAcademics());
-            $sum_location_rating = ($sum_academics_rating + $overall_rating->getLocation());
-            $sum_teachingQuality_rating = ($sum_teachingQuality_rating + $overall_rating->getTeachingQuality());
-            $sum_jobProspects_rating = ($sum_jobProspects_rating + $overall_rating->getJobProspects());
-            $sum_professors_rating = ($sum_professors_rating + $overall_rating->getProfessors());
-            $sum_athletics_rating = ($sum_athletics_rating + $overall_rating->getAthletics());
-            $sum_food_rating = ($sum_food_rating + $overall_rating->getFood());
-            $sum_dorms_rating = ($sum_dorms_rating + $overall_rating->getDorms());
+            $sum_campus_rating = ($sum_campus_rating + $rating->getCampus());
+            $sum_academics_rating = ($sum_academics_rating + $rating->getAcademics());
+            $sum_location_rating = ($sum_academics_rating + $rating->getLocation());
+            $sum_teachingQuality_rating = ($sum_teachingQuality_rating + $rating->getTeachingQuality());
+            $sum_jobProspects_rating = ($sum_jobProspects_rating + $rating->getJobProspects());
+            $sum_professors_rating = ($sum_professors_rating + $rating->getProfessors());
+            $sum_athletics_rating = ($sum_athletics_rating + $rating->getAthletics());
+            $sum_food_rating = ($sum_food_rating + $rating->getFood());
+            $sum_dorms_rating = ($sum_dorms_rating + $rating->getDorms());
+            $sum_overall_rating = ($sum_overall_rating + $rating->getOverallRating());
+            array_push($sum_rating['overall_reviews'], $rating->getOverallReview());
         }
-        $sum_campus_rating = $sum_campus_rating / sizeof($overall_ratings);
-        $sum_academics_rating = $sum_academics_rating / sizeof($overall_ratings);
-        $sum_location_rating = $sum_location_rating / sizeof($overall_ratings);
-        $sum_teachingQuality_rating = $sum_teachingQuality_rating / sizeof($overall_ratings);
-        $sum_jobProspects_rating = $sum_jobProspects_rating / sizeof($overall_ratings);
-        $sum_professors_rating = $sum_professors_rating / sizeof($overall_ratings);
-        $sum_athletics_rating = $sum_athletics_rating / sizeof($overall_ratings);
-        $sum_food_rating = $sum_food_rating / sizeof($overall_ratings);
-        $sum_dorms_rating = $sum_dorms_rating / sizeof($overall_ratings);
+        $sum_campus_rating = $sum_campus_rating / sizeof($ratings);
+        $sum_academics_rating = $sum_academics_rating / sizeof($ratings);
+        $sum_location_rating = $sum_location_rating / sizeof($ratings);
+        $sum_teachingQuality_rating = $sum_teachingQuality_rating / sizeof($ratings);
+        $sum_jobProspects_rating = $sum_jobProspects_rating / sizeof($ratings);
+        $sum_professors_rating = $sum_professors_rating / sizeof($ratings);
+        $sum_athletics_rating = $sum_athletics_rating / sizeof($ratings);
+        $sum_food_rating = $sum_food_rating / sizeof($ratings);
+        $sum_dorms_rating = $sum_dorms_rating / sizeof($ratings);
 
         array_push($sum_rating['campus'], $sum_campus_rating);
         array_push($sum_rating['academics'], $sum_academics_rating);
@@ -110,6 +115,7 @@ class UniversityController extends AbstractController
         array_push($sum_rating['athletics'], $sum_athletics_rating);
         array_push($sum_rating['food'], $sum_food_rating);
         array_push($sum_rating['dorms'], $sum_dorms_rating);
+        array_push($sum_rating['overall_rating'], $sum_overall_rating);
 
         return $sum_rating;
     }

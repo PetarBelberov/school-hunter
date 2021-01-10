@@ -22,13 +22,6 @@
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UniversityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/RatingFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/RatingFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/UserRatingFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UserRatingFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Rating.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Rating.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/University.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/University.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/UserRating.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/UserRatingRepository.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/university/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/university/show.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
@@ -243,7 +236,9 @@
       <workItem from="1609755357275" duration="14199000" />
       <workItem from="1609852412963" duration="25593000" />
       <workItem from="1609950072842" duration="17187000" />
-      <workItem from="1610028919325" duration="24350000" />
+      <workItem from="1610028919325" duration="25029000" />
+      <workItem from="1610206580432" duration="602000" />
+      <workItem from="1610280155057" duration="10875000" />
     </task>
     <servers />
   </component>
