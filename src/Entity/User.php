@@ -66,6 +66,13 @@ class User implements UserInterface
      */
     private $rating;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="string")
+     */
+    private $userType = [];
+
     public function __construct()
     {
         $this->rating = new ArrayCollection();
@@ -199,5 +206,24 @@ class User implements UserInterface
                 $rating->setUser(null);
             }
         }
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getUserType(): ?array
+    {
+        $userType = $this->userType;
+        // guarantees that a user always has at least one user type
+        if (empty($userType)) {
+            $userType[] = 'other';
+        }
+
+        return array_unique($userType);
+    }
+
+    public function setUserType(string $userType): void
+    {
+        $this->userType = $userType;
     }
 }

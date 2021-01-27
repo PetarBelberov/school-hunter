@@ -17,7 +17,7 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        foreach ($this->getUserData() as [$firstName, $lastName, $email, $roles, $password, $isVerified]) {
+        foreach ($this->getUserData() as [$firstName, $lastName, $email, $roles, $password, $isVerified, $userType]) {
             $user = new User();
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
@@ -25,6 +25,7 @@ class UserFixtures extends Fixture
             $user->setRoles($roles);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
             $user->setIsVerified($isVerified);
+            $user->setUserType($userType);
 
             $manager->persist($user);
         }
@@ -35,8 +36,8 @@ class UserFixtures extends Fixture
     {
         return [
             // $userData = [$firstName, $lastName, $email, $roles, $password, $isVerified];
-            ['Johny', 'Domino', 'johny@gmail.com', ['ROLE_ADMIN'], '123456', true],
-            ['User', 'Userov', 'user@abv.com', ['ROLE_USER'], '123456', true]
+            ['Johny', 'Domino', 'johny@gmail.com', ['ROLE_ADMIN'], '123456', true, 'prospective student'],
+            ['User', 'Userov', 'user@abv.com', ['ROLE_USER'], '123456', true, 'current student']
         ];
     }
 }

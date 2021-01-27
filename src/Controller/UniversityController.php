@@ -104,6 +104,7 @@ class UniversityController extends AbstractController
         $sum_professors_rating = $sum_professors_rating / sizeof($ratings);
         $sum_athletics_rating = $sum_athletics_rating / sizeof($ratings);
         $sum_food_rating = $sum_food_rating / sizeof($ratings);
+        $sum_overall_rating = $sum_overall_rating / sizeof($ratings);
         $sum_dorms_rating = $sum_dorms_rating / sizeof($ratings);
 
         array_push($sum_rating['campus'], $sum_campus_rating);

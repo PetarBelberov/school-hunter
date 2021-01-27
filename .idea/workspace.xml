@@ -21,11 +21,11 @@
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/findAll()" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/persist($university_major)" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/UniversityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UniversityController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/profile.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/profile.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.lock" afterDir="false" />
@@ -242,7 +242,10 @@
       <workItem from="1609950072842" duration="17187000" />
       <workItem from="1610028919325" duration="25029000" />
       <workItem from="1610206580432" duration="602000" />
-      <workItem from="1610280155057" duration="25544000" />
+      <workItem from="1610280155057" duration="25888000" />
+      <workItem from="1610386564234" duration="4471000" />
+      <workItem from="1611659193284" duration="7823000" />
+      <workItem from="1611766365068" duration="8068000" />
     </task>
     <servers />
   </component>

@@ -7,6 +7,21 @@
 {% block header_class %} site-header site-header--fluid bg-primary {% endblock %}
 
 {% block body %}
-   {{ dump(user) }}
-    {{ dump(university_rating) }}
+    <p>{{ user.firstName }} Ratings</p>
+    {% for rating in university_rating %}
+        <p>{{ rating.university.title }}</p>
+        <p>{{ rating.campus }}</p>
+        <p>{{ rating.academics }}</p>
+        <p>{{ rating.location }}</p>
+        <p>{{ rating.jobProspects }}</p>
+        <p>{{ rating.professors }}</p>
+        <p>{{ rating.athletics }}</p>
+        <p>{{ rating.food }}</p>
+        <p>{{ rating.dorms }}</p>
+        <p>{{ rating.getOverallRating }}</p>
+        <p>{{ rating.getOverallReview }}</p>
+        <hr>
+
+    {% endfor %}
+{#    {{ dump(university_rating) }}#}
 {% endblock %}
