@@ -20,12 +20,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/school-hunter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/school-hunter.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/UniversityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UniversityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SecurityController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/profile.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/profile.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/UserFormType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Security/EmailVerifier.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Security/LoginFormAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/LoginFormAuthenticator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/emails/confirmation_email.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/emails/confirmation_email.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/verified.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/verified.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.lock" afterDir="false" />
@@ -62,10 +70,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP">
     <include_path>
-      <path value="$PROJECT_DIR$/vendor/webimpress/safe-writer" />
       <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
       <path value="$PROJECT_DIR$/vendor/twig/twig" />
-      <path value="$PROJECT_DIR$/vendor/twig/extra-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/var-dumper" />
       <path value="$PROJECT_DIR$/vendor/symfony/twig-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/web-profiler-bundle" />
@@ -111,12 +117,10 @@
       <path value="$PROJECT_DIR$/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/vendor/psr/container" />
       <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
-      <path value="$PROJECT_DIR$/vendor/ocramius/proxy-manager" />
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-zendframework-bridge" />
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-eventmanager" />
       <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/reflection" />
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-code" />
       <path value="$PROJECT_DIR$/vendor/doctrine/migrations" />
       <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
@@ -169,6 +173,8 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
       <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
       <path value="$PROJECT_DIR$/vendor/symfonycasts/verify-email-bundle" />
+      <path value="$PROJECT_DIR$/vendor/friendsofphp/proxy-manager-lts" />
+      <path value="$PROJECT_DIR$/vendor/twig/extra-bundle" />
     </include_path>
   </component>
   <component name="ProjectId" id="1mLAVmoKQtxozDVOXeMToGoKpew" />
@@ -211,7 +217,10 @@
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="StructuralSearchPlugin">
-    <searchConfiguration name="Unnamed" created="1609625183314" text="migrations.php" recursive="false" caseInsensitive="false" type="PHP" scope_type="PROJECT" scope_descriptor="" history="1">
+    <searchConfiguration name="Unnamed" created="1611935837811" text="The link to verify your email has expired" recursive="false" caseInsensitive="false" type="PHP" scope_type="PROJECT" scope_descriptor="" history="1">
+      <constraint name="__context__" within="" contains="" />
+    </searchConfiguration>
+    <searchConfiguration name="Unnamed" created="1611935832140" text="migrations.php" recursive="false" caseInsensitive="false" type="PHP" scope_type="PROJECT" scope_descriptor="" history="1">
       <constraint name="__context__" within="" contains="" />
     </searchConfiguration>
   </component>
@@ -246,6 +255,7 @@
       <workItem from="1610386564234" duration="4471000" />
       <workItem from="1611659193284" duration="7823000" />
       <workItem from="1611766365068" duration="8068000" />
+      <workItem from="1611924936333" duration="13684000" />
     </task>
     <servers />
   </component>
