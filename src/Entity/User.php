@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
-    
+
     /**
      * @var string
      *
@@ -67,11 +67,21 @@ class User implements UserInterface
     private $rating;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebookID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebookAccessToken;
+
+    /**
      * @var array
      *
      * @ORM\Column(type="string")
      */
-    private $userType = [];
+    private $userType;
 
     public function __construct()
     {
@@ -216,14 +226,51 @@ class User implements UserInterface
         $userType = $this->userType;
         // guarantees that a user always has at least one user type
         if (empty($userType)) {
-            $userType[] = 'other';
+            $userType = 'other';
         }
 
-        return array_unique($userType);
+        return $userType;
     }
 
     public function setUserType(string $userType): void
     {
         $this->userType = $userType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookID()
+    {
+        return $this->facebookID;
+    }
+
+    /**
+     * @param mixed $facebookID
+     */
+    public function setFacebookID($facebookID): void
+    {
+        $this->facebookID = $facebookID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
+    }
+
+    /**
+     * @param mixed $facebookAccessToken
+     */
+    public function setFacebookAccessToken($facebookAccessToken): void
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
     }
 }

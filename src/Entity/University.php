@@ -233,4 +233,53 @@ class University
             }
         }
     }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUniversity() === $this) {
+                $comment->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UniversityMajor[]
+     */
+    public function getUniversityMajor(): Collection
+    {
+        return $this->universityMajor;
+    }
+
+    public function removeUniversityMajor(UniversityMajor $universityMajor): self
+    {
+        if ($this->universityMajor->removeElement($universityMajor)) {
+            // set the owning side to null (unless already changed)
+            if ($universityMajor->getUniversity() === $this) {
+                $universityMajor->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
 }

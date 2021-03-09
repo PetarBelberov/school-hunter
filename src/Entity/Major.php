@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,6 +30,11 @@ class Major
      /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="major") */
      private $universityMajor;
 
+     public function __construct()
+     {
+         $this->universityMajor = new ArrayCollection();
+     }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -49,5 +56,25 @@ class Major
             return;
         }
         $this->universityMajor[] = $universityMajors;
+    }
+
+    /**
+     * @return Collection|UniversityMajor[]
+     */
+    public function getUniversityMajor(): Collection
+    {
+        return $this->universityMajor;
+    }
+
+    public function removeUniversityMajor(UniversityMajor $universityMajor): self
+    {
+        if ($this->universityMajor->removeElement($universityMajor)) {
+            // set the owning side to null (unless already changed)
+            if ($universityMajor->getMajor() === $this) {
+                $universityMajor->setMajor(null);
+            }
+        }
+
+        return $this;
     }
 }

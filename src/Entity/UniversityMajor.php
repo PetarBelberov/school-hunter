@@ -70,4 +70,9 @@ class UniversityMajor {
     {
         $this->rsvu_ranking = $rsvu_ranking;
     }
+
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
 }
