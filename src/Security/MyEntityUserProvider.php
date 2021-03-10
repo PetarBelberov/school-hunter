@@ -2,15 +2,14 @@
 
 namespace App\Security;
 
-use App\Entity\Rating;
 use App\Entity\User;
 
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class MyEntityUserProvider extends EntityUserProvider implements AccountConnectorInterface {
@@ -22,32 +21,35 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         if (!isset($this->properties[$resourceOwnerName])) {
             throw new \RuntimeException(sprintf("No property defined for entity for resource owner '%s'.", $resourceOwnerName));
         }
+
         $serviceName = $response->getResourceOwner()->getName();
         $setterId = 'set'. ucfirst($serviceName) . 'ID';
         $setterAccessToken = 'set'. ucfirst($serviceName) . 'AccessToken';
 
+        // unique integer
         $username = $response->getUsername();
-//        $email = $response->getEmail();
-
+        $email = $response->getEmail();
         if (null === $user = $this->findUser([$this->properties[$resourceOwnerName] => $username])) {
-            $user = new User();
-            $user->setEmail($response->getEmail());
-            $user->setFirstName($response->getFirstName());
-            $user->setLastName($response->getLastName());
-            $user->setIsVerified(true);
-            $user->setPassword(md5(uniqid('', true)));
-            $user->setUserType('other');
-//            $user->setRoles(["ROLE_USER"]);
-
+            if (null === $user = $this->findUser(['email' => $email])){
+                $user = new User();
+                $user->setEmail($response->getEmail());
+                $user->setFirstName($response->getFirstName());
+                $user->setLastName($response->getLastName());
+                $user->setIsVerified(true);
+                $user->setPassword(password_hash($user->getFacebookAccessToken(),PASSWORD_BCRYPT));
+                $user->setUserType('other');
+                $user->setRoles(["ROLE_USER"]);
+            }
+            else{
+                $user->setIsVerified(true);
+            }
             $user->$setterId($username);
-            $user->$setterAccessToken($response->getAccessToken());
-            var_dump($user);
-
-            $this->em->persist($user);
-            $this->em->flush();
-            return $user;
         }
-        $user->setFacebookAccessToken($response->getAccessToken());
+        var_dump($user->getFacebookAccessToken());
+
+        $user->$setterAccessToken($response->getAccessToken());
+        $this->em->persist($user);
+        $this->em->flush();
         return $user;
     }
 
@@ -126,8 +128,6 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
     private function updateUser(UserInterface $user, UserResponseInterface $response)
     {
         $user->setEmail($response->getEmail());
-        $user->setFirstName($response->getFirstName());
-        $user->setLastName($response->getLastName());
         // TODO: Add more fields?!
 
         $this->em->persist($user);
