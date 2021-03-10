@@ -20,21 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/school-hunter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/school-hunter.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Major.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Major.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/University.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/University.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/UniversityMajor.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/UniversityMajor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.lock" afterDir="false" />
@@ -207,6 +194,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ChangesTree.GroupingKeys" value="directory&#10;repository" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
@@ -278,7 +266,10 @@
       <workItem from="1611766365068" duration="8068000" />
       <workItem from="1611924936333" duration="13684000" />
       <workItem from="1615216524498" duration="7780000" />
-      <workItem from="1615288912993" duration="14612000" />
+      <workItem from="1615288912993" duration="14957000" />
+      <workItem from="1615315926024" duration="337000" />
+      <workItem from="1615316275347" duration="1089000" />
+      <workItem from="1615388497737" duration="1431000" />
     </task>
     <servers />
   </component>
