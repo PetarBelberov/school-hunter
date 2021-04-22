@@ -21,7 +21,13 @@
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/hwi_oauth.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/hwi_oauth.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Security/MyEntityUserProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/MyEntityUserProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../symfony-demo/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../symfony-demo/composer.lock" afterDir="false" />
@@ -195,8 +201,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ChangesTree.GroupingKeys" value="directory&#10;repository" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../camellia-kutcher" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -269,7 +277,12 @@
       <workItem from="1615288912993" duration="14957000" />
       <workItem from="1615315926024" duration="337000" />
       <workItem from="1615316275347" duration="1089000" />
-      <workItem from="1615388497737" duration="7980000" />
+      <workItem from="1615388497737" duration="12925000" />
+      <workItem from="1615825962393" duration="601000" />
+      <workItem from="1617802798716" duration="114000" />
+      <workItem from="1619111937681" duration="28000" />
+      <workItem from="1619111981757" duration="554000" />
+      <workItem from="1619112605276" duration="1537000" />
     </task>
     <servers />
   </component>

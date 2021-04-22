@@ -77,6 +77,16 @@ class User implements UserInterface
     private $facebookAccessToken;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $googleID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $googleAccessToken;
+
+    /**
      * @var array
      *
      * @ORM\Column(type="string")
@@ -272,5 +282,37 @@ class User implements UserInterface
     public function getIsVerified(): ?bool
     {
         return $this->isVerified;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGoogleID()
+    {
+        return $this->googleID;
+    }
+
+    /**
+     * @param mixed $googleID
+     */
+    public function setGoogleID($googleID): void
+    {
+        $this->googleID = $googleID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGoogleAccessToken()
+    {
+        return $this->googleAccessToken;
+    }
+
+    /**
+     * @param mixed $googleAccessToken
+     */
+    public function setGoogleAccessToken($googleAccessToken): void
+    {
+        $this->googleAccessToken = $googleAccessToken;
     }
 }

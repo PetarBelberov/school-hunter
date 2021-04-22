@@ -7,9 +7,7 @@ use App\Entity\User;
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class MyEntityUserProvider extends EntityUserProvider implements AccountConnectorInterface {
@@ -45,7 +43,6 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
             }
             $user->$setterId($username);
         }
-        var_dump($user->getFacebookAccessToken());
 
         $user->$setterAccessToken($response->getAccessToken());
         $this->em->persist($user);
