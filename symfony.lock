@@ -32,6 +32,9 @@
     "doctrine/dbal": {
         "version": "2.10.2"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
         "recipe": {
@@ -103,13 +106,13 @@
         "version": "v1.0.3"
     },
     "guzzlehttp/guzzle": {
-        "version": "6.5.5"
+        "version": "7.3.0"
     },
     "guzzlehttp/promises": {
         "version": "1.4.1"
     },
     "guzzlehttp/psr7": {
-        "version": "1.7.0"
+        "version": "1.8.2"
     },
     "hwi/oauth-bundle": {
         "version": "0.6",

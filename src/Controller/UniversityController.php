@@ -3,6 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Rating;
+use App\Entity\Comment;
+use App\Events\CommentCreatedEvent;
+use App\Form\CommentType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,6 +43,10 @@ class UniversityController extends AbstractController
         ->getRepository(UniversityMajor::class)
         ->findBy(['university' => $university]);
 
+        $comments = $this->getDoctrine()
+        ->getRepository(Comment::class)
+        ->findBy(['university' => $university]);
+
         $counter = 0;
         foreach ($university_majors as $university_major) {
             array_push($majors, array($counter => $university_major->getMajor()->getName(), $university_major->getRSVURanking()));
@@ -47,7 +57,8 @@ class UniversityController extends AbstractController
             array(
                 'university' => $university,
                 'majors' => $majors,
-                'sum_ratings' => $this->sumRatings($university)
+                'sum_ratings' => $this->sumRatings($university),
+                'comments' => $comments
             )
         );
     }
@@ -119,5 +130,46 @@ class UniversityController extends AbstractController
         array_push($sum_rating['overall_rating'], $sum_overall_rating);
 
         return $sum_rating;
+    }
+
+    /**
+     * @Route("/comment/{universitySlug}/new", methods="POST", name="comment_new")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @ParamConverter("university", options={"mapping": {"universitySlug": "slug"}})
+     *
+     */
+    public function commentNew(Request $request, University $university, EventDispatcherInterface $eventDispatcher): Response
+    {
+        $comment = new Comment();
+        $comment->setAuthor($this->getUser());
+        $university->addComment($comment);
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+
+            $eventDispatcher->dispatch(new CommentCreatedEvent($comment));
+
+            return $this->redirectToRoute('university_index', ['slug' => $university->getSlug()]);
+        }
+
+        return $this->render('blog/comment_form_error.html.twig', [
+            'university' => $university,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function commentForm(University $university): Response
+    {
+        $form = $this->createForm(CommentType::class);
+
+        return $this->render('university/_comment_form.html.twig', [
+            'university' => $university,
+            'form' => $form->createView(),
+        ]);
     }
 }
