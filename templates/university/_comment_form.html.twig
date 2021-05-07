@@ -1,41 +1,51 @@
-{#
-    By default, forms enable client-side validation. This means that you can't
-    test the server-side validation errors from the browser. To temporarily
-    disable this validation, add the 'novalidate' attribute:
+<div id="add-review" class="listing-section bg-white hover-effect" data-matching-link="#add-review-link">
+    <div class="listing-section__header">
+        <h3 class="listing-section__title">Add Review</h3>
+    </div><!-- .listing-section__header -->
 
-    {{ form_start(form, {method: ..., action: ..., attr: {novalidate: 'novalidate'}}) }}
-#}
+    {{ form_start(form, {method: 'POST', action: path('university_comment_new', {'universitySlug': university.slug})}) }}
+    {# Render any errors for the "content" field (e.g. when a class property constraint failed) #}
+        <div class="row {% if not form.content.vars.valid %}has-error{% endif %}">                
+            <div class="col-md-12">
+                <div class="form-group">
+                    <span class="form-label">Your rating</span>
+                    <ul class="min-list inline-list stars">
+                        <li class="star" data-rating="1">
+                        <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star" data-rating="2">
+                        <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star" data-rating="3">
+                        <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star" data-rating="4">
+                        <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star" data-rating="5">
+                        <i class="fa fa-star"></i>
+                        </li>
+                    </ul>
+                </div><!-- .form-group -->
+            </div><!-- .col -->
 
-{# {{ form_start(form, {method: 'POST'}) }} #}
-{{ form_start(form, {method: 'POST', action: path('university_comment_new', {'universitySlug': university.slug})}) }}
-    {#  instead of displaying form fields one by one, you can also display them
-        all with their default options and styles just by calling to this function:
+            <div class="col-md-12">
+                <div class="form-group {% if not form.content.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your review</label>
+                    {{ form_label(form.content, 'label.content', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.content) }}
+                    {{ form_widget(form.content, {attr: {rows: 10}}) }}
+                    {{ form_help(form.content) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
 
-        {{ form_widget(form) }}
-    #}
-
-    <fieldset>
-        <legend>
-            <i class="fa fa-comment" aria-hidden="true"></i> {{ 'title.add_comment'|trans }}
-        </legend>
-
-        {# Render any global form error (e.g. when a constraint on a public getter method failed) #}
-        {{ form_errors(form) }}
-
-        <div class="form-group {% if not form.content.vars.valid %}has-error{% endif %}">
-            {{ form_label(form.content, 'label.content', {label_attr: {class: 'hidden'}}) }}
-
-            {# Render any errors for the "content" field (e.g. when a class property constraint failed) #}
-            {{ form_errors(form.content) }}
-
-            {{ form_widget(form.content, {attr: {rows: 10}}) }}
-            {{ form_help(form.content) }}
-        </div>
-
-        <div class="form-group">
-            <button class="btn btn-primary pull-right" type="submit">
-                <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ 'action.publish_comment'|trans }}
-            </button>
-        </div>
-    </fieldset>
-{{ form_end(form) }}
+            <div class="col-md-12">
+                <div class="form-group--submit">
+                    <button class="button button--large button--square button--primary" type="submit">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ 'Send Review'|trans }}
+                    </button>
+                </div>
+            </div><!-- .col -->
+        </div><!-- .row -->
+    {{ form_end(form) }}
+</div><!-- .listing-section -->

@@ -286,16 +286,14 @@
                   <span>{{ sum_ratings.jobProspects[0] }}</span>
                 </td>
               </tr><!-- .listing-rating -->
-
             </table><!-- .listing-ratings -->
 
             <ul class="min-list listing-review-list">
-
-              {% for overall_review in sum_ratings.overall_reviews %}
-              <li class="listing-review">
+              {% for comment in comments %}
+              <li id="comment_{{ comment.id }}" class="listing-review">
                 <div class="d-flex">
                   <div class="listing-review__avatar">
-                    <img src="assets/images/uploads/listing-review-1.png" alt="Avatar">
+                    <img src="#" alt="Avatar">
                   </div><!-- .listing-review__avatar -->
 
                   <div class="listing-review__content">
@@ -307,13 +305,13 @@
                           </span>
                           <span>8.0 - Good</span>
                         </div>
-
-                        <span>Written on October 9, 2017</span>
+                        
+                        <span>{{ 'Written on'|trans }} {{ comment.publishedAt|date("m/d/Y") }}</span>
                       </div>
                     </header><!-- .listing-review__header -->
 
                     <div class="listing-review__review">
-                      <p> {{ overall_review }} </p>
+                      <p> {{ comment.content|trans }} </p>
                     </div>
 
                     <footer class="listing-review__footer">
@@ -325,9 +323,9 @@
                 </div>
               </li><!-- .listing-review -->
               {% endfor %}
-
             </ul><!-- .listing-review-list -->
 
+          {# Pagination TO DO #}
             <div class="d-sm-flex justify-content-sm-between align-items-sm-center listing-pagination">
               <div class="page-navigation">
                 <span aria-current="page" class="page-numbers current">1</span>
@@ -339,86 +337,20 @@
               <span>Page 1 of 8</span>
             </div>
           </div><!-- .listing-section -->
-
-          <div id="add-review" class="listing-section bg-white hover-effect" data-matching-link="#add-review-link">
-            <div class="listing-section__header">
-              <h3 class="listing-section__title">Add Review</h3>
-            </div><!-- .listing-section__header -->
-
-            <form action="/" method="post">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <span class="form-label">Your rating</span>
-                    <ul class="min-list inline-list stars">
-                      <li class="star" data-rating="1">
-                        <i class="fa fa-star"></i>
-                      </li>
-                      <li class="star" data-rating="2">
-                        <i class="fa fa-star"></i>
-                      </li>
-                      <li class="star" data-rating="3">
-                        <i class="fa fa-star"></i>
-                      </li>
-                      <li class="star" data-rating="4">
-                        <i class="fa fa-star"></i>
-                      </li>
-                      <li class="star" data-rating="5">
-                        <i class="fa fa-star"></i>
-                      </li>
-                    </ul>
-                  </div><!-- .form-group -->
-                </div><!-- .col -->
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="review-name">Your full name *</label>
-                    <input
-                      type="text"
-                      id="review-name"
-                      name="name"
-                      class="form-input form-input--large form-input--border-c-alto"
-                      placeholder="John Doe"
-                      required
-                    >
-                  </div><!-- .form-group -->
-                </div><!-- .col -->
-
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="review-email">Your email *</label>
-                    <input
-                      type="email"
-                      id="review-email"
-                      name="email"
-                      class="form-input form-input--large form-input--border-c-alto"
-                      placeholder="johndoe@gmail.com"
-                      required
-                    >
-                  </div><!-- .form-group -->
-                </div><!-- .col -->
-
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <label for="review-message">Your review</label>
-                    <textarea
-                      name="message"
-                      id="review-message"
-                      rows="10"
-                      class="form-input form-input--large form-input--border-c-alto"
-                      placeholder="Your review"></textarea>
-                  </div><!-- .form-group -->
-                </div><!-- .col -->
-
-                <div class="col-md-12">
-                  <div class="form-group--submit">
-                    <button class="button button--large button--square button--primary" type="submit">Send Review
-                    </button>
-                  </div>
-                </div><!-- .col -->
-              </div><!-- .row -->
-            </form>
-          </div><!-- .listing-section -->
-        </div><!-- .col -->
+          {# Pagination TO DO #}
+          
+          <div id="post-add-comment" class="well">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+              {{ render(controller('App\\Controller\\UniversityController::commentForm', {'id': university.id})) }}
+            {% else %}
+              <p>
+                <a class="btn btn-success" href="{{ path('security_login', {'redirect_to': app.request.pathInfo}) }}">
+                  <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
+                </a>
+              </p>
+            {% endif %}
+          </div><!-- #post-add-comment -->
+        </div><!-- .col-lg-8 -->
 
         <div class="col-lg-4">
           <div class="listing-widget bg-white hover-effect">
@@ -653,46 +585,11 @@
           </div><!-- .listing-widget -->
           <p class="c-dusty-gray listing-cta">Is this your business?
             <a href="#" class="t-underline">Claim it now.</a></p>
-        </div><!-- .col -->
+        </div><!-- .col-lg-4 -->
       </div><!-- .row -->
     </div>
   </div>
 </section><!-- .single-listing -->
 </div><!-- .page-content -->
 
-    <div id="post-add-comment" class="well">
-        {# The 'IS_AUTHENTICATED_FULLY' role ensures that the user has entered
-        their credentials (login + password) during this session. If they
-        are automatically logged via the 'Remember Me' functionality, they won't
-        be able to add a comment.
-        See https://symfony.com/doc/current/security/remember_me.html#forcing-the-user-to-re-authenticate-before-accessing-certain-resources
-        #}
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            {{ render(controller('App\\Controller\\UniversityController::commentForm', {'id': university.id})) }}
-        {% else %}
-            <p>
-                <a class="btn btn-success" href="{{ path('security_login', {'redirect_to': app.request.pathInfo}) }}">
-                    <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
-                </a>
-            </p>
-        {% endif %}
-    </div>
-
-    <h3>
-        <i class="fa fa-comments" aria-hidden="true"></i> {{ 'university.num_comments'|trans({ 'count': university.comments|length }) }}
-    </h3>
-
-    {% for comment in comments %}
-        <div class="row post-comment">
-            <a name="comment_{{ comment.id }}"></a>
-            <h4 class="col-sm-3">
-                <strong>{{ comment.author.firstName}}</strong> {{ 'post.commented_on'|trans }}
-                {# it's not mandatory to set the timezone in localizeddate(). This is done to
-                   avoid errors when the 'intl' PHP extension is not available and the application
-                   is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
-                <strong>{{ comment.publishedAt|date("m/d/Y") }}</strong>
-            </h4>
-            <p>{{ comment.content|trans }}</p>
-        </div>
-    {% endfor %}
 {% endblock %}
