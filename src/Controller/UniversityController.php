@@ -163,8 +163,10 @@ class UniversityController extends AbstractController
         ]);
     }
 
-    public function commentForm(University $university): Response
-    {
+    /**
+     * @Route("/{slug}/add_review", name="add_review")
+     */
+    public function addReview(University $university) {
         $form = $this->createForm(CommentType::class);
 
         return $this->render('university/_comment_form.html.twig', [

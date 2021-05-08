@@ -756,9 +756,9 @@
     {% endblock %}<!-- block footer -->
 
     {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
+        <script src="{{ absolute_url(asset( 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBDyCxHyc8z9gMA5IlipXpt0c33Ajzqix4')) }}"></script>
+        <script src="{{ absolute_url(asset('https://cdn.rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox.js')) }}"></script>
+        <script src="{{ asset('/build/app.js') }}"></script>
     {% endblock %}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDyCxHyc8z9gMA5IlipXpt0c33Ajzqix4"></script>
-    <script src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox.js"></script>
     </body>
 </html>

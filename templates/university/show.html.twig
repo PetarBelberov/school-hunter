@@ -339,17 +339,6 @@
           </div><!-- .listing-section -->
           {# Pagination TO DO #}
           
-          <div id="post-add-comment" class="well">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-              {{ render(controller('App\\Controller\\UniversityController::commentForm', {'id': university.id})) }}
-            {% else %}
-              <p>
-                <a class="btn btn-success" href="{{ path('security_login', {'redirect_to': app.request.pathInfo}) }}">
-                  <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
-                </a>
-              </p>
-            {% endif %}
-          </div><!-- #post-add-comment -->
         </div><!-- .col-lg-8 -->
 
         <div class="col-lg-4">
