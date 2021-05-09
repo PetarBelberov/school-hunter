@@ -11,6 +11,7 @@
 
 namespace App\Events;
 
+use App\Entity\Rating;
 use App\Entity\Comment;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -18,12 +19,12 @@ class CommentCreatedEvent extends Event
 {
     protected $comment;
 
-    public function __construct(Comment $comment)
+    public function __construct(Rating $comment)
     {
         $this->comment = $comment;
     }
 
-    public function getComment(): Comment
+    public function getComment(): Rating
     {
         return $this->comment;
     }

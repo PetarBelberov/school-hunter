@@ -43,8 +43,8 @@ class UniversityController extends AbstractController
         ->getRepository(UniversityMajor::class)
         ->findBy(['university' => $university]);
 
-        $comments = $this->getDoctrine()
-        ->getRepository(Comment::class)
+        $ratings = $this->getDoctrine()
+        ->getRepository(Rating::class)
         ->findBy(['university' => $university]);
 
         $counter = 0;
@@ -58,7 +58,7 @@ class UniversityController extends AbstractController
                 'university' => $university,
                 'majors' => $majors,
                 'sum_ratings' => $this->sumRatings($university),
-                'comments' => $comments
+                'ratings' => $ratings
             )
         );
     }
@@ -140,25 +140,25 @@ class UniversityController extends AbstractController
      */
     public function commentNew(Request $request, University $university, EventDispatcherInterface $eventDispatcher): Response
     {
-        $comment = new Comment();
-        $comment->setAuthor($this->getUser());
-        $university->addComment($comment);
+        $rating = new Rating();
+        $rating->setUser($this->getUser());
+        $university->addRating($rating);
 
-        $form = $this->createForm(CommentType::class, $comment);
+        $form = $this->createForm(CommentType::class, $rating);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
+            $em->persist($rating);
             $em->flush();
 
-            $eventDispatcher->dispatch(new CommentCreatedEvent($comment));
+            $eventDispatcher->dispatch(new CommentCreatedEvent($rating));
 
             return $this->redirectToRoute('university_index', ['slug' => $university->getSlug()]);
         }
-
-        return $this->render('blog/comment_form_error.html.twig', [
-            'university' => $university,
+        var_dump($form->isValid());
+        return $this->render('error404.html.twig', [
+            'rating' => $rating,
             'form' => $form->createView(),
         ]);
     }

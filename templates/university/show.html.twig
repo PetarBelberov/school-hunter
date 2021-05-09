@@ -289,39 +289,39 @@
             </table><!-- .listing-ratings -->
 
             <ul class="min-list listing-review-list">
-              {% for comment in comments %}
-              <li id="comment_{{ comment.id }}" class="listing-review">
-                <div class="d-flex">
-                  <div class="listing-review__avatar">
-                    <img src="#" alt="Avatar">
-                  </div><!-- .listing-review__avatar -->
+              {% for rating in ratings %}
+                <li id="comment_" class="listing-review">
+                  <div class="d-flex">
+                    <div class="listing-review__avatar">
+                      <img src="#" alt="Avatar">
+                    </div><!-- .listing-review__avatar -->
 
-                  <div class="listing-review__content">
-                    <header class="listing-review__header">
-                      <div class="d-sm-flex justify-content-sm-between c-silver-charlice">
-                        <div>
-                          <span class="stars-outer" data-rating="4">
-                            <span class="stars-inner"></span>
-                          </span>
-                          <span>8.0 - Good</span>
+                    <div class="listing-review__content">
+                      <header class="listing-review__header">
+                        <div class="d-sm-flex justify-content-sm-between c-silver-charlice">
+                          <div>
+                            <span class="stars-outer" data-rating="{{ rating.getOverallRating }}">
+                              <span class="stars-inner"></span>
+                            </span>
+                            <span></span>
+                          </div>
+                          
+                          {# <span>{{ 'Written on'|trans }} {{ rating.publishedAt|date("m/d/Y") }}</span> #}
                         </div>
-                        
-                        <span>{{ 'Written on'|trans }} {{ comment.publishedAt|date("m/d/Y") }}</span>
+                      </header><!-- .listing-review__header -->
+
+                      <div class="listing-review__review">
+                        <p>{{ rating.getOverallReview }}</p>
                       </div>
-                    </header><!-- .listing-review__header -->
 
-                    <div class="listing-review__review">
-                      <p> {{ comment.content|trans }} </p>
-                    </div>
-
-                    <footer class="listing-review__footer">
-                      <button class="button button--like c-white">
-                        <i class="fa fa-thumbs-up"></i>
-                      </button>
-                    </footer>
-                  </div><!-- .listing-review__content -->
-                </div>
-              </li><!-- .listing-review -->
+                      <footer class="listing-review__footer">
+                        <button class="button button--like c-white">
+                          <i class="fa fa-thumbs-up"></i>
+                        </button>
+                      </footer>
+                    </div><!-- .listing-review__content -->
+                  </div>
+                </li><!-- .listing-review -->
               {% endfor %}
             </ul><!-- .listing-review-list -->
 

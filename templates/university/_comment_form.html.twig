@@ -14,37 +14,165 @@
 
     {{ form_start(form, {method: 'POST', action: path('university_comment_new', {'universitySlug': university.slug})}) }}
     {# Render any errors for the "content" field (e.g. when a class property constraint failed) #}
-        <div class="row {% if not form.content.vars.valid %}has-error{% endif %}">                
-            <div class="col-md-12">
+        <div class="row {% if not form.overall_review.vars.valid %}has-error{% endif %}">   
+                         
+            <div class="col-md-6">
                 <div class="form-group">
-                    <span class="form-label">Your rating</span>
-                    <ul class="min-list inline-list stars">
-                        <li class="star" data-rating="1">
+                    {% for rating in 0..5 %}
+                        <span class="form-label">#</span>
+                        <ul class="min-list inline-list stars">
+                            <li class="star" data-rating="1">
+                                <i class="fa fa-star"></i>
+                            </li>
+                            <li class="star" data-rating="2">
+                                <i class="fa fa-star"></i>
+                            </li>
+                                <li class="star" data-rating="3">
                             <i class="fa fa-star"></i>
-                        </li>
-                        <li class="star" data-rating="2">
+                            </li>
+                            <li class="star" data-rating="4">
+                                <i class="fa fa-star"></i>
+                            </li>
+                            <li class="star" data-rating="5">
+                                <i class="fa fa-star"></i>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% for rating in 0..5 %}
+                        <span class="form-label">#</span>
+                        <ul class="min-list inline-list stars">
+                            <li class="star" data-rating="1">
+                                <i class="fa fa-star"></i>
+                            </li>
+                            <li class="star" data-rating="2">
+                                <i class="fa fa-star"></i>
+                            </li>
+                                <li class="star" data-rating="3">
                             <i class="fa fa-star"></i>
-                        </li>
-                            <li class="star" data-rating="3">
-                        <i class="fa fa-star"></i>
-                        </li>
-                        <li class="star" data-rating="4">
-                            <i class="fa fa-star"></i>
-                        </li>
-                        <li class="star" data-rating="5">
-                            <i class="fa fa-star"></i>
-                        </li>
-                    </ul>
+                            </li>
+                            <li class="star" data-rating="4">
+                                <i class="fa fa-star"></i>
+                            </li>
+                            <li class="star" data-rating="5">
+                                <i class="fa fa-star"></i>
+                            </li>
+                        </ul>
+                    {% endfor %}
                 </div><!-- .form-group -->
             </div><!-- .col -->
 
             <div class="col-md-12">
-                <div class="form-group {% if not form.content.vars.valid %}has-error{% endif %}">
-                    <label for="review-message">Your review</label>
-                    {{ form_label(form.content, 'label.content', {label_attr: {class: 'hidden'}}) }}
-                    {{ form_errors(form.content) }}
-                    {{ form_widget(form.content, {attr: {rows: 10}}) }}
-                    {{ form_help(form.content) }}
+                <div class="form-group {% if not form.campus.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your campus</label>
+                    {{ form_label(form.campus, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.campus) }}
+                    {{ form_widget(form.campus, {attr: {rows: 10}}) }}
+                    {{ form_help(form.campus) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+             <div class="col-md-12">
+                <div class="form-group {% if not form.academics.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your academics</label>
+                    {{ form_label(form.academics, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.academics) }}
+                    {{ form_widget(form.academics, {attr: {rows: 10}}) }}
+                    {{ form_help(form.academics) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.location.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your location *</label>
+                    {{ form_label(form.location, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.location) }}
+                    {{ form_widget(form.location, {attr: {rows: 10}}) }}
+                    {{ form_help(form.location) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.teachingQuality.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your teachingQuality</label>
+                    {{ form_label(form.teachingQuality, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.teachingQuality) }}
+                    {{ form_widget(form.teachingQuality, {attr: {rows: 10}}) }}
+                    {{ form_help(form.teachingQuality) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.jobProspects.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your jobProspects *</label>
+                    {{ form_label(form.jobProspects, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.jobProspects) }}
+                    {{ form_widget(form.jobProspects, {attr: {rows: 10}}) }}
+                    {{ form_help(form.jobProspects) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.professors.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your professors</label>
+                    {{ form_label(form.professors, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.professors) }}
+                    {{ form_widget(form.professors, {attr: {rows: 10}}) }}
+                    {{ form_help(form.professors) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.athletics.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your athletics *</label>
+                    {{ form_label(form.athletics, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.athletics) }}
+                    {{ form_widget(form.athletics, {attr: {rows: 10}}) }}
+                    {{ form_help(form.athletics) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.food.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your food *</label>
+                    {{ form_label(form.food, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.food) }}
+                    {{ form_widget(form.food, {attr: {rows: 10}}) }}
+                    {{ form_help(form.food) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.dorms.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your dorms *</label>
+                    {{ form_label(form.dorms, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.dorms) }}
+                    {{ form_widget(form.dorms, {attr: {rows: 10}}) }}
+                    {{ form_help(form.dorms) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+            <div class="col-md-12">
+                <div class="form-group {% if not form.overall_rating.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your overall_rating</label>
+                    {{ form_label(form.overall_rating, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.overall_rating) }}
+                    {{ form_widget(form.overall_rating, {attr: {rows: 10}}) }}
+                    {{ form_help(form.overall_rating) }}
+                </div><!-- .form-group -->
+            </div><!-- .col -->
+
+             <div class="col-md-12">
+                <div class="form-group {% if not form.overall_review.vars.valid %}has-error{% endif %}">
+                    <label for="review-message">Your overall_review</label>
+                    {{ form_label(form.overall_review, '', {label_attr: {class: 'hidden'}}) }}
+                    {{ form_errors(form.overall_review) }}
+                    {{ form_widget(form.overall_review, {attr: {rows: 10}}) }}
+                    {{ form_help(form.overall_review) }}
                 </div><!-- .form-group -->
             </div><!-- .col -->
 

@@ -11,9 +11,11 @@
 
 namespace App\Form;
 
-use App\Entity\Comment;
+use App\Entity\Rating;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -34,15 +36,44 @@ class CommentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // By default, form fields include the 'required' attribute, which enables
-        // the client-side form validation. This means that you can't test the
-        // server-side validation errors from the browser. To temporarily disable
-        // this validation, set the 'required' attribute to 'false':
-        // $builder->add('content', null, ['required' => false]);
-
         $builder
-            ->add('content', TextareaType::class, [
-                'help' => 'help.comment_content',
+            ->add('campus', IntegerType::class, [
+                'label' => 'Campus',
+            ])
+            ->add('academics', IntegerType::class, [
+                'label' => 'Academics',
+            ])
+            ->add('location', IntegerType::class, [
+                'label' => 'Location',
+                'required' => false
+            ])
+            ->add('teachingQuality', IntegerType::class, [
+                'label' => 'TeachingQuality',
+            ])
+            ->add('jobProspects', IntegerType::class, [
+                'label' => 'JobProspects',
+                'required' => false
+            ])
+            ->add('professors', IntegerType::class, [
+                'label' => 'Professors',
+            ])
+            ->add('athletics', IntegerType::class, [
+                'label' => 'Athletics',
+                'required' => false
+            ])
+            ->add('food', IntegerType::class, [
+                'label' => 'Food',
+                'required' => false
+            ])
+            ->add('dorms', IntegerType::class, [
+                'label' => 'Dorms',
+                'required' => false
+            ])
+            ->add('overall_rating', IntegerType::class, [
+                'label' => 'Overall_rating',
+            ])
+            ->add('overall_review', TextareaType::class, [
+                'help' => 'Overall_review',
             ])
         ;
     }
@@ -53,7 +84,7 @@ class CommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Comment::class,
+            'data_class' => Rating::class,
         ]);
     }
 }
