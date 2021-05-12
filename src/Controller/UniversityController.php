@@ -16,6 +16,7 @@ use App\Entity\University;
 use App\Entity\Major;
 use App\Entity\UniversityMajor;
 use App\Entity\User;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\HttpFoundation\Response;
 
     /**
@@ -143,20 +144,26 @@ class UniversityController extends AbstractController
         $rating = new Rating();
         $rating->setUser($this->getUser());
         $university->addRating($rating);
+       
+        $is_exist = $this->getDoctrine()
+        ->getRepository(Rating::class)
+        ->findOneBy(['university' => $university]);
 
         $form = $this->createForm(CommentType::class, $rating);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($rating);
-            $em->flush();
+            if(!isset($is_exist)) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($rating);
+                $em->flush();    
 
-            $eventDispatcher->dispatch(new CommentCreatedEvent($rating));
+                $eventDispatcher->dispatch(new CommentCreatedEvent($rating));
 
-            return $this->redirectToRoute('university_index', ['slug' => $university->getSlug()]);
+                return $this->redirectToRoute('university_index', ['slug' => $university->getSlug()]);
+            }
         }
-        var_dump($form->isValid());
+
         return $this->render('error404.html.twig', [
             'rating' => $rating,
             'form' => $form->createView(),
@@ -168,7 +175,7 @@ class UniversityController extends AbstractController
      */
     public function addReview(University $university) {
         $form = $this->createForm(CommentType::class);
-
+        
         return $this->render('university/_comment_form.html.twig', [
             'university' => $university,
             'form' => $form->createView(),
