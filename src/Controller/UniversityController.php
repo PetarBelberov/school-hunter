@@ -18,12 +18,21 @@ use App\Entity\UniversityMajor;
 use App\Entity\User;
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-    /**
+/**
     * @Route("/universities", name="university_")
     */
 class UniversityController extends AbstractController
 {
+
+    private $client;
+
+    public function __construct(HttpClientInterface $client)
+    {
+        $this->client = $client;
+    }
+
     /**
      * @Route("/", name="index")
      */
@@ -32,6 +41,26 @@ class UniversityController extends AbstractController
         return $this->render('university/index.html.twig', [
             'controller_name' => 'UniversityController',
         ]);
+    }
+
+    public function fetchDegree(): array
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381'
+        );
+        
+
+        $statusCode = $response->getStatusCode();
+        // $statusCode = 200
+        $contentType = $response->getHeaders()['content-type'][0];
+        // $contentType = 'application/json'
+        $content = $response->getContent();
+        // $content = '{"id":521583, "name":"symfony-docs", ...}'
+        $content = $response->toArray();
+        // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
+
+        return $content;
     }
 
     /**
@@ -59,7 +88,8 @@ class UniversityController extends AbstractController
                 'university' => $university,
                 'majors' => $majors,
                 'sum_ratings' => $this->sumRatings($university),
-                'ratings' => $ratings
+                'ratings' => $ratings,
+                'degrees' => $this->fetchDegree()
             )
         );
     }

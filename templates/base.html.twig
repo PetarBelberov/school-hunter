@@ -8,6 +8,7 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+        <link href="{{ asset('build/assets/custom.css') }}" rel="stylesheet"/>
         <link href="{{ asset('https://fonts.googleapis.com/css?family=Cabin:400,600') }}" rel="stylesheet"/>
     </head>
 
@@ -759,6 +760,7 @@
         <script src="{{ absolute_url(asset( 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBDyCxHyc8z9gMA5IlipXpt0c33Ajzqix4')) }}"></script>
         <script src="{{ absolute_url(asset('https://cdn.rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox.js')) }}"></script>
         <script src="{{ asset('/build/app.js') }}"></script>
+        {{ encore_entry_script_tags('app') }}
     {% endblock %}
     </body>
 </html>

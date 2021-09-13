@@ -1,0 +1,9 @@
+// Accordion
+#accordion {
+    padding: 2rem 0;
+    & .accordion-container {
+        & h4 {
+            display: inline;
+        }
+    }
+}
