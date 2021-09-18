@@ -23,7 +23,7 @@ var $ = require('jquery');
       }
     },
     template: `
-              <div class="accordion-container">
+              <div class="accordion-content">
                   <div class="tab__header">
                       <a href="#" class="tab__link p-4 block bg-blue-dark hover:bg-blue-darker no-underline text-white border-b-2 border-white flex justify-between" @click.prevent="active = !active">
                           <h4 class="listing-section__title">{{ title }}</h4>
@@ -37,7 +37,7 @@ var $ = require('jquery');
   }
   
   var app = new Vue({
-    el: '#accordion',
+    el: '.accordion-container',
     components: {
       accordion
     }

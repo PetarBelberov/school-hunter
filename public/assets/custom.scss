@@ -1,7 +1,7 @@
 // Accordion
-#accordion {
+.accordion-container {
     padding: 2rem 0;
-    & .accordion-container {
+    & .accordion-content {
         & h4 {
             display: inline;
         }
