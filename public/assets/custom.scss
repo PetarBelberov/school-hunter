@@ -1,9 +1,26 @@
 // Accordion
 .accordion-container {
+    &:before {
+        content: none;
+    }
     padding: 2rem 0;
     & .accordion-content {
-        & h4 {
+        & .listing-section__title {
+            font-size: 22px;
             display: inline;
+        }
+    }
+    & .subaccordion-content {
+        & .tab__header {
+            padding-top: 1rem;
+            & .listing-section__title {
+                display: inline;
+                font-size: 20px;
+                margin-left: 1rem;
+            }
+        }
+        & .tab__content.p-2 {
+            margin-left: 2rem;
         }
     }
 }

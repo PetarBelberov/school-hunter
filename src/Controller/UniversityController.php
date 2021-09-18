@@ -18,7 +18,10 @@ use App\Entity\UniversityMajor;
 use App\Entity\User;
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpClient\CachingHttpClient;
+use Symfony\Component\HttpClient\HttpClient;
 
 /**
     * @Route("/universities", name="university_")
@@ -45,6 +48,11 @@ class UniversityController extends AbstractController
 
     public function fetchDegree(): array
     {
+        // Caching the request
+        $store = new Store('https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381');
+        $this->client = HttpClient::create();
+        $this->client = new CachingHttpClient($this->client, $store);
+
         $response = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381'
