@@ -162,7 +162,7 @@
               <h3 class="listing-section__title">Професионални направления</h3>
             </div><!-- .listing-section__header -->
             <ul class="min-list listing-menu">
-         
+            
               <div id="accordion" class="container mx-auto bg-white border-grey-light border mt-20">
                 {% if degrees[0]['degreeIDs'] == '6' %}
                   <accordion title="{{ 'Бакалавър' }}">
@@ -172,16 +172,30 @@
                   <accordion title="{{ 'Доктор' }}">
                 {% endif %}
 
-                {% for key, degree in degrees %}  
+                {# {% for key, degree in degrees %}  
                 <p class="pb-5">
                   <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
                   <span class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</span>
+                </p>
+                {% endfor %} #}
+
+                {% for key, major in majors %}  
+                <p class="pb-5">
+                  <h4 class="listing-menu__item-name">{{ major[key] }}</h4>
+                    {% if major[key] == 'Икономика' %}
+                      {% for key, degree in degrees %}  
+                        <p class="pb-5">
+                          <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
+                          <span class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</span>
+                        </p>
+                      {% endfor %}
+                    {% endif %}
                 </p>
                 {% endfor %}
                 </accordion>
               </div><!-- #accordion -->
 
-              {% for key, major in majors %}   
+              {# {% for key, major in majors %}   
                 <li class="listing-menu__item">
                   {% if major[key] == 'Икономика' %}
                     <div class="d-flex justify-content-between align-items-center">
@@ -196,9 +210,8 @@
                   {% endif %}
                   
                 </li><!-- .listing-menu__item -->
-              {% endfor %}
+              {% endfor %} #}
 
-              
             </ul><!-- .listing-menu -->
           </div><!-- .listing-section -->
 

@@ -1,6 +1,6 @@
 import '../css/app.scss';
 import Vue from 'vue';
-import collapse from './collapse.vue'
+import collapse from './collapse.vue' 
 
 var $ = require('jquery');
 
