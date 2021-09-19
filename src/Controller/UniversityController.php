@@ -48,28 +48,40 @@ class UniversityController extends AbstractController
 
     public function fetchDegree(): array
     {
-        // Caching the request
-        $store = new Store('https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381');
-        $this->client = HttpClient::create();
-        $this->client = new CachingHttpClient($this->client, $store);
-
-        $response = $this->client->request(
+        // Bachelors
+        $response_economics_bachelors = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381'
         );
+
+        // Masters
+        $response_economics_masters = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/7/bg?v=1631382508381'
+        );
+
+         // Doctor
+         $response_economics_phd = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/8/bg?v=1631382508381'
+        );
         
-
-        $statusCode = $response->getStatusCode();
-        // $statusCode = 200
-        $contentType = $response->getHeaders()['content-type'][0];
-        // $contentType = 'application/json'
-        $content = $response->getContent();
-        // $content = '{"id":521583, "name":"symfony-docs", ...}'
-        $content = $response->toArray();
-        // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
-
+        if (isset($response_economics_bachelors)) {
+            $content['economics_bachelors'] = $response_economics_bachelors->getContent();
+            $content['economics_bachelors'] = $response_economics_bachelors->toArray();
+        }
+        if (isset($response_economics_masters)) {
+            $content['economics_masters'] = $response_economics_masters->getContent();
+            $content['economics_masters'] = $response_economics_masters->toArray();
+        }
+        if (isset($response_economics_phd)) {
+            $content['economics_phd'] = $response_economics_phd->getContent();
+            $content['economics_phd'] = $response_economics_phd->toArray();
+        }
+        
         return $content;
     }
+
 
     /**
      * @Route("/{slug}", name="show")

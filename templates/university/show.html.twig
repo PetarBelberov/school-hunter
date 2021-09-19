@@ -166,27 +166,50 @@
               <div class="accordion-container" class="container mx-auto bg-white border-grey-light border mt-20">
                 {% for key, major in majors %}  
                   <div class="accordion-container">
+                    {# accordion #}
                     <accordion title="{{ major[key] }}">
                       {% if major[key] == 'Икономика' %}
-                        {% if degrees[0]['degreeIDs'] == '6' %}
+
+                        {% if (degrees['economics_phd'] is defined) %}
+                          {# subaccordion #}
                           <subaccordion title="{{ 'Бакалавър' }}">
-                        {% elseif degrees[0]['degreeIDs'] == '7' %} 
-                          <subaccordion title="{{ 'Магистър' }}">
-                        {% elseif degrees[0]['degreeIDs'] == '8' %}        
-                          <subaccordion title="{{ 'Доктор' }}">
+                            {% for key, degree in degrees['economics_bachelors'] %}
+                              <p class="pb-5">
+                                <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
+                                <p class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</p>
+                              </p>
+                            {% endfor %}
+                          </subaccordion>
                         {% endif %}
-                        {% for key, degree in degrees %}  
-                          <p class="pb-5">
-                            <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
-                            <p class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</p>
-                          </p>
-                        {% endfor %}
+
+                        {% if (degrees['economics_phd'] is defined) %}
+                          {# subaccordion #}
+                          <subaccordion title="{{ 'Магистър' }}">
+                            {% for key, degree in degrees['economics_masters'] %}
+                              <p class="pb-5">
+                                <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
+                                <p class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</p>
+                              </p>
+                            {% endfor %}
+                          </subaccordion>
+                        {% endif %}
+                        
+                         {% if (degrees['economics_phd'] is defined) %}
+                            {# subaccordion #}
+                            <subaccordion title="{{ 'Доктор' }}">
+                              {% for key, degree in degrees['economics_phd'] %}
+                                <p class="pb-5">
+                                  <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
+                                  <p class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</p>
+                                </p>
+                              {% endfor %}
+                            </subaccordion>
+                        {% endif %}
                       {% endif %}
-                    </subaccordion>
-                  </div>
+                    </accordion><!-- accordion -->
+                  </div><!-- .accordion-container -->
                 {% endfor %}
-                </accordion>
-              </div><!-- #accordion -->
+              </div><!-- .accordion-container -->
 
             </ul><!-- .listing-menu -->
           </div><!-- .listing-section -->
