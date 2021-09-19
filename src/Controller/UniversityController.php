@@ -46,7 +46,7 @@ class UniversityController extends AbstractController
         ]);
     }
 
-    public function fetchDegree(): array
+    public function fetchDegrees(): array
     {
         // Bachelors
         $response_2588_bachelors = $this->client->request(
@@ -56,6 +56,10 @@ class UniversityController extends AbstractController
         $response_2592_bachelors = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381'
+        );
+        $response_2531_bachelors = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2531/6/bg?v=1631382508381'
         );
 
         // Masters
@@ -67,6 +71,10 @@ class UniversityController extends AbstractController
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/7/bg?v=1631382508381'
         );
+        $response_2531_masters = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2531/7/bg?v=1631382508381'
+        );
 
          // PhD
          $response_2588_phd = $this->client->request(
@@ -76,6 +84,10 @@ class UniversityController extends AbstractController
          $response_2592_phd = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/8/bg?v=1631382508381'
+        );
+        $response_2531_phd = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2531/8/bg?v=1631382508381'
         );
         
         // Administration and Management
@@ -104,6 +116,20 @@ class UniversityController extends AbstractController
         if (isset($response_2592_phd)) {
             $content['2592_phd'] = $response_2592_phd->getContent();
             $content['2592_phd'] = $response_2592_phd->toArray();
+        }
+
+         // Economics
+         if (isset($response_2531_bachelors)) {
+            $content['2531_bachelors'] = $response_2531_bachelors->getContent();
+            $content['2531_bachelors'] = $response_2531_bachelors->toArray();
+        }
+        if (isset($response_2531_masters)) {
+            $content['2531_masters'] = $response_2531_masters->getContent();
+            $content['2531_masters'] = $response_2531_masters->toArray();
+        }
+        if (isset($response_2531_phd)) {
+            $content['2531_phd'] = $response_2531_phd->getContent();
+            $content['2531_phd'] = $response_2531_phd->toArray();
         }
         
         return $content;
@@ -136,7 +162,7 @@ class UniversityController extends AbstractController
                 'majors' => $majors,
                 'sum_ratings' => $this->sumRatings($university),
                 'ratings' => $ratings,
-                'degrees' => $this->fetchDegree()
+                'degrees' => $this->fetchDegrees()
             )
         );
     }
