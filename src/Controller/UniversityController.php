@@ -49,34 +49,61 @@ class UniversityController extends AbstractController
     public function fetchDegree(): array
     {
         // Bachelors
-        $response_economics_bachelors = $this->client->request(
+        $response_2588_bachelors = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/6/bg?v=1631382508381'
+        );
+        $response_2592_bachelors = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381'
         );
 
         // Masters
-        $response_economics_masters = $this->client->request(
+        $response_2588_masters = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/7/bg?v=1631382508381'
+        );
+        $response_2592_masters = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/7/bg?v=1631382508381'
         );
 
-         // Doctor
-         $response_economics_phd = $this->client->request(
+         // PhD
+         $response_2588_phd = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/8/bg?v=1631382508381'
+        );
+         $response_2592_phd = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/8/bg?v=1631382508381'
         );
         
-        if (isset($response_economics_bachelors)) {
-            $content['economics_bachelors'] = $response_economics_bachelors->getContent();
-            $content['economics_bachelors'] = $response_economics_bachelors->toArray();
+        // Administration and Management
+        if (isset($response_2588_bachelors)) {
+            $content['2588_bachelors'] = $response_2588_bachelors->getContent();
+            $content['2588_bachelors'] = $response_2588_bachelors->toArray();
         }
-        if (isset($response_economics_masters)) {
-            $content['economics_masters'] = $response_economics_masters->getContent();
-            $content['economics_masters'] = $response_economics_masters->toArray();
+        if (isset($response_2588_masters)) {
+            $content['2588_masters'] = $response_2588_masters->getContent();
+            $content['2588_masters'] = $response_2588_masters->toArray();
         }
-        if (isset($response_economics_phd)) {
-            $content['economics_phd'] = $response_economics_phd->getContent();
-            $content['economics_phd'] = $response_economics_phd->toArray();
+        if (isset($response_2588_phd)) {
+            $content['2588_phd'] = $response_2588_phd->getContent();
+            $content['2588_phd'] = $response_2588_phd->toArray();
+        }
+
+        // Economics
+        if (isset($response_2592_bachelors)) {
+            $content['2592_bachelors'] = $response_2592_bachelors->getContent();
+            $content['2592_bachelors'] = $response_2592_bachelors->toArray();
+        }
+        if (isset($response_2592_masters)) {
+            $content['2592_masters'] = $response_2592_masters->getContent();
+            $content['2592_masters'] = $response_2592_masters->toArray();
+        }
+        if (isset($response_2592_phd)) {
+            $content['2592_phd'] = $response_2592_phd->getContent();
+            $content['2592_phd'] = $response_2592_phd->toArray();
         }
         
         return $content;

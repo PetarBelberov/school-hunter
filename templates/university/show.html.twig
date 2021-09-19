@@ -168,44 +168,7 @@
                   <div class="accordion-container">
                     {# accordion #}
                     <accordion title="{{ major[key] }}">
-                      {% if major[key] == 'Икономика' %}
-
-                        {% if (degrees['economics_phd'] is defined) %}
-                          {# subaccordion #}
-                          <subaccordion title="{{ 'Бакалавър' }}">
-                            {% for key, degree in degrees['economics_bachelors'] %}
-                              <p class="pb-5">
-                                <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
-                                <p class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</p>
-                              </p>
-                            {% endfor %}
-                          </subaccordion>
-                        {% endif %}
-
-                        {% if (degrees['economics_phd'] is defined) %}
-                          {# subaccordion #}
-                          <subaccordion title="{{ 'Магистър' }}">
-                            {% for key, degree in degrees['economics_masters'] %}
-                              <p class="pb-5">
-                                <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
-                                <p class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</p>
-                              </p>
-                            {% endfor %}
-                          </subaccordion>
-                        {% endif %}
-                        
-                         {% if (degrees['economics_phd'] is defined) %}
-                            {# subaccordion #}
-                            <subaccordion title="{{ 'Доктор' }}">
-                              {% for key, degree in degrees['economics_phd'] %}
-                                <p class="pb-5">
-                                  <h4 class="listing-menu__item-name">{{ degree['name'] }}</h4>
-                                  <p class="c-gray listing-menu__item-gradients">{{ degree['eduForms'] }}</p>
-                                </p>
-                              {% endfor %}
-                            </subaccordion>
-                        {% endif %}
-                      {% endif %}
+                       {% include 'university/degrees.html.twig' %}
                     </accordion><!-- accordion -->
                   </div><!-- .accordion-container -->
                 {% endfor %}
