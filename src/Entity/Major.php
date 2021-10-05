@@ -30,9 +30,16 @@ class Major
      /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="major") */
      private $universityMajor;
 
+     /**
+      * @ORM\ManyToMany(targetEntity=Degrees::class, inversedBy="majors")
+      */
+     private $degrees;
+
+
      public function __construct()
      {
          $this->universityMajor = new ArrayCollection();
+         $this->degrees = new ArrayCollection();
      }
 
     public function getId(): ?int
@@ -74,6 +81,30 @@ class Major
                 $universityMajor->setMajor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Degrees[]
+     */
+    public function getDegrees(): Collection
+    {
+        return $this->degrees;
+    }
+
+    public function addDegree(Degrees $degree): self
+    {
+        if (!$this->degrees->contains($degree)) {
+            $this->degrees[] = $degree;
+        }
+
+        return $this;
+    }
+
+    public function removeDegree(Degrees $degree): self
+    {
+        $this->degrees->removeElement($degree);
 
         return $this;
     }

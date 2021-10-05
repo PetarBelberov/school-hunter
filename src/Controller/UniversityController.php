@@ -17,11 +17,17 @@ use App\Entity\Major;
 use App\Entity\UniversityMajor;
 use App\Entity\User;
 use Doctrine\ORM\Mapping\Id;
+use SessionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\CachingHttpClient;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
     * @Route("/universities", name="university_")
@@ -46,13 +52,19 @@ class UniversityController extends AbstractController
         ]);
     }
 
-    public function fetchDegrees(): array
+    public function fetchDegrees()
     {
+        $store = new Store('src/Controller');
+        $this->client = HttpClient::create();
+        $this->client = new CachingHttpClient($this->client, $store);
+        // $this->cacheDegrees();
+
         // Bachelors
         $response_2588_bachelors = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/6/bg?v=1631382508381'
         );
+        
         $response_2592_bachelors = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381'
@@ -89,6 +101,7 @@ class UniversityController extends AbstractController
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2531/8/bg?v=1631382508381'
         );
+        
         
         // Administration and Management
         if (isset($response_2588_bachelors)) {
@@ -135,6 +148,24 @@ class UniversityController extends AbstractController
         return $content;
     }
 
+    public function cacheDegrees() {
+        $cache = new FilesystemAdapter();
+
+        // The callable will only be executed on a cache miss.
+        $value = $cache->get('bachelors', function (ItemInterface $item) {
+            $item->expiresAfter(3600);
+
+            // ... do some HTTP request or heavy computations
+            $response_2588_bachelors = $this->client->request(
+                'GET',
+                'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/6/bg?v=1631382508381'
+            );
+
+            return $response_2588_bachelors;
+        });
+
+        //  $value['bachelors'];
+    }
 
     /**
      * @Route("/{slug}", name="show")
