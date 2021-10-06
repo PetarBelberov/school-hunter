@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Rating;
 use App\Entity\Comment;
+use App\Entity\Degrees;
 use App\Events\CommentCreatedEvent;
 use App\Form\CommentType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -57,7 +58,6 @@ class UniversityController extends AbstractController
         $store = new Store('src/Controller');
         $this->client = HttpClient::create();
         $this->client = new CachingHttpClient($this->client, $store);
-        // $this->cacheDegrees();
 
         // Bachelors
         $response_2588_bachelors = $this->client->request(
@@ -148,25 +148,30 @@ class UniversityController extends AbstractController
         return $content;
     }
 
-    public function cacheDegrees() {
-        $cache = new FilesystemAdapter();
+    public function createDegrees() {
+        $entityManager = $this->getDoctrine()->getManager();
 
-        // The callable will only be executed on a cache miss.
-        $value = $cache->get('bachelors', function (ItemInterface $item) {
-            $item->expiresAfter(3600);
-
-            // ... do some HTTP request or heavy computations
-            $response_2588_bachelors = $this->client->request(
-                'GET',
-                'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/6/bg?v=1631382508381'
-            );
-
-            return $response_2588_bachelors;
-        });
-
-        //  $value['bachelors'];
+        foreach ($this->getDegreeData() as [$name]) {
+            // checks if the record exist
+            $checkDegree = $entityManager->getRepository(Degrees::class)->findBy( ['name' => $name],);
+            if (!$checkDegree) {
+                $degree = new Degrees();
+                $degree->setName($name);
+                $entityManager->persist($degree);
+            }
+        }
+        $entityManager->flush();
+    }
+    private function getDegreeData(): array
+    {
+        return [
+                ['бакалавър'],
+                ['магистър'],
+                ['доктор']
+        ];
     }
 
+    
     /**
      * @Route("/{slug}", name="show")
      */
@@ -186,7 +191,7 @@ class UniversityController extends AbstractController
             array_push($majors, array($counter => $university_major->getMajor()->getName(), $university_major->getRSVURanking()));
             $counter++;
         }
-
+        $this->createDegrees();
         return $this->render('university/show.html.twig',
             array(
                 'university' => $university,
