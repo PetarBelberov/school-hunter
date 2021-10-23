@@ -162,6 +162,7 @@ class UniversityController extends AbstractController
         }
         $entityManager->flush();
     }
+
     private function getDegreeData(): array
     {
         return [
@@ -170,7 +171,6 @@ class UniversityController extends AbstractController
                 ['доктор']
         ];
     }
-
     
     /**
      * @Route("/{slug}", name="show")

@@ -1,17 +1,25 @@
 <?php
 namespace App\DataFixtures;
 
+use App\Entity\Degrees;
 use App\Entity\Major;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class MajorFixtures extends Fixture
+class MajorFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $degrees_arr = array('бакалавър', 'магистър', 'доктор');
         foreach ($this->getMajorData() as [$name]) {
                 $major = new Major();
                 $major->setName($name);
+                
+                foreach($degrees_arr as $degree) {
+                    $major->addDegree($this->getReference('degree-'.$degree));
+                }
+                
                 $manager->persist($major);
             }
         $manager->flush();
@@ -56,5 +64,15 @@ class MajorFixtures extends Fixture
                 ['Философия'],
                 ['Химически науки']
         ];
+    }
+
+    /**
+     * Get the order of this fixture
+     *
+     * @return integer
+     */
+    function getOrder()
+    {
+        return 2;
     }
 }
