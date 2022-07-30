@@ -18,6 +18,7 @@ use App\Entity\Major;
 use App\Entity\UniversityMajor;
 use App\Entity\User;
 use Doctrine\ORM\Mapping\Id;
+use Exception;
 use SessionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpCache\Store;
@@ -51,6 +52,20 @@ class UniversityController extends AbstractController
         return $this->render('university/index.html.twig', [
             'controller_name' => 'UniversityController',
         ]);
+    }
+
+    public function fetchMajors() {
+        $response_majors = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/major/bg?v=1636023237666'
+        );
+
+        if (isset($response_majors)) {
+            $content['majors'] = $response_majors->getContent();
+            $content['majors'] = $response_majors->toArray();
+        }
+
+        return $content;
     }
 
     public function fetchDegrees()
@@ -148,9 +163,41 @@ class UniversityController extends AbstractController
         return $content;
     }
 
+    public function createMajors() {
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        foreach ($this->getMajorsData() as $majors) {
+            foreach ($majors as $name) {
+                 // checks if the record exist
+                $checkMajor = $entityManager->getRepository(Major::class)->findBy( ['name' => $name],);
+                if (!$checkMajor) {
+                    $major = new Major();
+                    $major->setName($name);
+                    $entityManager->persist($major);
+                }
+            } 
+        }
+        $entityManager->flush();
+    }
+
+    private function getMajorsData(): array
+    {
+        $majors = $this->fetchMajors();
+        $majors_arr = array();
+        foreach ($majors as $major) {
+            foreach ($major as $m) {
+                array_push($majors_arr, $m['name']);                
+            }
+        }
+        
+        return [
+             $majors_arr
+        ];
+    }
+
     public function createDegrees() {
         $entityManager = $this->getDoctrine()->getManager();
-
+        
         foreach ($this->getDegreeData() as [$name]) {
             // checks if the record exist
             $checkDegree = $entityManager->getRepository(Degrees::class)->findBy( ['name' => $name],);
@@ -171,34 +218,91 @@ class UniversityController extends AbstractController
                 ['доктор']
         ];
     }
+
+    public function checkMajors($major_name, $ranking) {
+        $major = $this->em
+            ->getRepository(Major::class)
+            ->findBy(['name' => $major_name]);
+
+        $uni_majors = $this->em
+            ->getRepository(UniversityMajor::class)
+            ->findBy(['rsvu_ranking' => $ranking, 'major' => $major]);
+
+        return $uni_majors;
+    }
     
     /**
      * @Route("/{slug}", name="show")
      */
     public function show(University $university): Response
     {
-        $majors = array();
-        $university_majors = $this->getDoctrine()
-        ->getRepository(UniversityMajor::class)
-        ->findBy(['university' => $university]);
+        // $majors = array();
+        
+            // ->findBy([]);
 
+        $universityMajor = $this->getDoctrine()->getManager()
+            ->getRepository(UniversityMajor::class)
+            ->findBy(['university' => $university]);
+
+        $bachelors = $this->getDoctrine()
+            ->getRepository(Degrees::class)
+            // ->findBy(['majors' => $majors]);
+            ->findBy(['name' => 'бакалавър']);
+
+        $masters = $this->getDoctrine()
+            ->getRepository(Degrees::class)
+            // ->findBy(['majors' => $majors]);
+            ->findBy(['name' => 'магистър']);
+
+        $doctors = $this->getDoctrine()
+            ->getRepository(Degrees::class)
+            // ->findBy(['majors' => $majors]);
+            ->findBy(['name' => 'доктор']);
+            
         $ratings = $this->getDoctrine()
-        ->getRepository(Rating::class)
-        ->findBy(['university' => $university]);
+            ->getRepository(Rating::class)
+            ->findBy(['university' => $university]);
 
-        $counter = 0;
-        foreach ($university_majors as $university_major) {
-            array_push($majors, array($counter => $university_major->getMajor()->getName(), $university_major->getRSVURanking()));
-            $counter++;
-        }
+        
+        $majors = $universityMajor;
+        
+        // var_dump($majors->getName());
+        // die();
+        // $degrees = $majors->getDegree();
+        
+
+            // foreach($doctors as $doctor) {
+            //     $majors = $this->getDoctrine()
+            //         ->getRepository(Degrees::class)
+            //         ->findBy(['degrees' => $doctor->getDegrees()]);
+
+            //     var_dump( $majors);
+            //     // $degrees = $doctor->getMajors();
+            // }
+        
+            
+            
+           
+
+        // $counter = 0;
+        // foreach ($university_majors as $university_major) {
+        //     array_push($majors, array($counter => $university_major->getMajor()->getName(), $university_major->getRSVURanking()));
+        //     $counter++;
+        // }
         $this->createDegrees();
+        $this->createMajors();
+
         return $this->render('university/show.html.twig',
             array(
                 'university' => $university,
                 'majors' => $majors,
+                // 'majors_api' => $this->fetchMajors(),
                 'sum_ratings' => $this->sumRatings($university),
                 'ratings' => $ratings,
-                'degrees' => $this->fetchDegrees()
+                // 'degrees' => $degrees->getDegrees(),
+                'bachelors' => $bachelors,
+                'masters' => $masters,
+                'doctors' => $doctors
             )
         );
     }

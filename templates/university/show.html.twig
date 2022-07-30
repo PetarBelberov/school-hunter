@@ -164,14 +164,19 @@
             <ul class="min-list">
             
               <div class="accordion-container" class="container mx-auto bg-white border-grey-light border mt-20">
-                {% for key, major in majors %}  
+               {{ dump(degrees) }}  
+                {% for key, major in majors %} 
+                  {{ dump(major.name) }}  
+                {% endfor %} 
+                {# {% for key, major in majors %} #}
                   <div class="accordion-container">
                     {# accordion #}
-                    <accordion title="{{ major[key] }}">
+                    {# <accordion title="{{ major['name'] }}">
                        {% include 'university/degrees.html.twig' %}
-                    </accordion><!-- accordion -->
+                    </accordion> #}
+                    <!-- accordion -->
                   </div><!-- .accordion-container -->
-                {% endfor %}
+                {# {% endfor %} #}
               </div><!-- .accordion-container -->
 
             </ul><!-- .listing-menu -->

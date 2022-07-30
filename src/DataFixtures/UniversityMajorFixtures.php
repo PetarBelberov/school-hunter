@@ -5,11 +5,13 @@ use App\Entity\Major;
 use App\Entity\University;
 use App\Entity\UniversityMajor;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use ErrorException;
 use Exception;
 
-class UniversityMajorFixtures extends Fixture
+class UniversityMajorFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function __construct(EntityManagerInterface $em)
     {
@@ -18,10 +20,8 @@ class UniversityMajorFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $major = new Major();
-        $university = new University();
-        $this->loadNBU($manager);
         $this->loadUNSS($manager);
+        $this->loadNBU($manager);
         $this->loadSU($manager);
         $this->loadACS($manager);
     }
@@ -61,7 +61,7 @@ class UniversityMajorFixtures extends Fixture
 
         foreach ($majors as $major) {
             $university_major = new UniversityMajor();
-
+            
             if ($major->getName() == 'Администрация и управление') {
                 $ranking = 1;
                 $this->checkMajors($major->getName(), $ranking);
@@ -451,5 +451,15 @@ class UniversityMajorFixtures extends Fixture
 
         $manager->persist($university_major);
         $manager->flush();
+    }
+
+    /**
+     * Get the order of this fixture
+     *
+     * @return integer
+     */
+    function getOrder()
+    {
+        return 3;
     }
 }
