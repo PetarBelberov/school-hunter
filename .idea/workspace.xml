@@ -23,6 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90540943-9151-40a1-84bf-f6097c1a8105" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
@@ -3002,6 +3003,9 @@
       <change beforePath="$PROJECT_DIR$/vendor/webmozart/assert/psalm.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/webmozart/assert/src/Assert.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/webmozart/assert/src/Assert.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/webmozart/assert/src/Mixin.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/webmozart/assert/src/Mixin.php" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> 6abeb1e76aca3697f3187394af2fc7af6b923b17
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -3196,6 +3200,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
@@ -3208,6 +3213,22 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/ffw/Projects/school-hunter&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+>>>>>>> 6abeb1e76aca3697f3187394af2fc7af6b923b17
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\school-hunter\templates" />
@@ -3284,10 +3305,16 @@
       <workItem from="1658666030963" duration="219000" />
       <workItem from="1658666334699" duration="130000" />
       <workItem from="1658666466124" duration="225000" />
+<<<<<<< HEAD
       <workItem from="1659448894006" duration="208000" />
       <workItem from="1659449109797" duration="7000" />
       <workItem from="1659449117839" duration="17000" />
       <workItem from="1659449136190" duration="3954000" />
+=======
+      <workItem from="1659187592185" duration="1034000" />
+      <workItem from="1659196807174" duration="5591000" />
+      <workItem from="1659444552208" duration="990000" />
+>>>>>>> 6abeb1e76aca3697f3187394af2fc7af6b923b17
     </task>
     <servers />
   </component>
@@ -3355,6 +3382,27 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/UniversityController.php</url>
+          <line>237</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/templates/university/show.html.twig</url>
+          <line>166</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/UniversityController.php</url>
+          <line>296</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
