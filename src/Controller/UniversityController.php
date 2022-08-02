@@ -236,6 +236,7 @@ class UniversityController extends AbstractController
      */
     public function show(University $university): Response
     {
+
         // $majors = array();
         
             // ->findBy([]);
