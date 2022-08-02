@@ -42,8 +42,6 @@ class PassConfig
         $this->beforeOptimizationPasses = [
             100 => [
                 new ResolveClassPass(),
-                new RegisterAutoconfigureAttributesPass(),
-                new AttributeAutoconfigurationPass(),
                 new ResolveInstanceofConditionalsPass(),
                 new RegisterEnvVarProcessorsPass(),
             ],
@@ -66,7 +64,6 @@ class PassConfig
             new DecoratorServicePass(),
             new CheckDefinitionValidityPass(),
             new AutowirePass(false),
-            new ServiceLocatorTagPass(),
             new ResolveTaggedIteratorArgumentPass(),
             new ResolveServiceSubscribersPass(),
             new ResolveReferencesToAliasesPass(),
@@ -76,6 +73,12 @@ class PassConfig
             new CheckReferenceValidityPass(),
             new CheckArgumentsValidityPass(false),
         ]];
+
+        $this->beforeRemovingPasses = [
+            -100 => [
+                new ResolvePrivatesPass(),
+            ],
+        ];
 
         $this->removingPasses = [[
             new RemovePrivateAliasesPass(),

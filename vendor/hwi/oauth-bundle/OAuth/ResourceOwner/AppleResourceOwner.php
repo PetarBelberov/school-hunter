@@ -56,7 +56,7 @@ class AppleResourceOwner extends GenericOAuth2ResourceOwner
         }
 
         $jwt = self::jwt_decode($accessToken['id_token']);
-        $data = json_decode(base64_decode($jwt), true);
+        $data = $jwt ? json_decode(base64_decode($jwt), true) : [];
 
         if (isset($accessToken['firstName'], $accessToken['lastName'])) {
             $data['firstName'] = $accessToken['firstName'];
@@ -88,13 +88,17 @@ class AppleResourceOwner extends GenericOAuth2ResourceOwner
 
         $response = $this->doGetTokenRequest($this->options['access_token_url'], $parameters);
         $response = $this->getResponseContent($response);
-        $this->validateResponseContent($response);
-        $user_info = $request->request->get('user');
-        $user_info = json_decode($user_info, true);
 
-        if (null !== $user_info && isset($user_info['name'])) {
-            $response['firstName'] = $user_info['name']['firstName'];
-            $response['lastName'] = $user_info['name']['lastName'];
+        $this->validateResponseContent($response);
+
+        $userInfo = $request->request->get('user');
+        if ($userInfo) {
+            $userInfo = json_decode($userInfo, true);
+
+            if (null !== $userInfo && isset($userInfo['name'])) {
+                $response['firstName'] = $userInfo['name']['firstName'];
+                $response['lastName'] = $userInfo['name']['lastName'];
+            }
         }
 
         return $response;

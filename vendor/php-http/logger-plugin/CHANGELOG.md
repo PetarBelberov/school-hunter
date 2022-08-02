@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.3.0 - 2022-02-11
+
+- Do not log request when loggin response again, but use UID to identify request
+  that belongs to response.
+  If you use a logger that does not log `info` severity and want the request
+  logged when an error happened, use a Fingerscrossed log handler to also log
+  info if any error is logged.
+- Removed the request and response from the log context. They did not get
+  printed because they don't implement `__toString`.
+- Supporting the newly introduced message formatter method
+  `formatResponseForRequest` that allows more flexibility in the formatter.
+  See https://github.com/php-http/message/pull/146
+
 ## 1.2.2 - 2021-07-26
 
 - Allow installation with psr/log version 2 and 3

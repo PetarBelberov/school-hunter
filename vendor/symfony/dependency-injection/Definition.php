@@ -22,8 +22,6 @@ use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
  */
 class Definition
 {
-    private const DEFAULT_DEPRECATION_TEMPLATE = 'The "%service_id%" service is deprecated. You should stop using it, as it will be removed in the future.';
-
     private $class;
     private $file;
     private $factory;
@@ -35,7 +33,8 @@ class Definition
     private $autoconfigured = false;
     private $configurator;
     private $tags = [];
-    private $public = false;
+    private $public = true;
+    private $private = true;
     private $synthetic = false;
     private $abstract = false;
     private $lazy = false;
@@ -46,6 +45,8 @@ class Definition
     private $errors = [];
 
     protected $arguments = [];
+
+    private static $defaultDeprecationTemplate = 'The "%service_id%" service is deprecated. You should stop using it, as it will be removed in the future.';
 
     /**
      * @internal
@@ -96,7 +97,7 @@ class Definition
     /**
      * Sets a factory.
      *
-     * @param string|array|Reference|null $factory A PHP function, reference or an array containing a class/Reference and a method to call
+     * @param string|array|Reference $factory A PHP function, reference or an array containing a class/Reference and a method to call
      *
      * @return $this
      */
@@ -104,7 +105,7 @@ class Definition
     {
         $this->changes['factory'] = true;
 
-        if (\is_string($factory) && str_contains($factory, '::')) {
+        if (\is_string($factory) && false !== strpos($factory, '::')) {
             $factory = explode('::', $factory, 2);
         } elseif ($factory instanceof Reference) {
             $factory = [$factory, '__invoke'];
@@ -135,7 +136,7 @@ class Definition
      *
      * @throws InvalidArgumentException in case the decorated service id and the new decorated service id are equals
      */
-    public function setDecoratedService(?string $id, string $renamedId = null, int $priority = 0, int $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
+    public function setDecoratedService(?string $id, ?string $renamedId = null, int $priority = 0, int $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
         if ($renamedId && $id === $renamedId) {
             throw new InvalidArgumentException(sprintf('The decorated service inner name for "%s" must be different than the service name itself.', $id));
@@ -370,6 +371,7 @@ class Definition
         foreach ($this->calls as $i => $call) {
             if ($call[0] === $method) {
                 unset($this->calls[$i]);
+                break;
             }
         }
 
@@ -584,6 +586,7 @@ class Definition
         $this->changes['public'] = true;
 
         $this->public = $boolean;
+        $this->private = false;
 
         return $this;
     }
@@ -601,15 +604,18 @@ class Definition
     /**
      * Sets if this service is private.
      *
-     * @return $this
+     * When set, the "private" state has a higher precedence than "public".
+     * In version 3.4, a "private" service always remains publicly accessible,
+     * but triggers a deprecation notice when accessed from the container,
+     * so that the service can be made really private in 4.0.
      *
-     * @deprecated since Symfony 5.2, use setPublic() instead
+     * @return $this
      */
     public function setPrivate(bool $boolean)
     {
-        trigger_deprecation('symfony/dependency-injection', '5.2', 'The "%s()" method is deprecated, use "setPublic()" instead.', __METHOD__);
+        $this->private = $boolean;
 
-        return $this->setPublic(!$boolean);
+        return $this;
     }
 
     /**
@@ -619,7 +625,7 @@ class Definition
      */
     public function isPrivate()
     {
-        return !$this->public;
+        return $this->private;
     }
 
     /**
@@ -655,10 +661,6 @@ class Definition
     public function setSynthetic(bool $boolean)
     {
         $this->synthetic = $boolean;
-
-        if (!isset($this->changes['public'])) {
-            $this->setPublic(true);
-        }
 
         return $this;
     }
@@ -737,13 +739,13 @@ class Definition
                 throw new InvalidArgumentException('Invalid characters found in deprecation template.');
             }
 
-            if (!str_contains($message, '%service_id%')) {
+            if (false === strpos($message, '%service_id%')) {
                 throw new InvalidArgumentException('The deprecation template must contain the "%service_id%" placeholder.');
             }
         }
 
         $this->changes['deprecated'] = true;
-        $this->deprecation = $status ? ['package' => $package, 'version' => $version, 'message' => $message ?: self::DEFAULT_DEPRECATION_TEMPLATE] : [];
+        $this->deprecation = $status ? ['package' => $package, 'version' => $version, 'message' => $message ?: self::$defaultDeprecationTemplate] : [];
 
         return $this;
     }
@@ -790,7 +792,7 @@ class Definition
     /**
      * Sets a configurator to call after the service is fully initialized.
      *
-     * @param string|array|Reference|null $configurator A PHP function, reference or an array containing a class/Reference and a method to call
+     * @param string|array|Reference $configurator A PHP function, reference or an array containing a class/Reference and a method to call
      *
      * @return $this
      */
@@ -798,7 +800,7 @@ class Definition
     {
         $this->changes['configurator'] = true;
 
-        if (\is_string($configurator) && str_contains($configurator, '::')) {
+        if (\is_string($configurator) && false !== strpos($configurator, '::')) {
             $configurator = explode('::', $configurator, 2);
         } elseif ($configurator instanceof Reference) {
             $configurator = [$configurator, '__invoke'];

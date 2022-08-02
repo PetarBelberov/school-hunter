@@ -2,6 +2,28 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+# 1.27.0 - 2022-07-25
+
+- Added support for configuring the error plugin via configuration
+
+# 1.26.2 - 2022-06-01
+
+- Fixed: You can now configure the cache plugin option `cache_lifetime` to `null` (which makes the plugin not add to the maxAge).
+
+# 1.26.1 - 2022-04-29
+
+- Fixed: Setting the cache plugin option `respect_response_cache_directives` to `null` makes the
+  plugin use the default set of directives instead of triggering an error.
+
+# 1.26.0 - 2022-03-17
+
+- Fixed you can now configure the cache plugin default_ttl with `null`.
+
+# 1.25.0 - 2021-11-26
+- Added PHP 8.1 support
+- Added Symfony 6 support
+- Removed Symfony 3.x support
+
 # 1.24.0 - 2021-10-23
 - Changed stopwatch category from default to "httplug", so it's more prominent on Execution timeline view
 - Changed tab texts inside profiler so that it shows ports in URL in case it's non-standard

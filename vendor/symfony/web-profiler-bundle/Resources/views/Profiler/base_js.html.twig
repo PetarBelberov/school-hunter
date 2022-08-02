@@ -5,7 +5,6 @@
                 them as JavaScript source code. Always use '/*' comments instead
                 of '//' comments to avoid impossible-to-debug side-effects #}
 
-if (typeof Sfjs === 'undefined' || typeof Sfjs.loadToolbar === 'undefined') {
     Sfjs = (function() {
         "use strict";
 
@@ -425,10 +424,6 @@ if (typeof Sfjs === 'undefined' || typeof Sfjs.loadToolbar === 'undefined') {
                     'sfwdt' + token,
                     '{{ url("_wdt", { "token": "xxxxxx" })|escape('js') }}'.replace(/xxxxxx/, newToken),
                     function(xhr, el) {
-                        /* Do nothing in the edge case where the toolbar has already been replaced with a new one */
-                        if (!document.getElementById('sfToolbarMainContent-' + newToken)) {
-                            return;
-                        }
 
                         /* Evaluate in global scope scripts embedded inside the toolbar */
                         var i, scripts = [].slice.call(el.querySelectorAll('script'));
@@ -478,11 +473,7 @@ if (typeof Sfjs === 'undefined' || typeof Sfjs.loadToolbar === 'undefined') {
                                 }
                             };
                         }
-                        var hideButton = document.getElementById('sfToolbarHideButton-' + newToken);
-                        var hideButtonSvg = hideButton.querySelector('svg');
-                        hideButtonSvg.setAttribute('aria-hidden', 'true');
-                        hideButtonSvg.setAttribute('focusable', 'false');
-                        addEventListener(hideButton, 'click', function (event) {
+                        addEventListener(document.getElementById('sfToolbarHideButton-' + newToken), 'click', function (event) {
                             event.preventDefault();
 
                             var p = this.parentNode;
@@ -491,11 +482,7 @@ if (typeof Sfjs === 'undefined' || typeof Sfjs.loadToolbar === 'undefined') {
                             document.getElementById('sfMiniToolbar-' + newToken).style.display = 'block';
                             setPreference('toolbar/displayState', 'none');
                         });
-                        var showButton = document.getElementById('sfToolbarMiniToggler-' + newToken);
-                        var showButtonSvg = showButton.querySelector('svg');
-                        showButtonSvg.setAttribute('aria-hidden', 'true');
-                        showButtonSvg.setAttribute('focusable', 'false');
-                        addEventListener(showButton, 'click', function (event) {
+                        addEventListener(document.getElementById('sfToolbarMiniToggler-' + newToken), 'click', function (event) {
                             event.preventDefault();
 
                             var elem = this.parentNode;
@@ -812,5 +799,5 @@ if (typeof Sfjs === 'undefined' || typeof Sfjs.loadToolbar === 'undefined') {
         Sfjs.createTabs();
         Sfjs.createToggles();
     });
-}
+
 /*]]>*/</script>

@@ -23,12 +23,12 @@ use Http\Message\Authentication\Wsse;
 use Http\Mock\Client as MockClient;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -198,6 +198,9 @@ class HttplugExtension extends Extension
         switch ($name) {
             case 'cache':
                 $options = $config['config'];
+                if (\array_key_exists('respect_response_cache_directives', $options) && null === $options['respect_response_cache_directives']) {
+                    unset($options['respect_response_cache_directives']);
+                }
                 if (!empty($options['cache_key_generator'])) {
                     $options['cache_key_generator'] = new Reference($options['cache_key_generator']);
                 }
@@ -269,6 +272,13 @@ class HttplugExtension extends Extension
                     ->replaceArgument(0, new Reference($config['stopwatch']))
                     ->setAbstract(false)
                 ;
+
+                break;
+
+            case 'error':
+                $definition->addArgument([
+                    'only_server_exception' => $config['only_server_exception'],
+                ]);
 
                 break;
 
@@ -382,14 +392,8 @@ class HttplugExtension extends Extension
     {
         $serviceId = 'httplug.client.'.$clientName;
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            $alias = $container->registerAliasForArgument($serviceId, HttpClient::class, $clientName);
-
-            $interfaces = class_implements(HttpClient::class) ?? [];
-            if (isset($interfaces[ClientInterface::class])) {
-                $container->registerAliasForArgument($serviceId, ClientInterface::class, $clientName);
-            }
-        }
+        $container->registerAliasForArgument($serviceId, HttpClient::class, $clientName);
+        $container->registerAliasForArgument($serviceId, ClientInterface::class, $clientName);
 
         $plugins = [];
         foreach ($arguments['plugins'] as $plugin) {
@@ -530,7 +534,7 @@ class HttplugExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
     {
         return new Configuration($container->getParameter('kernel.debug'));
     }
@@ -547,7 +551,7 @@ class HttplugExtension extends Extension
     {
         $pluginServiceId = $serviceId.'.plugin.'.$pluginName;
 
-        $definition = $this->createChildDefinition('httplug.plugin.'.$pluginName);
+        $definition = new ChildDefinition('httplug.plugin.'.$pluginName);
 
         $this->configurePluginByName($pluginName, $definition, $pluginConfig, $container, $pluginServiceId);
         $container->setDefinition($pluginServiceId, $definition);
@@ -564,7 +568,7 @@ class HttplugExtension extends Extension
         $recordId = $prefix.'.record';
 
         if ('filesystem' === $recorder) {
-            $recorderDefinition = $this->createChildDefinition('httplug.plugin.vcr.recorder.filesystem');
+            $recorderDefinition = new ChildDefinition('httplug.plugin.vcr.recorder.filesystem');
             $recorderDefinition->replaceArgument(0, $config['fixtures_directory']);
             $recorderId = $prefix.'.recorder';
 
@@ -573,7 +577,7 @@ class HttplugExtension extends Extension
 
         if ('default' === $config['naming_strategy']) {
             $namingStrategyId = $prefix.'.naming_strategy';
-            $namingStrategy = $this->createChildDefinition('httplug.plugin.vcr.naming_strategy.path');
+            $namingStrategy = new ChildDefinition('httplug.plugin.vcr.naming_strategy.path');
 
             if (!empty($config['naming_strategy_options'])) {
                 $namingStrategy->setArguments([$config['naming_strategy_options']]);
@@ -609,19 +613,5 @@ class HttplugExtension extends Extension
         }
 
         return $plugins;
-    }
-
-    /**
-     * BC for old Symfony versions. Remove this method and use new ChildDefinition directly when we drop support for Symfony 2.
-     *
-     * @param string $parent the parent service id
-     *
-     * @return ChildDefinition|DefinitionDecorator
-     */
-    private function createChildDefinition($parent)
-    {
-        $definitionClass = class_exists(ChildDefinition::class) ? ChildDefinition::class : DefinitionDecorator::class;
-
-        return new $definitionClass($parent);
     }
 }

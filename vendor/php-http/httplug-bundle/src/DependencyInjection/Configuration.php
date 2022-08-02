@@ -54,15 +54,10 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('httplug');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->root('httplug');
-        } else {
-            $rootNode = $treeBuilder->getRootNode();
-        }
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->configureClients($rootNode);
         $this->configureSharedPlugins($rootNode);
@@ -274,12 +269,7 @@ class Configuration implements ConfigurationInterface
     private function createClientPluginNode()
     {
         $treeBuilder = new TreeBuilder('plugins');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $node = $treeBuilder->root('plugins');
-        } else {
-            $node = $treeBuilder->getRootNode();
-        }
+        $node = $treeBuilder->getRootNode();
 
         /** @var ArrayNodeDefinition $pluginList */
         $pluginList = $node
@@ -600,6 +590,15 @@ class Configuration implements ConfigurationInterface
             ->end()
         ->end();
         // End stopwatch plugin
+
+        $error = $children->arrayNode('error')
+            ->canBeEnabled()
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('only_server_exception')->defaultFalse()->end()
+            ->end()
+        ->end();
+        // End error plugin
     }
 
     /**
@@ -610,12 +609,7 @@ class Configuration implements ConfigurationInterface
     private function createAuthenticationPluginNode()
     {
         $treeBuilder = new TreeBuilder('authentication');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $node = $treeBuilder->root('authentication');
-        } else {
-            $node = $treeBuilder->getRootNode();
-        }
+        $node = $treeBuilder->getRootNode();
 
         $node
             ->useAttributeAsKey('name')
@@ -707,12 +701,7 @@ class Configuration implements ConfigurationInterface
     private function createCachePluginNode()
     {
         $builder = new TreeBuilder('config');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($builder, 'getRootNode')) {
-            $config = $builder->root('config');
-        } else {
-            $config = $builder->getRootNode();
-        }
+        $config = $builder->getRootNode();
 
         $config
             ->fixXmlConfig('method')
@@ -730,11 +719,23 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('cache_key_generator')
                     ->info('This must be a service id to a service implementing '.CacheKeyGenerator::class)
                 ->end()
-                ->integerNode('cache_lifetime')
+                ->scalarNode('cache_lifetime')
                     ->info('The minimum time we should store a cache item')
+                    ->validate()
+                    ->ifTrue(function ($v) {
+                        return null !== $v && !is_int($v);
+                    })
+                    ->thenInvalid('cache_lifetime must be an integer or null, got %s')
+                    ->end()
                 ->end()
-                ->integerNode('default_ttl')
+                ->scalarNode('default_ttl')
                     ->info('The default max age of a Response')
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            return null !== $v && !is_int($v);
+                        })
+                        ->thenInvalid('default_ttl must be an integer or null, got %s')
+                    ->end()
                 ->end()
                 ->arrayNode('blacklisted_paths')
                     ->info('An array of regular expression patterns for paths not to be cached. Defaults to an empty array.')
@@ -790,7 +791,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->variableNode('respect_response_cache_directives')
-                    ->info('A list of cache directives to respect when caching responses')
+                    ->info('A list of cache directives to respect when caching responses. Omit or set to null to respect the default set of directives.')
                     ->validate()
                         ->always(function ($v) {
                             if (is_null($v) || is_array($v)) {
@@ -805,12 +806,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $treeBuilder = new TreeBuilder('cache');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $cache = $treeBuilder->root('cache');
-        } else {
-            $cache = $treeBuilder->getRootNode();
-        }
+        $cache = $treeBuilder->getRootNode();
 
         $cache
             ->canBeEnabled()

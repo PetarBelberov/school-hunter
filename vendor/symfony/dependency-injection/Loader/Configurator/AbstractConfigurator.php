@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Component\Config\Loader\ParamConfigurator;
 use Symfony\Component\DependencyInjection\Argument\AbstractArgument;
 use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -25,7 +24,7 @@ abstract class AbstractConfigurator
     public const FACTORY = 'unknown';
 
     /**
-     * @var callable(mixed, bool $allowService)|null
+     * @var callable(mixed $value, bool $allowService)|null
      */
     public static $valuePreProcessor;
 
@@ -41,9 +40,6 @@ abstract class AbstractConfigurator
         throw new \BadMethodCallException(sprintf('Call to undefined method "%s::%s()".', static::class, $method));
     }
 
-    /**
-     * @return array
-     */
     public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
@@ -85,10 +81,6 @@ abstract class AbstractConfigurator
             $value->definition = null;
 
             return $def;
-        }
-
-        if ($value instanceof ParamConfigurator) {
-            return (string) $value;
         }
 
         if ($value instanceof self) {

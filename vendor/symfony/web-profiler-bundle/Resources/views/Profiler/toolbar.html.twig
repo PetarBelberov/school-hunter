@@ -1,8 +1,8 @@
 <!-- START of Symfony Web Debug Toolbar -->
 <div id="sfMiniToolbar-{{ token }}" class="sf-minitoolbar" data-no-turbolink>
-    <button type="button" title="Show Symfony toolbar" id="sfToolbarMiniToggler-{{ token }}" accesskey="D" aria-expanded="false" aria-controls="sfToolbarMainContent-{{ token }}">
+    <a href="#" title="Show Symfony toolbar" tabindex="-1" id="sfToolbarMiniToggler-{{ token }}" accesskey="D">
         {{ include('@WebProfiler/Icon/symfony.svg') }}
-    </button>
+    </a>
 </div>
 <div id="sfToolbarClearer-{{ token }}" class="sf-toolbar-clearer"></div>
 
@@ -23,8 +23,8 @@
         {% endif %}
     {% endfor %}
 
-    <button class="hide-button" type="button" id="sfToolbarHideButton-{{ token }}" title="Close Toolbar" accesskey="D" aria-expanded="true" aria-controls="sfToolbarMainContent-{{ token }}">
+    <a class="hide-button" id="sfToolbarHideButton-{{ token }}" title="Close Toolbar" tabindex="-1" accesskey="D">
         {{ include('@WebProfiler/Icon/close.svg') }}
-    </button>
+    </a>
 </div>
 <!-- END of Symfony Web Debug Toolbar -->

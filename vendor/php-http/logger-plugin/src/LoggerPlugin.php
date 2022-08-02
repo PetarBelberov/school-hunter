@@ -32,39 +32,44 @@ final class LoggerPlugin implements Plugin
     protected function doHandleRequest(RequestInterface $request, callable $next, callable $first)
     {
         $start = hrtime(true) / 1E6;
-        $this->logger->info(sprintf("Sending request:\n%s", $this->formatter->formatRequest($request)), ['request' => $request]);
+        $uid = uniqid('', true);
+        $this->logger->info(sprintf("Sending request:\n%s", $this->formatter->formatRequest($request)), ['request' => $request, 'uid' => $uid]);
 
-        return $next($request)->then(function (ResponseInterface $response) use ($request, $start) {
+        return $next($request)->then(function (ResponseInterface $response) use ($start, $uid, $request) {
             $milliseconds = (int) round(hrtime(true) / 1E6 - $start);
+            $formattedResponse = method_exists($this->formatter, 'formatResponseForRequest')
+                ? $this->formatter->formatResponseForRequest($response, $request)
+                : $this->formatter->formatResponse($response);
             $this->logger->info(
-                sprintf("Received response:\n%s\n\nfor request:\n%s", $this->formatter->formatResponse($response), $this->formatter->formatRequest($request)),
+                sprintf("Received response:\n%s", $formattedResponse),
                 [
-                    'request' => $request,
-                    'response' => $response,
                     'milliseconds' => $milliseconds,
+                    'uid' => $uid,
                 ]
             );
 
             return $response;
-        }, function (Exception $exception) use ($request, $start) {
+        }, function (Exception $exception) use ($request, $start, $uid) {
             $milliseconds = (int) round((hrtime(true) / 1E6 - $start));
             if ($exception instanceof Exception\HttpException) {
+                $formattedResponse = method_exists($this->formatter, 'formatResponseForRequest')
+                    ? $this->formatter->formatResponseForRequest($exception->getResponse(), $exception->getRequest())
+                    : $this->formatter->formatResponse($exception->getResponse());
                 $this->logger->error(
-                    sprintf("Error:\n%s\nwith response:\n%s\n\nwhen sending request:\n%s", $exception->getMessage(), $this->formatter->formatResponse($exception->getResponse()), $this->formatter->formatRequest($request)),
+                    sprintf("Error:\n%s\nwith response:\n%s", $exception->getMessage(), $formattedResponse),
                     [
-                        'request' => $request,
-                        'response' => $exception->getResponse(),
                         'exception' => $exception,
                         'milliseconds' => $milliseconds,
+                        'uid' => $uid,
                     ]
                 );
             } else {
                 $this->logger->error(
                     sprintf("Error:\n%s\nwhen sending request:\n%s", $exception->getMessage(), $this->formatter->formatRequest($request)),
                     [
-                        'request' => $request,
                         'exception' => $exception,
                         'milliseconds' => $milliseconds,
+                        'uid' => $uid,
                     ]
                 );
             }

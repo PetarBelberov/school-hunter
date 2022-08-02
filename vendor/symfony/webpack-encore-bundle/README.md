@@ -55,6 +55,9 @@ webpack_encore:
     # cache: true
 ```
 
+If you're not using Flex, [enable the bundle manually](https://symfony.com/doc/current/bundles.html)
+and copy the config file from above into your project.
+
 ## Usage
 
 The "Split Chunks" functionality in Webpack Encore is enabled by default
@@ -67,7 +70,6 @@ enable it manually:
     .setOutputPath('public/build/')
     .setPublicPath('/build')
     .setManifestKeyPrefix('build/')
-
     .addEntry('entry1', './assets/some_file.js')
 
 +   .splitEntryChunks()
@@ -202,7 +204,7 @@ class ScriptNonceSubscriber implements EventSubscriberInterface
 ### stimulus_controller
 
 This bundle also ships with a special `stimulus_controller()` Twig function
-that can be used to render [Stimulus Controllers & Values](https://stimulus.hotwire.dev/reference/values).
+that can be used to render [Stimulus Controllers & Values](https://stimulus.hotwired.dev/reference/values).
 See [stimulus-bridge](https://github.com/symfony/stimulus-bridge) for more details.
 
 For example:
@@ -226,21 +228,23 @@ Any non-scalar values (like `data: [1, 2, 3, 4]`) are JSON-encoded. And all
 values are properly escaped (the string `&#x5B;` is an escaped
 `[` character, so the attribute is really `[1,2,3,4]`).
 
-If you have multiple controllers on the same element, pass them all as an
-associative array in the first argument:
+If you have multiple controllers on the same element, you can chain them as there's also a `stimulus_controller` filter:
 
 ```twig
-<div {{ stimulus_controller({
-    'chart': { 'name': 'Likes' },
-    'other-controller': { },
-) }}>
+<div {{ stimulus_controller('chart', { 'name': 'Likes' })|stimulus_controller('other-controller') }}>
     Hello
 </div>
 ```
 
+You can also retrieve the generated attributes as an array, which can be helpful e.g. for forms:
+
+```twig
+{{ form_start(form, { attr: stimulus_controller('chart', { 'name': 'Likes' }).toArray() }) }}
+```
+
 ### stimulus_action
 
-The `stimulus_action()` Twig function can be used to render [Stimulus Actions](https://stimulus.hotwire.dev/reference/actions).
+The `stimulus_action()` Twig function can be used to render [Stimulus Actions](https://stimulus.hotwired.dev/reference/actions).
 
 For example:
 
@@ -253,26 +257,38 @@ For example:
 <div data-action="click->controller#method">Hello</div>
 ```
 
-If you have multiple actions and/or methods on the same element, pass them all as an
-associative array in the first argument:
+If you have multiple actions and/or methods on the same element, you can chain them as there's also a
+`stimulus_action` filter:
 
 ```twig
-<div {{ stimulus_action({
- 'controller': 'method',
- 'other-controller': ['method', {'window@resize': 'onWindowResize'}]
-}) }}>
+<div {{ stimulus_action('controller', 'method')|stimulus_action('other-controller', 'test') }}>
     Hello
 </div>
 
 <!-- would render -->
-<div data-action="controller#method other-controller#method window@resize->other-controller#onWindowResize">
+<div data-action="controller#method other-controller#test">
     Hello
 </div>
 ```
 
+You can also retrieve the generated attributes as an array, which can be helpful e.g. for forms:
+
+```twig
+{{ form_row(form.password, { attr: stimulus_action('hello-controller', 'checkPasswordStrength').toArray() }) }}
+```
+
+You can also pass [parameters](https://stimulus.hotwired.dev/reference/actions#action-parameters) to actions:
+
+```twig
+<div {{ stimulus_action('hello-controller', 'method', 'click', { 'count': 3 }) }}>Hello</div>
+
+<!-- would render -->
+<div data-action="click->hello-controller#method" data-hello-controller-count-param="3">Hello</div>
+```
+
 ### stimulus_target
 
-The `stimulus_target()` Twig function can be used to render [Stimulus Targets](https://stimulus.hotwire.dev/reference/targets).
+The `stimulus_target()` Twig function can be used to render [Stimulus Targets](https://stimulus.hotwired.dev/reference/targets).
 
 For example:
 
@@ -285,14 +301,10 @@ For example:
 <div data-controller-target="a-target second-target">Hello</div>
 ```
 
-If you have multiple targets on the same element, pass them all as an
-associative array in the first argument:
+If you have multiple targets on the same element, you can chain them as there's also a `stimulus_target` filter:
 
 ```twig
-<div {{ stimulus_target({
- 'controller': 'a-target',
- 'other-controller': 'another-target'
-}) }}>
+<div {{ stimulus_target('controller', 'a-target')|stimulus_target('other-controller', 'another-target') }}>
     Hello
 </div>
 
@@ -300,6 +312,12 @@ associative array in the first argument:
 <div data-controller-target="a-target" data-other-controller-target="another-target">
     Hello
 </div>
+```
+
+You can also retrieve the generated attributes as an array, which can be helpful e.g. for forms:
+
+```twig
+{{ form_row(form.password, { attr: stimulus_target('hello-controller', 'a-target').toArray() }) }}
 ```
 
 Ok, have fun!

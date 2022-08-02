@@ -15,16 +15,18 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 class Alias
 {
-    private const DEFAULT_DEPRECATION_TEMPLATE = 'The "%alias_id%" service alias is deprecated. You should stop using it, as it will be removed in the future.';
-
     private $id;
     private $public;
+    private $private;
     private $deprecation = [];
 
-    public function __construct(string $id, bool $public = false)
+    private static $defaultDeprecationTemplate = 'The "%alias_id%" service alias is deprecated. You should stop using it, as it will be removed in the future.';
+
+    public function __construct(string $id, bool $public = true)
     {
         $this->id = $id;
         $this->public = $public;
+        $this->private = 2 > \func_num_args();
     }
 
     /**
@@ -45,6 +47,7 @@ class Alias
     public function setPublic(bool $boolean)
     {
         $this->public = $boolean;
+        $this->private = false;
 
         return $this;
     }
@@ -52,15 +55,18 @@ class Alias
     /**
      * Sets if this Alias is private.
      *
-     * @return $this
+     * When set, the "private" state has a higher precedence than "public".
+     * In version 3.4, a "private" alias always remains publicly accessible,
+     * but triggers a deprecation notice when accessed from the container,
+     * so that the alias can be made really private in 4.0.
      *
-     * @deprecated since Symfony 5.2, use setPublic() instead
+     * @return $this
      */
     public function setPrivate(bool $boolean)
     {
-        trigger_deprecation('symfony/dependency-injection', '5.2', 'The "%s()" method is deprecated, use "setPublic()" instead.', __METHOD__);
+        $this->private = $boolean;
 
-        return $this->setPublic(!$boolean);
+        return $this;
     }
 
     /**
@@ -70,7 +76,7 @@ class Alias
      */
     public function isPrivate()
     {
-        return !$this->public;
+        return $this->private;
     }
 
     /**
@@ -112,12 +118,12 @@ class Alias
                 throw new InvalidArgumentException('Invalid characters found in deprecation template.');
             }
 
-            if (!str_contains($message, '%alias_id%')) {
+            if (false === strpos($message, '%alias_id%')) {
                 throw new InvalidArgumentException('The deprecation template must contain the "%alias_id%" placeholder.');
             }
         }
 
-        $this->deprecation = $status ? ['package' => $package, 'version' => $version, 'message' => $message ?: self::DEFAULT_DEPRECATION_TEMPLATE] : [];
+        $this->deprecation = $status ? ['package' => $package, 'version' => $version, 'message' => $message ?: self::$defaultDeprecationTemplate] : [];
 
         return $this;
     }

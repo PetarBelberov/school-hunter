@@ -12,20 +12,25 @@
     ],
     "require": {
         "php": "^7.3 || ^8.0",
-        "symfony/stopwatch": "^3.4 || ^4.0 || ^5.0",
+        "symfony/stopwatch": "^3.4 || ^4.0 || ^5.0 || ^6.0",
         "php-http/client-common": "^1.9 || ^2.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "^7.0"
+        "symfony/phpunit-bridge": "^5.3",
+        "guzzlehttp/psr7": "^2.1"
     },
     "autoload": {
         "psr-4": {
             "Http\\Client\\Common\\Plugin\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Http\\Client\\Common\\Plugin\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
-        "test": "vendor/bin/phpspec run",
-        "test-ci": "vendor/bin/phpspec run -c phpspec.yml.ci"
+        "test": "vendor/bin/simple-phpunit"
     },
     "extra": {
         "branch-alias": {

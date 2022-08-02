@@ -413,7 +413,6 @@ class Theme {
             'doctrine': '#ff6633',
             'messenger_middleware': '#bdb81e',
             'controller.argument_value_resolver': '#8c5de6',
-            'http_client': '#ffa333',
         };
 
         this.customCategoryColors = [

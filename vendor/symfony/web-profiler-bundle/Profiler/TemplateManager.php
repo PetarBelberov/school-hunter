@@ -78,7 +78,7 @@ class TemplateManager
                 continue;
             }
 
-            if (str_ends_with($template, '.html.twig')) {
+            if ('.html.twig' === substr($template, -10)) {
                 $template = substr($template, 0, -10);
             }
 

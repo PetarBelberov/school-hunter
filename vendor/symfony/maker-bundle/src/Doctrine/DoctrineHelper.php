@@ -161,7 +161,6 @@ final class DoctrineHelper
         if ($this->isDoctrineInstalled()) {
             $allMetadata = $this->getMetadata();
 
-            /* @var ClassMetadata $metadata */
             foreach (array_keys($allMetadata) as $classname) {
                 $entityClassDetails = new ClassNameDetails($classname, $this->entityNamespace);
                 $entities[] = $entityClassDetails->getRelativeName();
@@ -311,7 +310,7 @@ final class DoctrineHelper
         $lowestCharacterDiff = null;
         $foundDriver = null;
 
-        foreach ($this->mappingDriversByPrefix as $key => $mappings) {
+        foreach ($this->mappingDriversByPrefix ?? [] as $mappings) {
             foreach ($mappings as [$prefix, $driver]) {
                 $diff = substr_compare($namespace, $prefix, 0);
 
