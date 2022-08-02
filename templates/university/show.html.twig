@@ -164,10 +164,10 @@
             <ul class="min-list">
             
               <div class="accordion-container" class="container mx-auto bg-white border-grey-light border mt-20">
-               {{ dump(degrees) }}  
-                {% for key, major in majors %} 
-                  {{ dump(major.name) }}  
-                {% endfor %} 
+{#               {{ dump(majors) }}#}
+                {% for key, major in majors %}
+                  {{ dump(major.university) }}
+                {% endfor %}
                 {# {% for key, major in majors %} #}
                   <div class="accordion-container">
                     {# accordion #}
