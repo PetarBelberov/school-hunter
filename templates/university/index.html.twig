@@ -7,5 +7,12 @@
 {% block header_class %} site-header site-header--fluid bg-primary {% endblock %}
 
 {% block body %}
-  <p>List all universities</p>
+    <p>List all universities</p>
+    {% set id = 0 %}
+    {% for key, university in universities %}
+        {% set id = id + 1 %}
+        <span>{{ id ~ '.' }}</span>
+        <span>{{  (university['title']) }}</span>
+        <br>
+    {% endfor %}
 {% endblock %}

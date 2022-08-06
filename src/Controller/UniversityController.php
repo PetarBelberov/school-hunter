@@ -49,9 +49,95 @@ class UniversityController extends AbstractController
      */
     public function index()
     {
+
         return $this->render('university/index.html.twig', [
             'controller_name' => 'UniversityController',
+            'universities' => $this->fetchUniversities(),
         ]);
+    }
+
+    public function fetchUniversities() {
+
+        // Caching the request and the response
+        $store = new Store('src/Controller');
+        $this->client = HttpClient::create();
+        $this->client = new CachingHttpClient($this->client, $store);
+
+        $university = array();
+        $universities = array();
+
+        $universitiesResponse = $this->client->request(
+            'GET',
+            'https://rsvu.mon.bg/rsvu4/rest/universities/bg?v=1659787975114'
+        );
+
+        if (isset($universitiesResponse)) {
+            $content['universities'] = $universitiesResponse->getContent();
+            $content['universities'] = $universitiesResponse->toArray();
+
+            // Fetch by the domain name from the website with Regex.
+            $regex = '/(?:https?:\/\/)?(?:www\.)?(.*)\.(?=[\w.]{2,4})/';
+
+            foreach ($content['universities'] as $universityArr) {
+                if ($universityArr['uniParentId'] == null && $universityArr['uniCode'] != '9999') {
+
+                    $university['title'] = $universityArr['name'];
+                    $university['address'] = $universityArr['city'] . ', ' . $universityArr['poAddress'];
+                    $university['phone'] = $universityArr['telephone'];
+                    $university['email'] = $universityArr['email'];
+                    $university['website'] = $universityArr['webAddress'];
+
+                    preg_match_all($regex, $university['website'], $slugArr, PREG_SET_ORDER, 0);
+
+                    foreach ($slugArr as $slug) {
+                        $university['slug'] = $slug[1];
+                    }
+
+                    array_push($universities, $university);
+                }
+            }
+        }
+        $this->createUniversities($universities);
+        return $universities;
+    }
+
+    public function createUniversities($universities) {
+        $entityManager = $this->getDoctrine()->getManager();
+        foreach ($universities as $university) {
+
+            // checks if the record exist
+            $checkUniversity = $entityManager->getRepository(University::class)->findBy( ['slug' => $university['slug']],);
+
+            if (empty($checkUniversity)) {
+                $universityEntity = new University();
+                $universityEntity->setTitle($university['title']);
+                $universityEntity->setSlug($university['slug']);
+                $universityEntity->setDescription($university['title']);
+                $universityEntity->setAddres($university['address']);
+                $universityEntity->setPhone($university['phone']);
+                $universityEntity->setEmail($university['email']);
+                $universityEntity->setWebsite($university['website']);
+
+                $entityManager->remove($universityEntity);
+                $entityManager->persist($universityEntity);
+            }
+        }
+        $entityManager->flush();
+    }
+
+    private function getUniversitiesData(): array
+    {
+        $universities = $this->fetchUniversities();
+        $universitiesArr = array();
+        foreach ($universities as $university) {
+            foreach ($university as $uni) {
+                array_push($universitiesArr, $uni['title']);
+            }
+        }
+
+        return [
+            $universitiesArr
+        ];
     }
 
     public function fetchMajors() {
