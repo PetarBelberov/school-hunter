@@ -12,7 +12,7 @@
     {% for key, university in universities %}
         {% set id = id + 1 %}
         <span>{{ id ~ '.' }}</span>
-        <span>{{  (university['title']) }}</span>
+        <span>{{  (university.title) }}</span>
         <br>
     {% endfor %}
 {% endblock %}
