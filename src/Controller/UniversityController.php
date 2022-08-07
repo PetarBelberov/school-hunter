@@ -22,6 +22,7 @@ use Exception;
 use SessionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpCache\Store;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\CachingHttpClient;
 use Symfony\Component\HttpClient\HttpClient;
@@ -64,14 +65,32 @@ class UniversityController extends AbstractController
         $this->client = new CachingHttpClient($this->client, $store);
 
         $university = array();
-        $universities = array();
 
-        $universitiesResponse = $this->client->request(
-            'GET',
-            'https://rsvu.mon.bg/rsvu4/rest/universities/bg?v=1659787975114'
-        );
+        // Handle network errors and outdated or wrong API
+        try {
+            // Fetch the universities API and getting the data
+            $universitiesResponse = $this->client->request(
+                'GET',
+                'https://rsvu.mon.bg/rsvu4/rest/universities/bg?v=1659787975114'
+            );
+        // Handle the exception and get the data from the DB
+        } catch (TransportExceptionInterface $e) {
+            $universities = array();
+            $fetchUniversities = $this->getDoctrine()->getManager()
+                ->getRepository(University::class)
+                ->findAll();
+
+            foreach ($fetchUniversities as $university) {
+                array_push($universities, $university);
+            }
+            return $universities;
+        }
+
+
 
         if (isset($universitiesResponse)) {
+            $universities = array();
+
             $content['universities'] = $universitiesResponse->getContent();
             $content['universities'] = $universitiesResponse->toArray();
 
@@ -92,7 +111,6 @@ class UniversityController extends AbstractController
                     foreach ($slugArr as $slug) {
                         $university['slug'] = $slug[1];
                     }
-
                     array_push($universities, $university);
                 }
             }
