@@ -64,8 +64,6 @@ class UniversityController extends AbstractController
         $this->client = HttpClient::create();
         $this->client = new CachingHttpClient($this->client, $store);
 
-        $university = array();
-
         // Handle network errors and outdated or wrong API
         try {
             // Fetch the universities API and getting the data
@@ -73,6 +71,7 @@ class UniversityController extends AbstractController
                 'GET',
                 'https://rsvu.mon.bg/rsvu4/rest/universities/bg?v=1659787975114'
             );
+
         // Handle the exception and get the data from the DB
         } catch (TransportExceptionInterface $e) {
             $universities = array();
@@ -86,9 +85,7 @@ class UniversityController extends AbstractController
             return $universities;
         }
 
-
-
-        if (isset($universitiesResponse)) {
+        if (!empty($universitiesResponse)) {
             $universities = array();
 
             $content['universities'] = $universitiesResponse->getContent();
@@ -109,13 +106,14 @@ class UniversityController extends AbstractController
                     preg_match_all($regex, $university['website'], $slugArr, PREG_SET_ORDER, 0);
 
                     foreach ($slugArr as $slug) {
-                        $university['slug'] = $slug[1];
+                        $university['slug'] = strtolower($slug[1]);
+
                     }
                     array_push($universities, $university);
                 }
             }
         }
-        $this->createUniversities($universities);
+//        $this->createUniversities($universities);
         return $universities;
     }
 
@@ -158,18 +156,85 @@ class UniversityController extends AbstractController
         ];
     }
 
-    public function fetchMajors() {
-        $response_majors = $this->client->request(
-            'GET',
-            'https://rsvu.mon.bg/rsvu4/rest/major/bg?v=1636023237666'
-        );
+    public function fetchMajors($api, $university) {
+        // Caching the request and the response
+        $store = new Store('src/Controller');
+        $this->client = HttpClient::create();
+        $this->client = new CachingHttpClient($this->client, $store);
+//        $majors = array();
 
-        if (isset($response_majors)) {
-            $content['majors'] = $response_majors->getContent();
-            $content['majors'] = $response_majors->toArray();
+        // Handle network errors and outdated or wrong API
+        try {
+            // Fetch the universities API and getting the data
+            $majorsResponse = $this->client->request(
+                'GET',
+                $api
+            );
+
+            // Handle the exception and get the data from the DB
+        } catch (TransportExceptionInterface $e) {
+            $majors = array();
+
+            $fetchMajors = $this->getDoctrine()->getManager()
+                ->getRepository(UniversityMajor::class)
+                ->findBy(['university' => $university]);
+
+            foreach ($fetchMajors as $major) {
+                array_push($majors, $major->getMajor());
+            }
+            return $majors;
         }
 
-        return $content;
+        if (!empty($majorsResponse)) {
+            $majors = array();
+
+
+            $content['majors'] = $majorsResponse->getContent();
+            $content['majors'] = $majorsResponse->toArray();
+
+            foreach ($content['majors'] as $majorArr) {
+                if (!empty($majorArr['name'])) {
+                    $major['name'] = $majorArr['name'];
+                    array_push($majors, $major);
+                }
+            }
+        }
+
+//        $this->createMajors($majors);
+        return $majors;
+    }
+
+    public function createMajors($majors) {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        foreach ($majors as $major) {
+            foreach ($major as $name) {
+
+                // checks if the record exist
+                $checkMajor = $entityManager->getRepository(Major::class)->findBy( ['name' => $name],);
+                if (!$checkMajor) {
+                    $major = new Major();
+                    $major->setName($name);
+                    $entityManager->persist($major);
+                }
+            }
+        }
+        $entityManager->flush();
+    }
+
+    private function getMajorsData(): array
+    {
+        $majors = $this->fetchMajors();
+        $majors_arr = array();
+        foreach ($majors as $major) {
+            foreach ($major as $m) {
+                array_push($majors_arr, $m['name']);
+            }
+        }
+
+        return [
+            $majors_arr
+        ];
     }
 
     public function fetchDegrees()
@@ -267,37 +332,6 @@ class UniversityController extends AbstractController
         return $content;
     }
 
-    public function createMajors() {
-        $entityManager = $this->getDoctrine()->getManager();
-        
-        foreach ($this->getMajorsData() as $majors) {
-            foreach ($majors as $name) {
-                 // checks if the record exist
-                $checkMajor = $entityManager->getRepository(Major::class)->findBy( ['name' => $name],);
-                if (!$checkMajor) {
-                    $major = new Major();
-                    $major->setName($name);
-                    $entityManager->persist($major);
-                }
-            } 
-        }
-        $entityManager->flush();
-    }
-
-    private function getMajorsData(): array
-    {
-        $majors = $this->fetchMajors();
-        $majors_arr = array();
-        foreach ($majors as $major) {
-            foreach ($major as $m) {
-                array_push($majors_arr, $m['name']);                
-            }
-        }
-        
-        return [
-             $majors_arr
-        ];
-    }
 
     public function createDegrees() {
         $entityManager = $this->getDoctrine()->getManager();
@@ -340,14 +374,8 @@ class UniversityController extends AbstractController
      */
     public function show(University $university): Response
     {
+        if($university->getSlug() == 'unwe') $majors = $this->fetchMajors('https://rsvu.mon.bg/rsvu4/rest/major/98/bg?v=1660247307955', $university);
 
-        // $majors = array();
-        
-            // ->findBy([]);
-
-        $universityMajor = $this->getDoctrine()->getManager()
-            ->getRepository(UniversityMajor::class)
-            ->findBy(['university' => $university]);
 
         $bachelors = $this->getDoctrine()
             ->getRepository(Degrees::class)
@@ -368,43 +396,16 @@ class UniversityController extends AbstractController
             ->getRepository(Rating::class)
             ->findBy(['university' => $university]);
 
-        
-        $majors = $universityMajor;
-        
-        // var_dump($majors->getName());
-        // die();
-        // $degrees = $majors->getDegree();
-        
-
-            // foreach($doctors as $doctor) {
-            //     $majors = $this->getDoctrine()
-            //         ->getRepository(Degrees::class)
-            //         ->findBy(['degrees' => $doctor->getDegrees()]);
-
-            //     var_dump( $majors);
-            //     // $degrees = $doctor->getMajors();
-            // }
-        
-            
-            
-           
-
-        // $counter = 0;
-        // foreach ($university_majors as $university_major) {
-        //     array_push($majors, array($counter => $university_major->getMajor()->getName(), $university_major->getRSVURanking()));
-        //     $counter++;
-        // }
-        $this->createDegrees();
-        $this->createMajors();
+//        $this->createDegrees();
+//        $this->createMajors();
 
         return $this->render('university/show.html.twig',
             array(
                 'university' => $university,
                 'majors' => $majors,
-                // 'majors_api' => $this->fetchMajors(),
                 'sum_ratings' => $this->sumRatings($university),
                 'ratings' => $ratings,
-                // 'degrees' => $degrees->getDegrees(),
+                 'degrees' => $this->getDegreeData(),
                 'bachelors' => $bachelors,
                 'masters' => $masters,
                 'doctors' => $doctors
