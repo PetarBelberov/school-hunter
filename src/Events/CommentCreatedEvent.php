@@ -12,7 +12,6 @@
 namespace App\Events;
 
 use App\Entity\Rating;
-use App\Entity\Comment;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class CommentCreatedEvent extends Event

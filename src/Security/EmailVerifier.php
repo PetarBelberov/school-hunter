@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +37,6 @@ class EmailVerifier
         $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
         $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
         $context['expiresAt'] = $signatureComponents->getExpiresAt();
-
 
         $email->context($context);
 

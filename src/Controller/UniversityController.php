@@ -2,42 +2,35 @@
 
 namespace App\Controller;
 
-use App\Entity\Rating;
 use App\Entity\Comment;
 use App\Entity\Degrees;
+use App\Entity\Major;
+use App\Entity\Rating;
+use App\Entity\University;
+use App\Entity\UniversityMajor;
 use App\Events\CommentCreatedEvent;
 use App\Form\CommentType;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\University;
-use App\Entity\Major;
-use App\Entity\UniversityMajor;
-use App\Entity\User;
-use Doctrine\ORM\Mapping\Id;
 use Exception;
-use SessionHandler;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpCache\Store;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Psr\Cache\CacheItemInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpClient\CachingHttpClient;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
-use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpCache\Store;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
-    * @Route("/universities", name="university_")
-    */
+ * @Route("/universities", name="university_")
+ */
 class UniversityController extends AbstractController
 {
-
     private $client;
 
     public function __construct(HttpClientInterface $client)
@@ -48,22 +41,21 @@ class UniversityController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(HttpClientInterface $httpClient, CacheInterface $cache,): Response
     {
-
+        //  Use Cache Contracts for the response
+        $cacheUniversities = $cache->get('universities', function(CacheItemInterface $cacheItem) use ($httpClient) {
+            $cacheItem->expiresAfter(3060);
+            return $this->fetchUniversities();
+        });
         return $this->render('university/index.html.twig', [
             'controller_name' => 'UniversityController',
-            'universities' => $this->fetchUniversities(),
+            'universities' => $cacheUniversities,
         ]);
     }
 
-    public function fetchUniversities() {
-
-        // Caching the request and the response
-        $store = new Store('src/Controller');
-        $this->client = HttpClient::create();
-        $this->client = new CachingHttpClient($this->client, $store);
-
+    public function fetchUniversities()
+    {
         // Handle network errors and outdated or wrong API
         try {
             // Fetch the universities API and getting the data
@@ -72,9 +64,9 @@ class UniversityController extends AbstractController
                 'https://rsvu.mon.bg/rsvu4/rest/universities/bg?v=1659787975114'
             );
 
-        // Handle the exception and get the data from the DB
+            // Handle the exception and get the data from the DB
         } catch (TransportExceptionInterface $e) {
-            $universities = array();
+            $universities = [];
             $fetchUniversities = $this->getDoctrine()->getManager()
                 ->getRepository(University::class)
                 ->findAll();
@@ -82,11 +74,12 @@ class UniversityController extends AbstractController
             foreach ($fetchUniversities as $university) {
                 array_push($universities, $university);
             }
+
             return $universities;
         }
 
         if (!empty($universitiesResponse)) {
-            $universities = array();
+            $universities = [];
 
             $content['universities'] = $universitiesResponse->getContent();
             $content['universities'] = $universitiesResponse->toArray();
@@ -96,9 +89,8 @@ class UniversityController extends AbstractController
 
             foreach ($content['universities'] as $universityArr) {
                 if ($universityArr['uniParentId'] == null && $universityArr['uniCode'] != '9999') {
-
                     $university['title'] = $universityArr['name'];
-                    $university['address'] = $universityArr['city'] . ', ' . $universityArr['poAddress'];
+                    $university['address'] = $universityArr['city'].', '.$universityArr['poAddress'];
                     $university['phone'] = $universityArr['telephone'];
                     $university['email'] = $universityArr['email'];
                     $university['website'] = $universityArr['webAddress'];
@@ -107,7 +99,6 @@ class UniversityController extends AbstractController
 
                     foreach ($slugArr as $slug) {
                         $university['slug'] = strtolower($slug[1]);
-
                     }
                     array_push($universities, $university);
                 }
@@ -117,12 +108,12 @@ class UniversityController extends AbstractController
         return $universities;
     }
 
-    public function createUniversities($universities) {
+    public function createUniversities($universities)
+    {
         $entityManager = $this->getDoctrine()->getManager();
         foreach ($universities as $university) {
-
             // checks if the record exist
-            $checkUniversity = $entityManager->getRepository(University::class)->findBy( ['slug' => $university['slug']],);
+            $checkUniversity = $entityManager->getRepository(University::class)->findBy(['slug' => $university['slug']]);
 
             if (empty($checkUniversity)) {
                 $universityEntity = new University();
@@ -144,7 +135,7 @@ class UniversityController extends AbstractController
     private function getUniversitiesData(): array
     {
         $universities = $this->fetchUniversities();
-        $universitiesArr = array();
+        $universitiesArr = [];
         foreach ($universities as $university) {
             foreach ($university as $uni) {
                 array_push($universitiesArr, $uni['title']);
@@ -152,17 +143,12 @@ class UniversityController extends AbstractController
         }
 
         return [
-            $universitiesArr
+            $universitiesArr,
         ];
     }
 
-    public function fetchMajors($api, $university) {
-        // Caching the request and the response
-        $store = new Store('src/Controller');
-        $this->client = HttpClient::create();
-        $this->client = new CachingHttpClient($this->client, $store);
-//        $majors = array();
-
+    public function fetchMajors($api, $university)
+    {
         // Handle network errors and outdated or wrong API
         try {
             // Fetch the universities API and getting the data
@@ -173,7 +159,7 @@ class UniversityController extends AbstractController
 
             // Handle the exception and get the data from the DB
         } catch (TransportExceptionInterface $e) {
-            $majors = array();
+            $majors = [];
 
             $fetchMajors = $this->getDoctrine()->getManager()
                 ->getRepository(UniversityMajor::class)
@@ -182,12 +168,12 @@ class UniversityController extends AbstractController
             foreach ($fetchMajors as $major) {
                 array_push($majors, $major->getMajor());
             }
+
             return $majors;
         }
 
         if (!empty($majorsResponse)) {
-            $majors = array();
-
+            $majors = [];
 
             $content['majors'] = $majorsResponse->getContent();
             $content['majors'] = $majorsResponse->toArray();
@@ -204,14 +190,14 @@ class UniversityController extends AbstractController
         return $majors;
     }
 
-    public function createMajors($majors) {
+    public function createMajors($majors)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         foreach ($majors as $major) {
             foreach ($major as $name) {
-
                 // checks if the record exist
-                $checkMajor = $entityManager->getRepository(Major::class)->findBy( ['name' => $name],);
+                $checkMajor = $entityManager->getRepository(Major::class)->findBy(['name' => $name]);
                 if (!$checkMajor) {
                     $major = new Major();
                     $major->setName($name);
@@ -225,7 +211,7 @@ class UniversityController extends AbstractController
     private function getMajorsData(): array
     {
         $majors = $this->fetchMajors();
-        $majors_arr = array();
+        $majors_arr = [];
         foreach ($majors as $major) {
             foreach ($major as $m) {
                 array_push($majors_arr, $m['name']);
@@ -233,7 +219,7 @@ class UniversityController extends AbstractController
         }
 
         return [
-            $majors_arr
+            $majors_arr,
         ];
     }
 
@@ -248,7 +234,7 @@ class UniversityController extends AbstractController
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/6/bg?v=1631382508381'
         );
-        
+
         $response_2592_bachelors = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/6/bg?v=1631382508381'
@@ -272,12 +258,12 @@ class UniversityController extends AbstractController
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2531/7/bg?v=1631382508381'
         );
 
-         // PhD
-         $response_2588_phd = $this->client->request(
+        // PhD
+        $response_2588_phd = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2588/8/bg?v=1631382508381'
         );
-         $response_2592_phd = $this->client->request(
+        $response_2592_phd = $this->client->request(
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2592/8/bg?v=1631382508381'
         );
@@ -285,8 +271,7 @@ class UniversityController extends AbstractController
             'GET',
             'https://rsvu.mon.bg/rsvu4/rest/universities/minors/107/2531/8/bg?v=1631382508381'
         );
-        
-        
+
         // Administration and Management
         if (isset($response_2588_bachelors)) {
             $content['2588_bachelors'] = $response_2588_bachelors->getContent();
@@ -315,8 +300,8 @@ class UniversityController extends AbstractController
             $content['2592_phd'] = $response_2592_phd->toArray();
         }
 
-         // Economics
-         if (isset($response_2531_bachelors)) {
+        // Economics
+        if (isset($response_2531_bachelors)) {
             $content['2531_bachelors'] = $response_2531_bachelors->getContent();
             $content['2531_bachelors'] = $response_2531_bachelors->toArray();
         }
@@ -328,17 +313,17 @@ class UniversityController extends AbstractController
             $content['2531_phd'] = $response_2531_phd->getContent();
             $content['2531_phd'] = $response_2531_phd->toArray();
         }
-        
+
         return $content;
     }
 
-
-    public function createDegrees() {
+    public function createDegrees()
+    {
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         foreach ($this->getDegreeData() as [$name]) {
             // checks if the record exist
-            $checkDegree = $entityManager->getRepository(Degrees::class)->findBy( ['name' => $name],);
+            $checkDegree = $entityManager->getRepository(Degrees::class)->findBy(['name' => $name]);
             if (!$checkDegree) {
                 $degree = new Degrees();
                 $degree->setName($name);
@@ -353,11 +338,12 @@ class UniversityController extends AbstractController
         return [
                 ['бакалавър'],
                 ['магистър'],
-                ['доктор']
+                ['доктор'],
         ];
     }
 
-    public function checkMajors($major_name, $ranking) {
+    public function checkMajors($major_name, $ranking)
+    {
         $major = $this->em
             ->getRepository(Major::class)
             ->findBy(['name' => $major_name]);
@@ -368,14 +354,19 @@ class UniversityController extends AbstractController
 
         return $uni_majors;
     }
-    
+
     /**
      * @Route("/{slug}", name="show")
      */
-    public function show(University $university): Response
+    public function show(University $university, HttpClientInterface $httpClient, CacheInterface $cache): Response
     {
-        if($university->getSlug() == 'unwe') $majors = $this->fetchMajors('https://rsvu.mon.bg/rsvu4/rest/major/98/bg?v=1660247307955', $university);
-
+        if ($university->getSlug() == 'unwe') {
+            //  Use Cache Contracts for the response
+            $cacheMajors = $cache->get('majors', function(CacheItemInterface $cacheItem,) use ($httpClient, $university) {
+                $cacheItem->expiresAfter(5);
+                return $this->fetchMajors('https://rsvu.mon.bg/rsvu4/rest/major/98/bg?v=1660247307955', $university);
+            });
+        }
 
         $bachelors = $this->getDoctrine()
             ->getRepository(Degrees::class)
@@ -391,7 +382,7 @@ class UniversityController extends AbstractController
             ->getRepository(Degrees::class)
             // ->findBy(['majors' => $majors]);
             ->findBy(['name' => 'доктор']);
-            
+
         $ratings = $this->getDoctrine()
             ->getRepository(Rating::class)
             ->findBy(['university' => $university]);
@@ -400,16 +391,16 @@ class UniversityController extends AbstractController
 //        $this->createMajors();
 
         return $this->render('university/show.html.twig',
-            array(
+            [
                 'university' => $university,
-                'majors' => $majors,
+                'majors' => $cacheMajors,
                 'sum_ratings' => $this->sumRatings($university),
                 'ratings' => $ratings,
                  'degrees' => $this->getDegreeData(),
                 'bachelors' => $bachelors,
                 'masters' => $masters,
-                'doctors' => $doctors
-            )
+                'doctors' => $doctors,
+            ]
         );
     }
 
@@ -420,17 +411,17 @@ class UniversityController extends AbstractController
             ->getRepository(Rating::class)
             ->findBy(['university' => $university]);
 
-        $sum_rating['campus'] = array();
-        $sum_rating['academics'] = array();
-        $sum_rating['location'] = array();
-        $sum_rating['teachingQuality'] = array();
-        $sum_rating['jobProspects'] = array();
-        $sum_rating['professors'] = array();
-        $sum_rating['athletics'] = array();
-        $sum_rating['food'] = array();
-        $sum_rating['dorms'] = array();
-        $sum_rating['overall_rating'] = array();
-        $sum_rating['overall_reviews'] = array();
+        $sum_rating['campus'] = [];
+        $sum_rating['academics'] = [];
+        $sum_rating['location'] = [];
+        $sum_rating['teachingQuality'] = [];
+        $sum_rating['jobProspects'] = [];
+        $sum_rating['professors'] = [];
+        $sum_rating['athletics'] = [];
+        $sum_rating['food'] = [];
+        $sum_rating['dorms'] = [];
+        $sum_rating['overall_rating'] = [];
+        $sum_rating['overall_reviews'] = [];
 
         $sum_campus_rating = 0;
         $sum_academics_rating = 0;
@@ -443,8 +434,7 @@ class UniversityController extends AbstractController
         $sum_dorms_rating = 0;
         $sum_overall_rating = 0;
 
-        foreach ($ratings as $rating)
-        {
+        foreach ($ratings as $rating) {
             $sum_campus_rating = ($sum_campus_rating + $rating->getCampus());
             $sum_academics_rating = ($sum_academics_rating + $rating->getAcademics());
             $sum_location_rating = ($sum_academics_rating + $rating->getLocation());
@@ -486,14 +476,13 @@ class UniversityController extends AbstractController
      * @Route("/comment/{universitySlug}/new", methods="POST", name="comment_new")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @ParamConverter("university", options={"mapping": {"universitySlug": "slug"}})
-     *
      */
     public function commentNew(Request $request, University $university, EventDispatcherInterface $eventDispatcher): Response
     {
         $rating = new Rating();
         $rating->setUser($this->getUser());
         $university->addRating($rating);
-       
+
         $is_exist = $this->getDoctrine()
         ->getRepository(Rating::class)
         ->findOneBy(['university' => $university]);
@@ -502,10 +491,10 @@ class UniversityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if(!isset($is_exist)) {
+            if (!isset($is_exist)) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($rating);
-                $em->flush();    
+                $em->flush();
 
                 $eventDispatcher->dispatch(new CommentCreatedEvent($rating));
 
@@ -522,9 +511,10 @@ class UniversityController extends AbstractController
     /**
      * @Route("/{slug}/add_review", name="add_review")
      */
-    public function addReview(University $university) {
+    public function addReview(University $university): Response
+    {
         $form = $this->createForm(CommentType::class);
-        
+
         return $this->render('university/_comment_form.html.twig', [
             'university' => $university,
             'form' => $form->createView(),

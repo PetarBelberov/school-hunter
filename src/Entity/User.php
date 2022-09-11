@@ -98,7 +98,6 @@ class User implements UserInterface
         $this->rating = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;

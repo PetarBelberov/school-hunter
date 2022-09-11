@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DataFixtures;
 
 use App\Entity\Rating;
@@ -13,6 +14,7 @@ class UserRatingFixtures extends Fixture
     {
         $this->em = $em;
     }
+
     public function load(ObjectManager $manager)
     {
         $this->loadJohny1($manager);
@@ -21,15 +23,15 @@ class UserRatingFixtures extends Fixture
         $this->loadUser2($manager);
     }
 
-    private function loadJohny1(ObjectManager $manager) {
-
+    private function loadJohny1(ObjectManager $manager)
+    {
         $rating = $this->em
             ->getRepository(Rating::class)
-            ->findOneBy (['overall_review' => 'Lorem Ipsum']);
+            ->findOneBy(['overall_review' => 'Lorem Ipsum']);
 
         $user = $this->em
             ->getRepository(User::class)
-            ->findOneBy (['email' => 'johny@gmail.com']);
+            ->findOneBy(['email' => 'johny@gmail.com']);
 
         $rating->setUser($user);
         $this->save($manager, $rating);
@@ -49,15 +51,15 @@ class UserRatingFixtures extends Fixture
         $this->save($manager, $rating);
     }
 
-    private function loadJohny2(ObjectManager $manager) {
-
+    private function loadJohny2(ObjectManager $manager)
+    {
         $rating = $this->em
             ->getRepository(Rating::class)
-            ->findOneBy (['overall_review' => 'Why do we use it']);
+            ->findOneBy(['overall_review' => 'Why do we use it']);
 
         $user = $this->em
             ->getRepository(User::class)
-            ->findOneBy (['email' => 'johny@gmail.com']);
+            ->findOneBy(['email' => 'johny@gmail.com']);
 
         $rating->setUser($user);
         $this->save($manager, $rating);

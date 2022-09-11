@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DataFixtures;
 
 use App\Entity\Rating;
@@ -13,6 +14,7 @@ class UniversityRatingFixtures extends Fixture
     {
         $this->em = $em;
     }
+
     public function load(ObjectManager $manager)
     {
         $this->loadLorem($manager);
@@ -21,15 +23,15 @@ class UniversityRatingFixtures extends Fixture
         $this->loadWhere($manager);
     }
 
-    private function loadLorem(ObjectManager $manager) {
-
+    private function loadLorem(ObjectManager $manager)
+    {
         $rating = $this->em
             ->getRepository(Rating::class)
-            ->findOneBy (['overall_review' => 'Lorem Ipsum']);
+            ->findOneBy(['overall_review' => 'Lorem Ipsum']);
 
         $university = $this->em
             ->getRepository(University::class)
-            ->findOneBy (['slug' => 'nbu']);
+            ->findOneBy(['slug' => 'nbu']);
 
         $rating->setUniversity($university);
         $this->save($manager, $rating);
@@ -43,7 +45,7 @@ class UniversityRatingFixtures extends Fixture
 
         $university = $this->em
             ->getRepository(University::class)
-            ->findOneBy (['slug' => 'nbu']);
+            ->findOneBy(['slug' => 'nbu']);
 
         $rating->setUniversity($university);
         $this->save($manager, $rating);
@@ -57,7 +59,7 @@ class UniversityRatingFixtures extends Fixture
 
         $university = $this->em
             ->getRepository(University::class)
-            ->findOneBy (['slug' => 'unss']);
+            ->findOneBy(['slug' => 'unss']);
 
         $rating->setUniversity($university);
         $this->save($manager, $rating);
@@ -71,7 +73,7 @@ class UniversityRatingFixtures extends Fixture
 
         $university = $this->em
             ->getRepository(University::class)
-            ->findOneBy (['slug' => 'unss']);
+            ->findOneBy(['slug' => 'unss']);
 
         $rating->setUniversity($university);
         $this->save($manager, $rating);

@@ -4,18 +4,16 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
+use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Symfony\Component\Security\Core\Security;
-
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -29,7 +27,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="user_registration")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, Security $security): Response
+    public function register(Request $request, \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $passwordEncoder, Security $security): Response
     {
         // if user is already logged in, don't display the login page again
         if ($security->isGranted('ROLE_USER')) {
@@ -37,7 +35,7 @@ class RegistrationController extends AbstractController
         }
 
         $user = new User();
-        $user->setRoles(array('ROLE_USER'));
+        $user->setRoles(['ROLE_USER']);
         $user->setUserType('other');
 
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -67,12 +65,13 @@ class RegistrationController extends AbstractController
 
             $this->addFlash('verify_title', 'Verify your email');
             $this->addFlash('verify_paragraph', 'We sent you a verification code to the email address you used to create the account');
-            return $this->render('user/confirmation_message.html.twig', ['user'=>$user]);
+
+            return $this->render('user/confirmation_message.html.twig', ['user' => $user]);
         }
 
         // the form is rendered
         return $this->render('user/register.html.twig', [
-            'form_registration' => $form->createView()
+            'form_registration' => $form->createView(),
         ]);
     }
 

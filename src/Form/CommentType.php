@@ -13,9 +13,8 @@ namespace App\Form;
 
 use App\Entity\Rating;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -45,29 +44,29 @@ class CommentType extends AbstractType
             ])
             ->add('location', IntegerType::class, [
                 'label' => 'Location',
-                'required' => false
+                'required' => false,
             ])
             ->add('teachingQuality', IntegerType::class, [
                 'label' => 'TeachingQuality',
             ])
             ->add('jobProspects', IntegerType::class, [
                 'label' => 'JobProspects',
-                'required' => false
+                'required' => false,
             ])
             ->add('professors', IntegerType::class, [
                 'label' => 'Professors',
             ])
             ->add('athletics', IntegerType::class, [
                 'label' => 'Athletics',
-                'required' => false
+                'required' => false,
             ])
             ->add('food', IntegerType::class, [
                 'label' => 'Food',
-                'required' => false
+                'required' => false,
             ])
             ->add('dorms', IntegerType::class, [
                 'label' => 'Dorms',
-                'required' => false
+                'required' => false,
             ])
             ->add('overall_rating', IntegerType::class, [
                 'label' => 'Overall_rating',

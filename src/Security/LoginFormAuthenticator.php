@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Security;
 
 use App\Entity\User;
@@ -7,7 +8,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -30,7 +30,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $csrfTokenManager;
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $passwordEncoder)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
@@ -51,7 +51,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             'password' => $request->request->get('_password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
-        
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $credentials['email']
@@ -68,7 +68,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
-        
+
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('You have entered an invalid username or password.');
@@ -96,7 +96,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return new RedirectResponse($targetPath);
         }
 
-        // redirect to some "home_index" 
+        // redirect to some "home_index"
         return new RedirectResponse($this->urlGenerator->generate('home_index'));
     }
 

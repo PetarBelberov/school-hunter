@@ -26,21 +26,20 @@ class Major
      * @Assert\NotBlank
      */
     private $name;
-    
-     /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="major") */
-     private $universityMajor;
 
-     /**
-      * @ORM\ManyToMany(targetEntity=Degrees::class, inversedBy="majors")
-      */
-     private $degrees;
+    /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="major") */
+    private $universityMajor;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Degrees::class, inversedBy="majors")
+     */
+    private $degrees;
 
-     public function __construct()
-     {
-         $this->universityMajor = new ArrayCollection();
-         $this->degrees = new ArrayCollection();
-     }
+    public function __construct()
+    {
+        $this->universityMajor = new ArrayCollection();
+        $this->degrees = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

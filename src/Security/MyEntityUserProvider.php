@@ -3,15 +3,13 @@
 namespace App\Security;
 
 use App\Entity\User;
-
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class MyEntityUserProvider extends EntityUserProvider implements AccountConnectorInterface {
-
+class MyEntityUserProvider extends EntityUserProvider implements AccountConnectorInterface
+{
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $resourceOwnerName = $response->getResourceOwner()->getName();
@@ -21,24 +19,23 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         }
 
         $serviceName = $response->getResourceOwner()->getName();
-        $setterId = 'set'. ucfirst($serviceName) . 'ID';
-        $setterAccessToken = 'set'. ucfirst($serviceName) . 'AccessToken';
+        $setterId = 'set'.ucfirst($serviceName).'ID';
+        $setterAccessToken = 'set'.ucfirst($serviceName).'AccessToken';
 
         // unique integer
         $username = $response->getUsername();
         $email = $response->getEmail();
         if (null === $user = $this->findUser([$this->properties[$resourceOwnerName] => $username])) {
-            if (null === $user = $this->findUser(['email' => $email])){
+            if (null === $user = $this->findUser(['email' => $email])) {
                 $user = new User();
                 $user->setEmail($response->getEmail());
                 $user->setFirstName($response->getFirstName());
                 $user->setLastName($response->getLastName());
                 $user->setIsVerified(true);
-                $user->setPassword(password_hash($user->getFacebookAccessToken(),PASSWORD_BCRYPT));
+                $user->setPassword(password_hash($user->getFacebookAccessToken(), PASSWORD_BCRYPT));
                 $user->setUserType('other');
-                $user->setRoles(["ROLE_USER"]);
-            }
-            else{
+                $user->setRoles(['ROLE_USER']);
+            } else {
                 $user->setIsVerified(true);
             }
             $user->$setterId($username);
@@ -47,13 +44,14 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         $user->$setterAccessToken($response->getAccessToken());
         $this->em->persist($user);
         $this->em->flush();
+
         return $user;
     }
 
     /**
      * Connects the response to the user object.
      *
-     * @param UserInterface $user The user object
+     * @param UserInterface         $user     The user object
      * @param UserResponseInterface $response The oauth response
      */
     public function connect(UserInterface $user, UserResponseInterface $response)
@@ -65,14 +63,13 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         $property = $this->getProperty($response);
         $username = $response->getUsername();
 
-        if (null !== $previousUser = $this->registry->getRepository(User::class)->findOneBy(array($property => $username))) {
+        if (null !== $previousUser = $this->registry->getRepository(User::class)->findOneBy([$property => $username])) {
             // 'disconnect' previously connected users
             $this->disconnect($previousUser, $response);
         }
 
-
         $serviceName = $response->getResourceOwner()->getName();
-        $setter = 'set'. ucfirst($serviceName) . 'AccessToken';
+        $setter = 'set'.ucfirst($serviceName).'AccessToken';
 
         $user->$setter($response->getAccessToken());
 
@@ -82,8 +79,6 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
     /**
      * ##STOLEN#
      * Gets the property for the response.
-     *
-     * @param UserResponseInterface $response
      *
      * @return string
      *
@@ -103,8 +98,6 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
     /**
      * Disconnects a user.
      *
-     * @param UserInterface $user
-     * @param UserResponseInterface $response
      * @throws \TypeError
      */
     public function disconnect(UserInterface $user, UserResponseInterface $response)
@@ -119,8 +112,6 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
 
     /**
      * Update the user and persist the changes to the database.
-     * @param UserInterface $user
-     * @param UserResponseInterface $response
      */
     private function updateUser(UserInterface $user, UserResponseInterface $response)
     {

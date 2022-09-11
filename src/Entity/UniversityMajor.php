@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="university_major")
  */
-class UniversityMajor {
-
+class UniversityMajor
+{
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,14 +23,13 @@ class UniversityMajor {
      */
     private $university;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="Major", inversedBy="universityMajor", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $major;
 
-   /**
+    /**
      * @var int
      * @ORM\Column(type="integer")
      */

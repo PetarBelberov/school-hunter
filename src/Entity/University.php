@@ -51,7 +51,7 @@ class University
      */
     private $address;
 
-     /**
+    /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank
      */
@@ -59,7 +59,7 @@ class University
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      * @Assert\NotBlank
      * @Assert\Email
@@ -68,13 +68,13 @@ class University
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      * @Assert\NotBlank
      */
     private $website;
 
-     /**
+    /**
      * @var Comment[]|ArrayCollection
      *
      * @ORM\OneToMany(
@@ -87,14 +87,13 @@ class University
      */
     private $comments;
 
-     /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="university") */
-     private $universityMajor;
+    /** @ORM\OneToMany(targetEntity="App\Entity\UniversityMajor", mappedBy="university") */
+    private $universityMajor;
 
-     /**
-      * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="university")
-      */
-     private $rating;
-
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="university")
+     */
+    private $rating;
 
     public function __construct()
     {

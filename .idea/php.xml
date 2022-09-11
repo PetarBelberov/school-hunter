@@ -127,6 +127,10 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/orm" />
       <path value="$PROJECT_DIR$/vendor/doctrine/persistence" />
       <path value="$PROJECT_DIR$/vendor/symfony/proxy-manager-bridge" />
+      <path value="$PROJECT_DIR$/vendor/symfony/password-hasher" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php81" />
+      <path value="$PROJECT_DIR$/vendor/rector/rector" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
@@ -224,5 +228,7 @@
       </interpreter>
     </phpInfoCache>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
 </project>

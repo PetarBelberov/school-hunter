@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\RatingRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -90,7 +88,6 @@ class Rating
      * @ORM\ManyToOne(targetEntity=University::class, inversedBy="rating")
      */
     private $university;
-
 
     public function getId(): ?int
     {

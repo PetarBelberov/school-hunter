@@ -5,28 +5,22 @@ namespace App\Controller;
 use App\Entity\Rating;
 use App\Entity\University;
 use App\Entity\User;
-use App\Form\UserEditFormType;
-use App\Form\UserFormType;
 use App\Form\ChangePasswordFormType;
-use App\Security\EmailVerifier;
+use App\Form\UserEditFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Mailer\MailerInterface;
-
 
 class UserController extends AbstractController
 {
     /**
      * @Route("/profile", name="user_profile")
      */
-    public function profile()
+    public function profile(): Response
     {
         $user = $this->getUser();
 
@@ -40,7 +34,7 @@ class UserController extends AbstractController
 
         return $this->render('user/profile.html.twig', [
             'user' => $user,
-            'university_rating' => $university_rating
+            'university_rating' => $university_rating,
         ]);
     }
 
@@ -68,10 +62,10 @@ class UserController extends AbstractController
         ]);
     }
 
-     /**
+    /**
      * @Route("/profile/change-password", methods="GET|POST", name="user_change_password")
      */
-    public function changePassword(Request $request, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): Response
+    public function changePassword(Request $request, \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $encoder, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
 
@@ -92,11 +86,11 @@ class UserController extends AbstractController
             // pass variables to the template
             ->context([
                 'user' => $user,
-                date_default_timezone_set("Europe/Sofia"),
-                'date' => date("H:i:s / d:m:Y")
+                date_default_timezone_set('Europe/Sofia'),
+                'date' => date('H:i:s / d:m:Y'),
             ]);
 
-         $mailer->send($email);
+            $mailer->send($email);
 
             return $this->redirectToRoute('security_logout');
         }
@@ -105,6 +99,4 @@ class UserController extends AbstractController
             'form_change_pass' => $form_change_pass->createView(),
         ]);
     }
-
-
 }

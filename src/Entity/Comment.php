@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
-use function Symfony\Component\String\u;
 use Doctrine\ORM\Mapping as ORM;
+
+use function Symfony\Component\String\u;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -46,7 +48,7 @@ class Comment
      */
     private $publishedAt;
 
-     /**
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
@@ -59,7 +61,7 @@ class Comment
         $this->publishedAt = new \DateTime();
     }
 
-     /**
+    /**
      * @Assert\IsTrue(message="comment.is_spam")
      */
     public function isLegitComment(): bool

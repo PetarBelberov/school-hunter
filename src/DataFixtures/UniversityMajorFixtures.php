@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DataFixtures;
 
 use App\Entity\Major;
@@ -8,14 +9,13 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
-use ErrorException;
 use Exception;
 
 class UniversityMajorFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function __construct(EntityManagerInterface $em)
     {
-        $this->em =  $em;
+        $this->em = $em;
     }
 
     public function load(ObjectManager $manager)
@@ -26,7 +26,8 @@ class UniversityMajorFixtures extends Fixture implements OrderedFixtureInterface
         $this->loadACS($manager);
     }
 
-    public function checkMajors($major_name, $ranking) {
+    public function checkMajors($major_name, $ranking)
+    {
         $major = $this->em
             ->getRepository(Major::class)
             ->findBy(['name' => $major_name]);
@@ -38,17 +39,15 @@ class UniversityMajorFixtures extends Fixture implements OrderedFixtureInterface
         return $uni_majors;
     }
 
-    public function throwException($ranking, $major, $manager, $university, $university_major) {
-        if(empty($this->checkMajors($major->getName(), $ranking)))
-        {
+    public function throwException($ranking, $major, $manager, $university, $university_major)
+    {
+        if (empty($this->checkMajors($major->getName(), $ranking))) {
             $this->save($manager, $ranking, $major, $university, $university_major);
-        }
-        else 
-        {
-            throw new Exception('Existing ranking (' . $ranking . ') for the major: ' . $major->getName());
+        } else {
+            throw new Exception('Existing ranking ('.$ranking.') for the major: '.$major->getName());
         }
     }
-    
+
     public function loadUNSS($manager)
     {
         $university = $this->em
@@ -61,7 +60,7 @@ class UniversityMajorFixtures extends Fixture implements OrderedFixtureInterface
 
         foreach ($majors as $major) {
             $university_major = new UniversityMajor();
-            
+
             if ($major->getName() == 'Администрация и управление') {
                 $ranking = 1;
                 $this->checkMajors($major->getName(), $ranking);
@@ -454,11 +453,11 @@ class UniversityMajorFixtures extends Fixture implements OrderedFixtureInterface
     }
 
     /**
-     * Get the order of this fixture
+     * Get the order of this fixture.
      *
-     * @return integer
+     * @return int
      */
-    function getOrder()
+    public function getOrder()
     {
         return 3;
     }
