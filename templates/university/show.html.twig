@@ -52,7 +52,9 @@
                 
                 <ul class="min-list listing-header__detail">
                   <li>
-                    <span class="listing__score t-center">{{ sum_ratings.overall_rating[0] }}</span>
+                    {% if sum_ratings.overall_rating is defined %}
+                      <span class="listing__score t-center">{{ sum_ratings.overall_rating[0] }}</span>
+                    {% endif %}
                     <span class="listing__review c-dusty-gray">
                       <span class="stars-outer" data-rating="4.5">
                         <span class="stars-inner"></span>
@@ -233,58 +235,74 @@
 
               <tr class="listing-rating">
                 <th>Обучение</th>
-                <td>
-                  <span>{{ sum_ratings.academics[0] }}</span>
-                </td>
+                  {% if sum_ratings.academics is defined %}
+                    <td>
+                      <span>{{ sum_ratings.academics[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
                 <th>Преподаватели</th>
-                <td>
-                  <span>{{ sum_ratings.professors[0] }}</span>
-                </td>
+                  {% if sum_ratings.professors is defined %}
+                    <td>
+                      <span>{{ sum_ratings.professors[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
                 <th>Университетска база</th>
-                <td>
-                  <span>{{ sum_ratings.campus[0] }}</span>
-                </td>
+                  {% if sum_ratings.campus is defined %}
+                    <td>
+                      <span>{{ sum_ratings.campus[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
                 <th>Местоположение</th>
-                <td>
-                  <span>{{ sum_ratings.location[0] }}</span>
-                </td>
+                  {% if sum_ratings.location is defined %}
+                    <td>
+                      <span>{{ sum_ratings.location[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
                 <th>Спортна база</th>
-                <td>
-                  <span>{{ sum_ratings.athletics[0] }}</span>
-                </td>
+                  {% if sum_ratings.athletics is defined %}
+                    <td>
+                      <span>{{ sum_ratings.athletics[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
                 <th>Храна</th>
-                <td>
-                  <span>{{ sum_ratings.food[0] }}</span>
-                </td>
+                  {% if sum_ratings.food is defined %}
+                    <td>
+                      <span>{{ sum_ratings.food[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
                 <th>Общежития</th>
-                <td>
-                  <span>{{ sum_ratings.dorms[0] }}</span>
-                </td>
+                  {% if sum_ratings.dorms is defined %}
+                    <td>
+                      <span>{{ sum_ratings.dorms[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
 
               <tr class="listing-rating">
                 <th>Перспективи за работа</th>
-                <td>
-                  <span>{{ sum_ratings.jobProspects[0] }}</span>
-                </td>
+                  {% if sum_ratings.jobProspects is defined %}
+                    <td>
+                      <span>{{ sum_ratings.jobProspects[0] }}</span>
+                    </td>
+                  {% endif %}
               </tr><!-- .listing-rating -->
             </table><!-- .listing-ratings -->
 

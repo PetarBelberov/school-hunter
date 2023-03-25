@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "^1.10",
+        "doctrine/dbal": "^3.6",
         "doctrine/doctrine-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
@@ -16,7 +17,7 @@
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/asset": "5.1.*",
         "symfony/console": "5.1.*",
-        "symfony/dotenv": "5.1.*",
+        "symfony/dotenv": "^5.1.11",
         "symfony/expression-language": "5.1.*",
         "symfony/flex": "^1.3.1",
         "symfony/form": "5.1.*",
@@ -99,7 +100,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "dotenv": "symfony dotenv:populate"
     },
     "conflict": {
         "symfony/symfony": "*"
