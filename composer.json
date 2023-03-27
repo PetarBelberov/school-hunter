@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.4.6",
+        "php": "^8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "^1.10",
@@ -10,6 +10,7 @@
         "doctrine/doctrine-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
+        "http-interop/http-factory-guzzle": "*",
         "hwi/oauth-bundle": "^1.3",
         "php-http/guzzle6-adapter": "^2.0",
         "php-http/httplug-bundle": "^1.20",
@@ -18,10 +19,9 @@
         "symfony/asset": "5.1.*",
         "symfony/console": "5.1.*",
         "symfony/dotenv": "^5.1.11",
-        "symfony/expression-language": "5.1.*",
         "symfony/flex": "^1.3.1",
         "symfony/form": "5.1.*",
-        "symfony/framework-bundle": "5.1.*",
+        "symfony/framework-bundle": "^4.4|^5.0",
         "symfony/http-client": "5.1.*",
         "symfony/intl": "5.1.*",
         "symfony/mailer": "5.1.*",
@@ -36,11 +36,11 @@
         "symfony/serializer": "5.1.*",
         "symfony/string": "5.1.*",
         "symfony/translation": "5.1.*",
-        "symfony/twig-bundle": "5.1.*",
+        "symfony/twig-bundle": "^5.1|^6.2",
         "symfony/validator": "5.1.*",
         "symfony/var-dumper": "5.1.*",
         "symfony/web-link": "5.1.*",
-        "symfony/webpack-encore-bundle": "^1.7",
+        "symfony/webpack-encore-bundle": "^1.16",
         "symfony/yaml": "5.1.*",
         "symfonycasts/verify-email-bundle": "^1.0",
         "twig/extra-bundle": "^2.12|^3.0",
@@ -52,10 +52,8 @@
         "symfony/css-selector": "^5.1",
         "symfony/debug-bundle": "^5.1",
         "symfony/maker-bundle": "^1.28.0",
-        "symfony/monolog-bundle": "^3.0",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/stopwatch": "^5.1",
-        "symfony/twig-bundle": "5.1.*",
         "symfony/web-profiler-bundle": "^5.1"
     },
     "config": {
@@ -65,10 +63,11 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "7.4.6"
+            "php": "8.2.4"
         },
         "allow-plugins": {
-            "symfony/flex": true
+            "symfony/flex": true,
+            "php-http/discovery": true
         }
     },
     "autoload": {
@@ -104,7 +103,6 @@
         "dotenv": "symfony dotenv:populate"
     },
     "conflict": {
-        "symfony/symfony": "*"
     },
     "extra": {
         "symfony": {
